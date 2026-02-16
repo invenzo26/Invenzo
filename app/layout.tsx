@@ -10,8 +10,9 @@ export const metadata = {
     apple: '/apple-touch-icon.png',
   },
   manifest: '/site.webmanifest',
+  viewport: 'width=device-width, initial-scale=1',
 };
-
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 export default function RootLayout({
   children,
 }: {
