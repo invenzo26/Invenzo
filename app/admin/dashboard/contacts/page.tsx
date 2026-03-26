@@ -1,17 +1,19 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { supabase } from '@/lib/supabaseClient'
+import { getSupabaseClient } from '@/lib/supabaseClient'
 
 export default function AdminContacts() {
   const [contacts, setContacts] = useState<any[]>([])
 
   useEffect(() => {
     const loadContacts = async () => {
+      const supabase = getSupabaseClient()
+
       const { data } = await supabase
-        .from('contacts')
-        .select('*')
-        .order('created_at', { ascending: false })
+         .from('contacts')
+         .select('*')
+         .order('created_at', { ascending: false })
 
       setContacts(data || [])
     }
