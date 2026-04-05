@@ -1,6 +1,7 @@
 'use client'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
+import { getProductIcon } from '@/lib/productMeta'
 
 const products = [
   {
@@ -54,17 +55,26 @@ export default function Products() {
       <div className="grid grid-cols-2 grid-rows-2 gap-10 max-w-7xl mx-auto min-h-[420px]">
         {products.map((p, i) => (
   <Link key={i} href={`/products/${p.id}`} className="block">
+    {(() => {
+      const ProductIcon = getProductIcon(p.id)
+
+      return (
     <motion.div
     key={i}
   whileHover={{ y: -10, scale: 1.04 }}
   transition={{ type: 'spring', stiffness: 200 }}
   className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-6 shadow-lg hover:shadow-purple-500/30"
 >
+      <div className="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-white/10 text-cyan-300">
+        <ProductIcon size={24} />
+      </div>
       <h3 className="text-xl font-semibold mb-3">{p.name}</h3>
       <p className="text-sm text-slate-300 mb-6">{p.desc}</p>
 
       <div className="h-[2px] w-12 bg-gradient-to-r from-purple-400 to-cyan-400 rounded-full"></div>
     </motion.div>
+      )
+    })()}
   </Link>
 ))}
       </div>

@@ -2,11 +2,13 @@
 import { useParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { getSupabaseClient } from '@/lib/supabaseClient'
+import { getProductIcon } from '@/lib/productMeta'
 
 export default function ProductDetails() {
   const { id } = useParams()
   const [product, setProduct] = useState<any>(null)
   const [loading, setLoading] = useState(true)
+  const ProductIcon = getProductIcon(typeof id === 'string' ? id : undefined)
 
   useEffect(() => {
     fetchProduct()
@@ -67,6 +69,9 @@ export default function ProductDetails() {
       <div className="absolute bottom-[-120px] right-[-120px] w-[240px] sm:w-[400px] h-[240px] sm:h-[400px] bg-cyan-500/30 blur-[140px] rounded-full"></div>
 
       <div className="relative max-w-4xl mx-auto">
+        <div className="mb-8 inline-flex h-16 w-16 items-center justify-center rounded-3xl border border-white/10 bg-white/10 text-cyan-300 shadow-lg shadow-cyan-500/10">
+          <ProductIcon size={30} />
+        </div>
         
         <h1 className="text-3xl sm:text-5xl font-bold leading-tight">
           {product.name}
