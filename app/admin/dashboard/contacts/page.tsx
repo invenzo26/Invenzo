@@ -7,18 +7,17 @@ export default function AdminContacts() {
   const [contacts, setContacts] = useState<any[]>([])
 
   useEffect(() => {
-    const loadContacts = async () => {
-      const { data } = await supabase
-         .from('contacts')
-         .select('*')
-         .order('created_at', { ascending: false })
+    fetchContacts()
+  }, [])
+  const fetchContacts = async () => {
+    const { data, error } = await supabase
+      .from('contacts')
+      .select('*')
 
+    if (!error) {
       setContacts(data || [])
     }
-
-    loadContacts()
-  }, [])
-
+  }  
   return (
     <div>
       <h1 className="text-3xl font-bold mb-6">Contact Submissions</h1>
