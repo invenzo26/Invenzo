@@ -11,6 +11,8 @@ export default function AdminProducts() {
   }, [])
 
   async function fetchProducts() {
+    const supabase = getSupabaseClient()
+    if (!supabase) return
     const { data, error } = await supabase
       .from('products')
       .select('*')
