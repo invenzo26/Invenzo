@@ -59,7 +59,7 @@ export default function Home() {
 
           <div className="relative z-10 text-center">
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-4">
-              New Product Launch
+              🚀 New Product Launch
             </h2>
             <p className="text-white/90 text-base sm:text-lg max-w-2xl mx-auto mb-6">
               We&apos;re glad that our new product which will increase your productivity and focus is getting launched soon...!!
