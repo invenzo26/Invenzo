@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { requireAdminApiUser } from '@/lib/adminApi'
-import { getSupabaseServerClient } from '@/lib/supabaseServer'
 
 export async function PUT(
   req: NextRequest,
@@ -9,12 +8,8 @@ export async function PUT(
   const auth = await requireAdminApiUser()
   if (auth.error) return auth.error
 
-  const supabase = getSupabaseServerClient()
+  const supabase = auth.supabase
   const { id } = await params
-
-  if (!supabase) {
-    return NextResponse.json({ error: 'Server Supabase client unavailable.' }, { status: 500 })
-  }
 
   const body = await req.json()
 
@@ -39,12 +34,8 @@ export async function DELETE(
   const auth = await requireAdminApiUser()
   if (auth.error) return auth.error
 
-  const supabase = getSupabaseServerClient()
+  const supabase = auth.supabase
   const { id } = await params
-
-  if (!supabase) {
-    return NextResponse.json({ error: 'Server Supabase client unavailable.' }, { status: 500 })
-  }
 
   const { error } = await supabase.from('products').delete().eq('id', id)
 

@@ -9,12 +9,33 @@ export async function GET() {
   const supabaseServer = getSupabaseServerClient()
 
   if (!supabaseServer) {
-    return NextResponse.json({ error: 'Server Supabase client unavailable.' }, { status: 500 })
+    const { data, error } = await auth.supabase
+      .from('admin_users')
+      .select('user_id, created_at')
+      .order('created_at', { ascending: false })
+
+    if (error) {
+      return NextResponse.json({ error: error.message }, { status: 500 })
+    }
+
+    const users = (data || []).map((record) => ({
+      id: record.user_id,
+      email: null,
+      created_at: record.created_at || null,
+      last_sign_in_at: null,
+      is_admin: true,
+    }))
+
+    return NextResponse.json({
+      users,
+      totalAuthUsers: users.length,
+      totalAdmins: users.length,
+    })
   }
 
   const [authUsersResult, adminUsersResult] = await Promise.all([
     supabaseServer.auth.admin.listUsers({ page: 1, perPage: 1000 }),
-    supabaseServer.from('admin_users').select('*'),
+    auth.supabase.from('admin_users').select('user_id'),
   ])
 
   if (authUsersResult.error) {

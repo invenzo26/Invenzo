@@ -1,16 +1,11 @@
 import { NextResponse } from 'next/server'
 import { requireAdminApiUser } from '@/lib/adminApi'
-import { getSupabaseServerClient } from '@/lib/supabaseServer'
 
 export async function GET() {
   const auth = await requireAdminApiUser()
   if (auth.error) return auth.error
 
-  const supabase = getSupabaseServerClient()
-
-  if (!supabase) {
-    return NextResponse.json({ error: 'Server Supabase client unavailable.' }, { status: 500 })
-  }
+  const supabase = auth.supabase
 
   const { data, error } = await supabase
     .from('contacts')

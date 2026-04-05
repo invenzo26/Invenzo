@@ -12,11 +12,8 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ results: [] })
   }
 
-  const supabase = getSupabaseServerClient()
-
-  if (!supabase) {
-    return NextResponse.json({ results: [] })
-  }
+  const supabaseServer = getSupabaseServerClient()
+  const supabase = supabaseServer ?? auth.supabase
 
   const [productsResult, contactsResult, authUsersResult] = await Promise.all([
     supabase
@@ -29,7 +26,8 @@ export async function GET(req: NextRequest) {
       .select('id, name, email, subject')
       .or(`name.ilike.%${query}%,email.ilike.%${query}%,subject.ilike.%${query}%`)
       .limit(5),
-    supabase.auth.admin.listUsers({ page: 1, perPage: 1000 }),
+    supabaseServer?.auth.admin.listUsers({ page: 1, perPage: 1000 }) ??
+      Promise.resolve({ data: { users: [] }, error: null }),
   ])
 
   const authUsers = (authUsersResult.data?.users || [])
