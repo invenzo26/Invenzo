@@ -1,12 +1,20 @@
 import { redirect } from 'next/navigation'
-import { supabaseServer } from '@/lib/supabaseServer'
+import { getSupabaseServerClient } from '@/lib/supabaseServer'
 import { isAdmin } from '@/lib/checkAdmin'
+
+export const dynamic = 'force-dynamic'
 
 export default async function AdminLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const supabaseServer = getSupabaseServerClient()
+
+  if (!supabaseServer) {
+    redirect('/admin/login')
+  }
+
   const {
     data: { user },
   } = await supabaseServer.auth.getUser()

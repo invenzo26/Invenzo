@@ -1,6 +1,20 @@
-import { createClient } from '@supabase/supabase-js'
+import { createClient, type SupabaseClient } from '@supabase/supabase-js'
 
-export const supabaseServer = createClient(
-  process.env.SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-)
+let supabaseServer: SupabaseClient | null = null
+
+export function getSupabaseServerClient() {
+  if (supabaseServer) {
+    return supabaseServer
+  }
+
+  const url = process.env.SUPABASE_URL
+  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY
+
+  if (!url || !serviceRoleKey) {
+    console.warn('Server Supabase env vars missing')
+    return null
+  }
+
+  supabaseServer = createClient(url, serviceRoleKey)
+  return supabaseServer
+}
