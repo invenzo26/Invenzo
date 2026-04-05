@@ -1,7 +1,6 @@
 import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
 import { createServerClient } from '@supabase/ssr'
-import { isAdmin } from '@/lib/checkAdmin'
 
 export async function requireAdminApiUser() {
   const cookieStore = await cookies()
@@ -32,11 +31,21 @@ export async function requireAdminApiUser() {
     return { error: NextResponse.json({ error: 'Unauthorized' }, { status: 401 }) }
   }
 
-  const allowed = await isAdmin(user.id)
+  const { data: adminRow, error: adminError } = await supabase
+    .from('admin_users')
+    .select('id')
+    .eq('user_id', user.id)
+    .maybeSingle()
 
-  if (!allowed) {
+  if (adminError) {
+    return {
+      error: NextResponse.json({ error: adminError.message }, { status: 500 }),
+    }
+  }
+
+  if (!adminRow) {
     return { error: NextResponse.json({ error: 'Forbidden' }, { status: 403 }) }
   }
 
-  return { user }
+  return { user, supabase }
 }

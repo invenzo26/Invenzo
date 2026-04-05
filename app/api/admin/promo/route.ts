@@ -1,53 +1,15 @@
-import { cookies } from 'next/headers'
 import { NextRequest, NextResponse } from 'next/server'
-import { createServerClient } from '@supabase/ssr'
+import { requireAdminApiUser } from '@/lib/adminApi'
 import { defaultPromoSettings } from '@/lib/promoSettings'
 import { getSupabaseServerClient } from '@/lib/supabaseServer'
-import { isAdmin } from '@/lib/checkAdmin'
 import {
   isMissingSiteSettingsTable,
   readFallbackSiteSetting,
   writeFallbackSiteSetting,
 } from '@/lib/siteSettingsFallback'
 
-async function requireAdmin() {
-  const cookieStore = await cookies()
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL
-  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-
-  if (!url || !anonKey) {
-    return { error: NextResponse.json({ error: 'Supabase is not configured.' }, { status: 500 }) }
-  }
-
-  const supabase = createServerClient(url, anonKey, {
-    cookies: {
-      get(name: string) {
-        return cookieStore.get(name)?.value
-      },
-      set() {},
-      remove() {},
-    },
-  })
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-
-  if (!user) {
-    return { error: NextResponse.json({ error: 'Unauthorized' }, { status: 401 }) }
-  }
-
-  const allowed = await isAdmin(user.id)
-
-  if (!allowed) {
-    return { error: NextResponse.json({ error: 'Forbidden' }, { status: 403 }) }
-  }
-
-  return { user }
-}
-
 export async function GET() {
-  const auth = await requireAdmin()
+  const auth = await requireAdminApiUser()
   if (auth.error) return auth.error
 
   const supabase = getSupabaseServerClient()
@@ -100,7 +62,7 @@ export async function GET() {
 }
 
 export async function PUT(req: NextRequest) {
-  const auth = await requireAdmin()
+  const auth = await requireAdminApiUser()
   if (auth.error) return auth.error
 
   const supabase = getSupabaseServerClient()
