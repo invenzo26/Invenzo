@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react'
 import { Mail, Reply, Search, Send, Trash2, X } from 'lucide-react'
+import { ADMIN_REPLY_EMAIL } from '@/lib/adminReplyEmail'
 
 type Contact = {
   id: string
@@ -19,7 +20,6 @@ export default function AdminContacts() {
   const [error, setError] = useState<string | null>(null)
   const [deleting, setDeleting] = useState(false)
   const [isReplyOpen, setIsReplyOpen] = useState(false)
-  const [replyEmail, setReplyEmail] = useState('')
   const [replySubject, setReplySubject] = useState('')
   const [replyBody, setReplyBody] = useState('')
   const [replyMessage, setReplyMessage] = useState<string | null>(null)
@@ -44,24 +44,6 @@ export default function AdminContacts() {
 
     setError('Failed to load contacts.')
   }
-
-  useEffect(() => {
-    const loadProfile = async () => {
-      const response = await fetch('/api/admin/profile', {
-        credentials: 'include',
-        cache: 'no-store',
-      })
-
-      if (!response.ok) {
-        return
-      }
-
-      const payload = await response.json()
-      setReplyEmail(payload.profile?.replyEmail || '')
-    }
-
-    loadProfile()
-  }, [])
 
   const filteredContacts = useMemo(() => {
     const term = query.trim().toLowerCase()
@@ -263,7 +245,7 @@ export default function AdminContacts() {
               <div>
                 <h3 className="text-lg font-semibold text-white">Reply to {selectedContact.name}</h3>
                 <p className="mt-1 text-sm text-slate-400">
-                  Replies will use the admin profile email configured in Settings.
+                  Replies will always use the shared admin email.
                 </p>
               </div>
 
@@ -277,16 +259,16 @@ export default function AdminContacts() {
               </button>
             </div>
 
-            {(replyMessage || !replyEmail) && (
+            {replyMessage && (
               <div className="mt-5 rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3 text-sm text-slate-300">
-                {replyMessage || 'Add a reply email in Settings before sending replies.'}
+                {replyMessage}
               </div>
             )}
 
             <div className="mt-5 grid gap-3 sm:grid-cols-2">
               <Field label="From email">
                 <input
-                  value={replyEmail}
+                  value={ADMIN_REPLY_EMAIL}
                   readOnly
                   className="w-full rounded-2xl border border-white/10 bg-[#0e1120]/85 px-4 py-2.5 text-slate-300 outline-none"
                 />
@@ -326,7 +308,7 @@ export default function AdminContacts() {
             <div className="mt-5 flex justify-end">
               <button
                 type="button"
-                disabled={!replyEmail || !replyBody.trim() || sendingReply}
+                disabled={!replyBody.trim() || sendingReply}
                 onClick={async () => {
                   setSendingReply(true)
                   setReplyMessage(null)
@@ -340,7 +322,7 @@ export default function AdminContacts() {
                     body: JSON.stringify({
                       contactId: selectedContact.id,
                       to: selectedContact.email,
-                      replyEmail,
+                      replyEmail: ADMIN_REPLY_EMAIL,
                       subject: replySubject,
                       message: replyBody,
                     }),
