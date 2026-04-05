@@ -1,5 +1,5 @@
 'use client'
-
+export const dynamic = 'force-dynamic'
 import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabaseClient'
 
@@ -7,7 +7,7 @@ export default function AdminContacts() {
   const [contacts, setContacts] = useState<any[]>([])
 
   useEffect(() => {
-    fetchContacts()
+  fetchContacts()
   }, [])
   const fetchContacts = async () => {
     const { data, error } = await supabase
