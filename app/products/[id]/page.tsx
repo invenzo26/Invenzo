@@ -1,7 +1,7 @@
 'use client'
 import { useParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { supabase } from '@/lib/supabaseClient'
+import { getSupabaseClient } from '@/lib/supabaseClient'
 
 export default function ProductDetails() {
   const { id } = useParams()
@@ -13,6 +13,8 @@ export default function ProductDetails() {
   }, [])
 
   async function fetchProduct() {
+    const supabase = getSupabaseClient()
+    if (!supabase) return
     const { data, error } = await supabase
       .from('products')
       .select('*')
