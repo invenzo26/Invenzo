@@ -1,73 +1,62 @@
 'use client'
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
 import { getSupabaseClient } from '@/lib/supabaseClient'
 
-export default function AdminLogin() {
-  const router = useRouter()
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState('')
-
-  async function handleLogin(e: any) {
-    e.preventDefault()
-    setLoading(true)
-    setError('')
+export default function AdminDashboard() {
+  const [stats, setStats] = useState({
+    contacts: 0,
+    products: 0,
+  })
+  
+  useEffect(() => {
+    const fetchStats = async () => {
     const supabase = getSupabaseClient()
+
     if (!supabase) return
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
+
+    // Get contacts count
+    const { count: contactCount } = await supabase
+      .from('contacts')
+      .select('*', { count: 'exact', head: true })
+
+    // Get products count
+    const { count: productCount } = await supabase
+      .from('products')
+      .select('*', { count: 'exact', head: true })
+
+    setStats({
+      contacts: contactCount || 0,
+      products: productCount || 0,
     })
-
-    if (error) {
-      setError(error.message)
-      setLoading(false)
-      return
-    }
-
-    router.push('/admin/dashboard')
   }
-
+    fetchStats()
+  }, [])
   return (
-    <main className="min-h-screen bg-black flex items-center justify-center text-white">
-      <form
-        onSubmit={handleLogin}
-        className="bg-white/5 border border-white/10 p-8 rounded-2xl w-full max-w-md"
-      >
-        <h1 className="text-3xl font-bold mb-6">Admin Login</h1>
+    <div>
+      <h1 className="text-3xl font-bold mb-6">
+        Dashboard Overview
+      </h1>
 
-        {error && (
-          <div className="mb-4 text-red-400 text-sm">{error}</div>
-        )}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="p-6 rounded-xl border border-zinc-800">
+          <h2 className="text-lg font-semibold mb-2">
+            Contacts
+          </h2>
+          <p className="text-2xl font-bold">
+            {stats.contacts}
+          </p>
+        </div>
 
-        <input
-          type="email"
-          placeholder="Admin Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="w-full p-3 mb-4 rounded bg-black border border-white/10"
-          required
-        />
-
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="w-full p-3 mb-6 rounded bg-black border border-white/10"
-          required
-        />
-
-        <button
-          disabled={loading}
-          className="w-full py-3 rounded-xl bg-gradient-to-r from-purple-500 to-cyan-500 font-semibold"
-        >
-          {loading ? 'Logging in...' : 'Login'}
-        </button>
-      </form>
-    </main>
+        <div className="p-6 rounded-xl border border-zinc-800">
+          <h2 className="text-lg font-semibold mb-2">
+            Products
+          </h2>
+          <p className="text-2xl font-bold">
+            {stats.products}
+          </p>
+        </div>
+      </div>
+    </div>
   )
 }
