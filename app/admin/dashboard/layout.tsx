@@ -3,7 +3,6 @@ import { redirect } from 'next/navigation'
 import { createServerClient } from '@supabase/ssr'
 import AdminSidebar from '@/app/admin/components/AdminSidebar'
 import AdminTopbar from '@/app/admin/components/AdminTopbar'
-import { isAdmin } from '@/lib/checkAdmin'
 
 export const dynamic = 'force-dynamic'
 
@@ -38,9 +37,13 @@ export default async function AdminLayout({
     redirect('/admin/login')
   }
 
-  const allowed = await isAdmin(user.id)
+  const { data: adminRow } = await supabase
+    .from('admin_users')
+    .select('id')
+    .eq('user_id', user.id)
+    .maybeSingle()
 
-  if (!allowed) {
+  if (!adminRow) {
     redirect('/')
   }
 
