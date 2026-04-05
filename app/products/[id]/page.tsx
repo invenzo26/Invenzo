@@ -69,17 +69,21 @@ export default function ProductDetails() {
       <div className="absolute bottom-[-120px] right-[-120px] w-[240px] sm:w-[400px] h-[240px] sm:h-[400px] bg-cyan-500/30 blur-[140px] rounded-full"></div>
 
       <div className="relative max-w-4xl mx-auto">
-        <div className="mb-8 inline-flex h-16 w-16 items-center justify-center rounded-3xl border border-white/10 bg-white/10 text-cyan-300 shadow-lg shadow-cyan-500/10">
-          <ProductIcon size={30} />
-        </div>
-        
-        <h1 className="text-3xl sm:text-5xl font-bold leading-tight">
-          {product.name}
-        </h1>
+        <div className="mb-8 flex items-center gap-4 sm:gap-5">
+          <div className="inline-flex h-16 w-16 shrink-0 items-center justify-center rounded-3xl border border-white/10 bg-white/10 text-cyan-300 shadow-lg shadow-cyan-500/10">
+            <ProductIcon size={30} />
+          </div>
 
-        <p className="text-base sm:text-xl text-purple-400 mt-2">
-          {product.tagline}
-        </p>
+          <div className="min-w-0">
+            <h1 className="text-3xl sm:text-5xl font-bold leading-tight">
+              {product.name}
+            </h1>
+
+            <p className="text-base sm:text-xl text-purple-400 mt-2">
+              {product.tagline}
+            </p>
+          </div>
+        </div>
 
         <p className="text-sm sm:text-base text-slate-300 mt-6 sm:mt-8 leading-relaxed">
           {product.description}

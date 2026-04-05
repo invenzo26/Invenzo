@@ -5,10 +5,17 @@ import {
   Sparkles,
   Target,
   TrendingUp,
-  type LucideIcon,
 } from 'lucide-react'
+import type { ComponentType } from 'react'
 
-export const productIcons: Record<string, LucideIcon> = {
+type ProductIconProps = {
+  size?: number
+  className?: string
+}
+
+type ProductIconComponent = ComponentType<ProductIconProps>
+
+export const productIcons: Record<string, ProductIconComponent> = {
   focuslock: AlarmClock,
   skillsyncx: BrainCircuit,
   trivio: GraduationCap,

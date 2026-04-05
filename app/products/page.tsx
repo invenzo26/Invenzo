@@ -61,17 +61,21 @@ export default function Products() {
       return (
     <motion.div
     key={i}
-  whileHover={{ y: -10, scale: 1.04 }}
-  transition={{ type: 'spring', stiffness: 200 }}
-  className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-6 shadow-lg hover:shadow-purple-500/30"
+  whileHover={{ y: -8, scale: 1.03 }}
+  className="group rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-6 transition-all shadow-lg hover:shadow-purple-500/20"
 >
-      <div className="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-white/10 text-cyan-300">
-        <ProductIcon size={24} />
-      </div>
-      <h3 className="text-xl font-semibold mb-3">{p.name}</h3>
-      <p className="text-sm text-slate-300 mb-6">{p.desc}</p>
+      <div className="flex items-start gap-4">
+        <div className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-white/10 text-cyan-300">
+          <ProductIcon size={24} />
+        </div>
 
-      <div className="h-[2px] w-12 bg-gradient-to-r from-purple-400 to-cyan-400 rounded-full"></div>
+        <div className="min-w-0 flex-1">
+          <h3 className="text-xl font-semibold mb-3">{p.name}</h3>
+          <p className="text-sm text-slate-300 mb-6">{p.desc}</p>
+        </div>
+      </div>
+
+      <div className="h-[2px] w-12 bg-gradient-to-r from-purple-400 to-cyan-400 rounded-full group-hover:w-24 transition-all"></div>
     </motion.div>
       )
     })()}

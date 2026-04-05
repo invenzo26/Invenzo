@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion'
 import Link from 'next/link'
+import { getProductIcon } from '@/lib/productMeta'
 
 export default function Home() {
   return (
@@ -82,15 +83,29 @@ export default function Home() {
           { id: 'gradguard', name: 'GradGuard', desc: 'Academic & student performance management system' },
           ].map((p, i) => (
             <Link href={`/products/${p.id}`} key={i}>
+            {(() => {
+              const ProductIcon = getProductIcon(p.id)
+
+              return (
             <motion.div
               whileHover={{ y: -8, scale: 1.03 }}
               className="group cursor-pointer rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-6 transition-all shadow-lg hover:shadow-purple-500/20"
              >
-              <h3 className="text-xl font-semibold mb-2">{p.name}</h3>
-              <p className="text-sm text-slate-300 mb-6">{p.desc}</p>
+              <div className="flex items-start gap-4">
+                <div className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-white/10 text-cyan-300">
+                  <ProductIcon size={24} />
+                </div>
+
+                <div className="min-w-0 flex-1">
+                  <h3 className="text-xl font-semibold mb-2">{p.name}</h3>
+                  <p className="text-sm text-slate-300 mb-6">{p.desc}</p>
+                </div>
+              </div>
 
               <div className="h-[2px] w-12 bg-gradient-to-r from-purple-400 to-cyan-400 rounded-full group-hover:w-24 transition-all"></div>
             </motion.div>
+              )
+            })()}
             </Link>
           ))}
         </div>
