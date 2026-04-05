@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { getSupabaseClient } from '@/lib/supabaseClient'
+import { supabase } from '@/lib/supabaseClient'
 
 export default function AdminLayout({
   children,
@@ -13,8 +13,6 @@ export default function AdminLayout({
 
   useEffect(() => {
     const checkAdmin = async () => {
-      const supabase = getSupabaseClient()
-
       const {
         data: { user },
       } = await supabase.auth.getUser()
