@@ -2,8 +2,24 @@
 
 import { motion } from 'framer-motion'
 import Link from 'next/link'
+import { useEffect, useState } from 'react'
+import { defaultPromoSettings, type PromoSettings } from '@/lib/promoSettings'
 
 export default function Home() {
+  const [promo, setPromo] = useState<PromoSettings>(defaultPromoSettings)
+
+  useEffect(() => {
+    const loadPromo = async () => {
+      const response = await fetch('/api/promo', {
+        cache: 'no-store',
+      })
+      const payload = await response.json()
+      setPromo(payload.settings || defaultPromoSettings)
+    }
+
+    loadPromo()
+  }, [])
+
   return (
     <main className="min-h-screen bg-gradient-to-br from-black via-slate-950 to-black text-white overflow-hidden">
       <section className="relative flex flex-col items-center justify-center text-center px-4 sm:px-6 pt-28 sm:pt-32 pb-10 sm:pb-12">
@@ -49,27 +65,29 @@ export default function Home() {
         </motion.div>
       </section>
 
-      <Link href="/products/FocusLock" className="block pb-16 md:pb-24">
-        <motion.div
-          whileHover={{ scale: 1.03 }}
-          transition={{ type: 'spring', stiffness: 200 }}
-          className="relative overflow-hidden mt-4 sm:mt-6 mx-4 sm:mx-auto max-w-5xl rounded-[2rem] border border-white/10 p-6 sm:p-10 bg-gradient-to-r from-purple-600 via-indigo-600 to-cyan-500 shadow-lg hover:shadow-purple-500/40 cursor-pointer"
-        >
-          <div className="absolute -top-20 -left-20 w-72 h-72 bg-white/20 blur-3xl rounded-full" />
+      {promo.enabled && (
+        <Link href={promo.href} className="block pb-16 md:pb-24">
+          <motion.div
+            whileHover={{ scale: 1.03 }}
+            transition={{ type: 'spring', stiffness: 200 }}
+            className="relative overflow-hidden mt-4 sm:mt-6 mx-4 sm:mx-auto max-w-5xl rounded-[2rem] border border-white/10 p-6 sm:p-10 bg-gradient-to-r from-purple-600 via-indigo-600 to-cyan-500 shadow-lg hover:shadow-purple-500/40 cursor-pointer"
+          >
+            <div className="absolute -top-20 -left-20 w-72 h-72 bg-white/20 blur-3xl rounded-full" />
 
-          <div className="relative z-10 text-center">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-4">
-              🚀 New Product Launch
-            </h2>
-            <p className="text-white/90 text-base sm:text-lg max-w-2xl mx-auto mb-6">
-              We&apos;re glad that our new product which will increase your productivity and focus is getting launched soon...!!
-            </p>
-            <div className="inline-block px-6 py-3 rounded-xl bg-white text-black font-semibold hover:bg-white/90 transition">
-              Get more info -&gt;
+            <div className="relative z-10 text-center">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-4">
+                {promo.title}
+              </h2>
+              <p className="text-white/90 text-base sm:text-lg max-w-2xl mx-auto mb-6">
+                {promo.description}
+              </p>
+              <div className="inline-block px-6 py-3 rounded-xl bg-white text-black font-semibold hover:bg-white/90 transition">
+                {promo.ctaLabel}
+              </div>
             </div>
-          </div>
-        </motion.div>
-      </Link>
+          </motion.div>
+        </Link>
+      )}
     </main>
   )
 }

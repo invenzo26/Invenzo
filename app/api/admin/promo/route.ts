@@ -4,6 +4,11 @@ import { createServerClient } from '@supabase/ssr'
 import { defaultPromoSettings } from '@/lib/promoSettings'
 import { getSupabaseServerClient } from '@/lib/supabaseServer'
 import { isAdmin } from '@/lib/checkAdmin'
+import {
+  isMissingSiteSettingsTable,
+  readFallbackSiteSetting,
+  writeFallbackSiteSetting,
+} from '@/lib/siteSettingsFallback'
 
 async function requireAdmin() {
   const cookieStore = await cookies()
@@ -48,7 +53,8 @@ export async function GET() {
   const supabase = getSupabaseServerClient()
 
   if (!supabase) {
-    return NextResponse.json({ settings: defaultPromoSettings })
+    const settings = await readFallbackSiteSetting('home_promo_card', defaultPromoSettings)
+    return NextResponse.json({ settings, storageReady: true, warning: null })
   }
 
   const { data, error } = await supabase
@@ -58,14 +64,20 @@ export async function GET() {
     .maybeSingle()
 
   if (error) {
-    const isMissingTable = error.message.includes('site_settings')
+    if (isMissingSiteSettingsTable(error)) {
+      const settings = await readFallbackSiteSetting('home_promo_card', defaultPromoSettings)
+
+      return NextResponse.json({
+        settings,
+        storageReady: true,
+        warning: null,
+      })
+    }
 
     return NextResponse.json({
       settings: defaultPromoSettings,
-      storageReady: !isMissingTable,
-      warning: isMissingTable
-        ? 'Promo settings table is missing. Apply the site_settings migration to save changes.'
-        : null,
+      storageReady: false,
+      warning: error.message,
     })
   }
 
@@ -93,14 +105,15 @@ export async function PUT(req: NextRequest) {
 
   const supabase = getSupabaseServerClient()
 
-  if (!supabase) {
-    return NextResponse.json({ error: 'Server Supabase client unavailable.' }, { status: 500 })
-  }
-
   const body = await req.json()
   const settings = {
     ...defaultPromoSettings,
     ...body,
+  }
+
+  if (!supabase) {
+    await writeFallbackSiteSetting('home_promo_card', settings)
+    return NextResponse.json({ settings })
   }
 
   const { error } = await supabase.from('site_settings').upsert(
@@ -112,13 +125,14 @@ export async function PUT(req: NextRequest) {
   )
 
   if (error) {
-    const isMissingTable = error.message.includes('site_settings')
+    if (isMissingSiteSettingsTable(error)) {
+      await writeFallbackSiteSetting('home_promo_card', settings)
+      return NextResponse.json({ settings })
+    }
 
     return NextResponse.json(
       {
-        error: isMissingTable
-          ? 'Promo settings cannot be saved until the `site_settings` table is created in Supabase.'
-          : error.message,
+        error: error.message,
       },
       { status: 500 }
     )

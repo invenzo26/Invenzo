@@ -1,6 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { requireAdminApiUser } from '@/lib/adminApi'
 import { getSupabaseServerClient } from '@/lib/supabaseServer'
+import {
+  isMissingSiteSettingsTable,
+  readFallbackSiteSetting,
+  writeFallbackSiteSetting,
+} from '@/lib/siteSettingsFallback'
 
 const defaultProfile = {
   replyEmail: '',
@@ -13,7 +18,8 @@ export async function GET() {
   const supabase = getSupabaseServerClient()
 
   if (!supabase) {
-    return NextResponse.json({ profile: defaultProfile, storageReady: false })
+    const profile = await readFallbackSiteSetting('admin_profile', defaultProfile)
+    return NextResponse.json({ profile, storageReady: true, warning: null })
   }
 
   const { data, error } = await supabase
@@ -23,14 +29,20 @@ export async function GET() {
     .maybeSingle()
 
   if (error) {
-    const isMissingTable = error.message.includes('site_settings')
+    if (isMissingSiteSettingsTable(error)) {
+      const profile = await readFallbackSiteSetting('admin_profile', defaultProfile)
+
+      return NextResponse.json({
+        profile,
+        storageReady: true,
+        warning: null,
+      })
+    }
 
     return NextResponse.json({
       profile: defaultProfile,
-      storageReady: !isMissingTable,
-      warning: isMissingTable
-        ? 'Admin profile storage is unavailable until the `site_settings` table is created.'
-        : null,
+      storageReady: false,
+      warning: error.message,
     })
   }
 
@@ -50,14 +62,15 @@ export async function PUT(req: NextRequest) {
 
   const supabase = getSupabaseServerClient()
 
-  if (!supabase) {
-    return NextResponse.json({ error: 'Server Supabase client unavailable.' }, { status: 500 })
-  }
-
   const body = await req.json()
   const profile = {
     ...defaultProfile,
     ...body,
+  }
+
+  if (!supabase) {
+    await writeFallbackSiteSetting('admin_profile', profile)
+    return NextResponse.json({ profile })
   }
 
   const { error } = await supabase.from('site_settings').upsert(
@@ -69,13 +82,14 @@ export async function PUT(req: NextRequest) {
   )
 
   if (error) {
-    const isMissingTable = error.message.includes('site_settings')
+    if (isMissingSiteSettingsTable(error)) {
+      await writeFallbackSiteSetting('admin_profile', profile)
+      return NextResponse.json({ profile })
+    }
 
     return NextResponse.json(
       {
-        error: isMissingTable
-          ? 'Admin profile settings cannot be saved until the `site_settings` table exists.'
-          : error.message,
+        error: error.message,
       },
       { status: 500 }
     )
