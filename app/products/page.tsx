@@ -4,6 +4,12 @@ import { motion } from 'framer-motion'
 
 const products = [
   {
+    id: 'FocusLock',
+    name: 'FocusLock',
+    desc: 'Coming Soon....',
+    coming_soon: true   // 👈 Coming Soon Product
+  },
+  {
     id: 'skillsyncx',
     name: 'SkillSyncX',
     desc: 'AI-powered outcome-based learning platform for career-focused education.'

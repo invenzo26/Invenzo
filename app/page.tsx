@@ -52,7 +52,22 @@ export default function Home() {
           </Link>
         </motion.div>
       </section>
-
+      <Link href="/products/FocusLock">
+      <motion.div
+    whileHover={{ scale: 1.03 }}
+    transition={{ type: "spring", stiffness: 200 }}
+    className="relative overflow-hidden mt-20 max-w-5xl mx-auto rounded-3xl p-10 border border-white/10 
+               bg-gradient-to-r from-purple-600 via-indigo-600 to-cyan-500 
+               shadow-lg hover:shadow-purple-500/40 cursor-pointer">
+    {/* Glow Effect */}
+        <div className="absolute -top-20 -left-20 w-72 h-72 bg-white/20 blur-3xl rounded-full"></div>
+          <div className="relative z-10 text-center">
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">🚀New Product Launch</h2>
+            <p className="text-white/90 text-lg max-w-2xl mx-auto mb-6">We're glad that our new product which will increase your productivity and focus is getting launched soon...!!</p>
+            <div className="inline-block px-6 py-3 rounded-xl bg-white text-black font-semibold hover:bg-white/90 transition">Get more info→</div>
+          </div>
+        </motion.div>
+      </Link>
       {/* PRODUCTS SECTION */}
       <section className="relative px-6 pb-32">
         <h2 className="text-4xl font-bold text-center mb-16">
