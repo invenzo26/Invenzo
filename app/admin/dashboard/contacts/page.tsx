@@ -1,14 +1,11 @@
 'use client'
-export const dynamic = 'force-dynamic'
+
 import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabaseClient'
 
 export default function AdminContacts() {
   const [contacts, setContacts] = useState<any[]>([])
 
-  useEffect(() => {
-  fetchContacts()
-  }, [])
   const fetchContacts = async () => {
     const { data, error } = await supabase
       .from('contacts')
@@ -17,10 +14,17 @@ export default function AdminContacts() {
     if (!error) {
       setContacts(data || [])
     }
-  }  
+  }
+
+  useEffect(() => {
+    fetchContacts()
+  }, [])
+
   return (
     <div>
-      <h1 className="text-3xl font-bold mb-6">Contact Submissions</h1>
+      <h1 className="text-3xl font-bold mb-6">
+        Contact Submissions
+      </h1>
 
       <div className="overflow-x-auto rounded-xl border border-zinc-800">
         <table className="w-full">
@@ -35,11 +39,16 @@ export default function AdminContacts() {
 
           <tbody>
             {contacts.map((c) => (
-              <tr key={c.id} className="border-t border-zinc-800 hover:bg-zinc-800">
+              <tr
+                key={c.id}
+                className="border-t border-zinc-800 hover:bg-zinc-800"
+              >
                 <td className="p-3">{c.name}</td>
                 <td className="p-3">{c.email}</td>
                 <td className="p-3">{c.subject}</td>
-                <td className="p-3">{new Date(c.created_at).toLocaleString()}</td>
+                <td className="p-3">
+                  {new Date(c.created_at).toLocaleString()}
+                </td>
               </tr>
             ))}
           </tbody>
