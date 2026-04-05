@@ -8,7 +8,7 @@ export default function Home() {
     <main className="min-h-screen bg-gradient-to-br from-black via-slate-950 to-black text-white overflow-hidden">
       
       {/* HERO SECTION */}
-      <section className="relative flex flex-col items-center justify-center text-center px-6 pt-32 pb-28">
+      <section className="relative flex flex-col items-center justify-center text-center px-6 pt-32 pb-12">
         
         {/* Glow Effects */}
         <div className="absolute top-[-150px] left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-purple-600/30 blur-[140px] rounded-full"></div>
@@ -56,7 +56,7 @@ export default function Home() {
       <motion.div
     whileHover={{ scale: 1.03 }}
     transition={{ type: "spring", stiffness: 200 }}
-    className="relative overflow-hidden mt-20 max-w-5xl mx-auto rounded-3xl p-10 border border-white/10 
+    className="relative overflow-hidden mt-6 max-w-5xl mx-auto rounded-3xl p-10 border border-white/10 
                bg-gradient-to-r from-purple-600 via-indigo-600 to-cyan-500 
                shadow-lg hover:shadow-purple-500/40 cursor-pointer">
     {/* Glow Effect */}
