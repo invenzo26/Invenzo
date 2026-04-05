@@ -1,18 +1,19 @@
 import {
   AlarmClock,
-  BookOpenCheck,
-  Brain,
-  ChartNoAxesCombined,
+  BrainCircuit,
+  GraduationCap,
   Sparkles,
+  Target,
+  TrendingUp,
   type LucideIcon,
 } from 'lucide-react'
 
 export const productIcons: Record<string, LucideIcon> = {
   focuslock: AlarmClock,
-  skillsyncx: BookOpenCheck,
-  trivio: Brain,
-  strequp: Sparkles,
-  gradguard: ChartNoAxesCombined,
+  skillsyncx: BrainCircuit,
+  trivio: GraduationCap,
+  strequp: Target,
+  gradguard: TrendingUp,
 }
 
 export function getProductIcon(slug?: string | null) {
