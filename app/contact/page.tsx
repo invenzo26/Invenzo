@@ -22,6 +22,8 @@ const handleSubmit = async (e: React.FormEvent) => {
   setError(null)
   setSuccess(false)
   console.log({ name, email, subject, message })
+  const supabase = getSupabaseClient()
+  if (!supabase) return
   const { error } = await supabase
     .from("contacts")
     .insert([
