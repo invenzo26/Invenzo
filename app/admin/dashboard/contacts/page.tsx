@@ -30,6 +30,7 @@ export default function AdminContacts() {
   const [isReplyOpen, setIsReplyOpen] = useState(false)
   const [replySubject, setReplySubject] = useState('')
   const [replyBody, setReplyBody] = useState('')
+  const [replyContactNumber, setReplyContactNumber] = useState('')
   const [replyMessage, setReplyMessage] = useState<string | null>(null)
   const [sendingReply, setSendingReply] = useState(false)
   const [deleteTarget, setDeleteTarget] = useState<DeleteTarget | null>(null)
@@ -90,6 +91,7 @@ export default function AdminContacts() {
     setSelectedContactId(contact.id)
     setReplySubject(contact.subject || `Re: ${contact.name}`)
     setReplyBody('')
+    setReplyContactNumber('')
     setReplyMessage(null)
     setIsReplyOpen(true)
   }
@@ -297,6 +299,17 @@ export default function AdminContacts() {
             </div>
 
             <div className="mt-4">
+              <Field label="Contact number">
+                <input
+                  value={replyContactNumber}
+                  onChange={(e) => setReplyContactNumber(e.target.value)}
+                  className="w-full rounded-2xl border border-white/10 bg-[#0e1120]/85 px-4 py-2.5 text-white outline-none transition focus:border-cyan-400"
+                  placeholder="Optional contact number to show in the email"
+                />
+              </Field>
+            </div>
+
+            <div className="mt-4">
               <Field label="Reply message">
                 <textarea
                   rows={6}
@@ -327,6 +340,7 @@ export default function AdminContacts() {
                       name: selectedContact.name,
                       to: selectedContact.email,
                       replyEmail: ADMIN_REPLY_EMAIL,
+                      contactNumber: replyContactNumber.trim(),
                       subject: replySubject,
                       message: replyBody,
                     }),

@@ -15,6 +15,7 @@ export async function POST(req: NextRequest) {
   const to = String(body.to || '').trim()
   const subject = String(body.subject || '').trim()
   const message = String(body.message || '').trim()
+  const contactNumber = String(body.contactNumber || '').trim()
 
   if (!contactId || !to || !subject || !message) {
     return NextResponse.json(
@@ -32,6 +33,7 @@ export async function POST(req: NextRequest) {
       subject,
       message,
       senderEmail: process.env.GMAIL_SENDER_EMAIL || ADMIN_REPLY_EMAIL,
+      contactNumber,
     })
 
     await sendGmailMessage({

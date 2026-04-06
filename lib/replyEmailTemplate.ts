@@ -11,20 +11,28 @@ function formatHtmlMessage(message: string) {
   return escapeHtml(message).replace(/\n/g, '<br />')
 }
 
+function toTelHref(contactNumber: string) {
+  return `tel:${contactNumber.replace(/[^\d+]/g, '')}`
+}
+
 export function buildReplyEmailTemplate({
   recipientName,
   subject,
   message,
   senderEmail,
+  contactNumber,
 }: {
   recipientName?: string
   subject: string
   message: string
   senderEmail: string
+  contactNumber?: string
 }) {
   const safeName = recipientName?.trim() || 'there'
   const safeSubject = escapeHtml(subject)
   const htmlMessage = formatHtmlMessage(message)
+  const safeContactNumber = contactNumber?.trim() || ''
+  const safeTelHref = safeContactNumber ? toTelHref(safeContactNumber) : ''
 
   const html = `
 <!DOCTYPE html>
@@ -54,8 +62,8 @@ export function buildReplyEmailTemplate({
             </div>
             <div style="margin-top:24px;padding-top:20px;border-top:1px solid rgba(255,255,255,0.08);font-size:14px;line-height:1.8;color:#a7b7cf;">
               <strong style="display:block;color:#ffffff;">Team Invenzo</strong>
-              Reply to this email if you need anything else.<br />
               <span style="color:#8be9fd;">${escapeHtml(senderEmail)}</span>
+              ${safeContactNumber ? `<br /><span style="color:#d7e3f5;">Contact: <a href="${escapeHtml(safeTelHref)}" style="color:#d7e3f5;text-decoration:none;">${escapeHtml(safeContactNumber)}</a></span>` : ''}
             </div>
           </td>
         </tr>
@@ -72,7 +80,8 @@ export function buildReplyEmailTemplate({
     message,
     '',
     'Team Invenzo',
-    `Reply to this email if you need anything else: ${senderEmail}`,
+    senderEmail,
+    ...(safeContactNumber ? [`Contact: ${safeContactNumber}`] : []),
   ].join('\n')
 
   return { html, text }
