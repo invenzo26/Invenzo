@@ -72,7 +72,7 @@ export default function Products() {
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="text-4xl sm:text-5xl font-bold text-center mb-4 sm:mb-6"
+        className="text-3xl sm:text-4xl font-bold text-center mb-3 sm:mb-5"
       >
         Our Products
       </motion.h1>
