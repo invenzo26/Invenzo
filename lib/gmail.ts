@@ -51,23 +51,47 @@ function buildRawEmail({
   from,
   to,
   subject,
-  message,
+  text,
+  html,
 }: {
   from: string
   to: string
   subject: string
-  message: string
+  text: string
+  html?: string
 }) {
-  const mime = [
-    `From: ${from}`,
-    `To: ${to}`,
-    `Subject: ${subject}`,
-    'MIME-Version: 1.0',
-    'Content-Type: text/plain; charset="UTF-8"',
-    'Content-Transfer-Encoding: 7bit',
-    '',
-    message,
-  ].join('\r\n')
+  const mime = html
+    ? [
+        `From: ${from}`,
+        `To: ${to}`,
+        `Subject: ${subject}`,
+        'MIME-Version: 1.0',
+        'Content-Type: multipart/alternative; boundary="invenzo-boundary"',
+        '',
+        '--invenzo-boundary',
+        'Content-Type: text/plain; charset="UTF-8"',
+        'Content-Transfer-Encoding: 7bit',
+        '',
+        text,
+        '',
+        '--invenzo-boundary',
+        'Content-Type: text/html; charset="UTF-8"',
+        'Content-Transfer-Encoding: 7bit',
+        '',
+        html,
+        '',
+        '--invenzo-boundary--',
+      ].join('\r\n')
+    : [
+        `From: ${from}`,
+        `To: ${to}`,
+        `Subject: ${subject}`,
+        'MIME-Version: 1.0',
+        'Content-Type: text/plain; charset="UTF-8"',
+        'Content-Transfer-Encoding: 7bit',
+        '',
+        text,
+      ].join('\r\n')
 
   return toBase64Url(mime)
 }
@@ -98,11 +122,13 @@ async function getAccessToken(config: GmailConfig) {
 export async function sendGmailMessage({
   to,
   subject,
-  message,
+  text,
+  html,
 }: {
   to: string
   subject: string
-  message: string
+  text: string
+  html?: string
 }) {
   const { config, error } = getGmailConfig()
 
@@ -115,7 +141,8 @@ export async function sendGmailMessage({
     from: config.senderEmail,
     to,
     subject,
-    message,
+    text,
+    html,
   })
 
   const response = await fetch(GMAIL_SEND_URL, {

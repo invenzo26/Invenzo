@@ -11,6 +11,8 @@ type Contact = {
   subject: string | null
   message: string | null
   created_at: string
+  replied_at?: string | null
+  reply_subject?: string | null
 }
 
 type DeleteTarget = {
@@ -21,6 +23,7 @@ type DeleteTarget = {
 export default function AdminContacts() {
   const [contacts, setContacts] = useState<Contact[]>([])
   const [query, setQuery] = useState('')
+  const [activeTab, setActiveTab] = useState<'inbox' | 'replied'>('inbox')
   const [selectedContactId, setSelectedContactId] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [deleting, setDeleting] = useState(false)
@@ -54,16 +57,23 @@ export default function AdminContacts() {
   const filteredContacts = useMemo(() => {
     const term = query.trim().toLowerCase()
 
+    const sourceContacts = contacts.filter((contact) =>
+      activeTab === 'inbox' ? !contact.replied_at : !!contact.replied_at
+    )
+
     if (!term) {
-      return contacts
+      return sourceContacts
     }
 
-    return contacts.filter((contact) =>
+    return sourceContacts.filter((contact) =>
       [contact.name, contact.email, contact.subject, contact.message]
         .filter(Boolean)
         .some((value) => String(value).toLowerCase().includes(term))
     )
-  }, [contacts, query])
+  }, [activeTab, contacts, query])
+
+  const inboxCount = contacts.filter((contact) => !contact.replied_at).length
+  const repliedCount = contacts.filter((contact) => !!contact.replied_at).length
 
   const selectedContact =
     filteredContacts.find((contact) => contact.id === selectedContactId) ??
@@ -108,8 +118,32 @@ export default function AdminContacts() {
       <section className="grid gap-3 lg:grid-cols-[0.8fr,1.2fr]">
         <div className="rounded-[1.4rem] border border-white/10 bg-gradient-to-br from-cyan-500/15 to-purple-500/10 p-4">
           <p className="text-sm text-slate-300">Messages received</p>
-          <p className="mt-2 text-2xl font-semibold text-white">{contacts.length}</p>
-          <p className="mt-1.5 text-sm text-slate-400">All contact-form entries synced from the website.</p>
+          <p className="mt-2 text-2xl font-semibold text-white">{inboxCount}</p>
+          <p className="mt-1.5 text-sm text-slate-400">Inbox messages that still need review or a reply.</p>
+          <div className="mt-4 flex flex-wrap gap-2">
+            <button
+              type="button"
+              onClick={() => setActiveTab('inbox')}
+              className={`rounded-2xl px-3 py-2 text-sm font-medium transition ${
+                activeTab === 'inbox'
+                  ? 'bg-white text-slate-950'
+                  : 'border border-white/10 bg-white/[0.05] text-slate-200 hover:bg-white/[0.1]'
+              }`}
+            >
+              Inbox ({inboxCount})
+            </button>
+            <button
+              type="button"
+              onClick={() => setActiveTab('replied')}
+              className={`rounded-2xl px-3 py-2 text-sm font-medium transition ${
+                activeTab === 'replied'
+                  ? 'bg-white text-slate-950'
+                  : 'border border-white/10 bg-white/[0.05] text-slate-200 hover:bg-white/[0.1]'
+              }`}
+            >
+              Replied ({repliedCount})
+            </button>
+          </div>
         </div>
 
         <div className="rounded-[1.4rem] border border-white/10 bg-[linear-gradient(145deg,rgba(26,12,46,0.8),rgba(10,18,34,0.72))] p-4">
@@ -118,7 +152,7 @@ export default function AdminContacts() {
             <input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search by name, email, subject, or message"
+              placeholder={`Search ${activeTab === 'inbox' ? 'inbox' : 'replied'} messages`}
               className="w-full bg-transparent text-sm text-white outline-none placeholder:text-slate-500"
             />
           </div>
@@ -134,7 +168,9 @@ export default function AdminContacts() {
           )}
           {filteredContacts.length === 0 ? (
             <div className="rounded-3xl border border-dashed border-white/10 bg-white/[0.02] px-6 py-14 text-center text-slate-400">
-              No contact messages matched your search.
+              {activeTab === 'inbox'
+                ? 'No inbox messages matched your search.'
+                : 'No replied messages matched your search.'}
             </div>
           ) : (
             filteredContacts.map((contact) => (
@@ -158,6 +194,11 @@ export default function AdminContacts() {
                       <p className="mt-2 text-sm font-medium text-purple-300">
                         {contact.subject || 'No subject provided'}
                       </p>
+                      {contact.replied_at && (
+                        <p className="mt-2 text-xs text-cyan-300">
+                          Replied on {new Date(contact.replied_at).toLocaleString()}
+                        </p>
+                      )}
                     </div>
                   </div>
 
@@ -169,7 +210,7 @@ export default function AdminContacts() {
                         className="inline-flex items-center gap-2 rounded-2xl bg-gradient-to-r from-purple-500 to-cyan-500 px-4 py-2.5 text-sm font-medium text-white transition hover:scale-[1.01]"
                       >
                         <Reply size={16} />
-                        Reply
+                        {contact.replied_at ? 'View reply' : 'Reply'}
                       </button>
 
                       <button
@@ -283,6 +324,7 @@ export default function AdminContacts() {
                     credentials: 'include',
                     body: JSON.stringify({
                       contactId: selectedContact.id,
+                      name: selectedContact.name,
                       to: selectedContact.email,
                       replyEmail: ADMIN_REPLY_EMAIL,
                       subject: replySubject,
@@ -290,8 +332,26 @@ export default function AdminContacts() {
                     }),
                   })
                   const payload = await response.json()
-                  setReplyMessage(payload.message || payload.error || 'Reply action completed.')
+                  if (!response.ok) {
+                    setReplyMessage(payload.error || payload.message || 'Failed to send reply.')
+                    setSendingReply(false)
+                    return
+                  }
+
+                  setContacts((current) =>
+                    current.map((contact) =>
+                      contact.id === selectedContact.id
+                        ? {
+                            ...contact,
+                            replied_at: payload.repliedAt || new Date().toISOString(),
+                            reply_subject: payload.replySubject || replySubject,
+                          }
+                        : contact
+                    )
+                  )
+                  setReplyMessage(payload.message || 'Reply action completed.')
                   setSendingReply(false)
+                  setActiveTab('replied')
                 }}
                 className="inline-flex items-center gap-2 rounded-2xl bg-gradient-to-r from-purple-500 to-cyan-500 px-5 py-2.5 font-medium text-white transition hover:scale-[1.01] disabled:opacity-60"
               >
