@@ -1,7 +1,8 @@
+import type { Metadata, Viewport } from 'next'
 import './globals.css'
 import Navbar from './components/Navbar'
 
-export const metadata = {
+export const metadata: Metadata = {
   title: 'Invenzo AI Solutions',
   description: 'Next-gen AI SaaS platform',
   icons: {
@@ -10,9 +11,13 @@ export const metadata = {
     apple: '/apple-touch-icon.png',
   },
   manifest: '/site.webmanifest',
-  viewport: 'width=device-width, initial-scale=1',
-};
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+}
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+}
+
 export default function RootLayout({
   children,
 }: {

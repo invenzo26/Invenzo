@@ -24,9 +24,9 @@ export async function POST(req: NextRequest) {
   const auth = await requireAdminApiUser()
   if (auth.error) return auth.error
 
-  const supabase = getSupabaseServerClient()
+  const { client: supabase, error: supabaseError } = getSupabaseServerClient()
   if (!supabase) {
-    return NextResponse.json({ error: 'Server Supabase client is not configured.' }, { status: 500 })
+    return NextResponse.json({ error: supabaseError || 'Server Supabase client is not configured.' }, { status: 500 })
   }
 
   const body = await req.json()
