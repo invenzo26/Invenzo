@@ -89,7 +89,7 @@ export default function AdminContacts() {
 
   function openReplyCard(contact: Contact) {
     setSelectedContactId(contact.id)
-    setReplySubject(contact.subject || `Re: ${contact.name}`)
+    setReplySubject(contact.subject ? `Re: ${contact.subject}` : `Re: ${contact.name}`)
     setReplyBody('')
     setReplyContactNumber('')
     setReplyMessage(null)
