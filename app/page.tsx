@@ -52,7 +52,7 @@ export default function Home() {
           className="mt-8 sm:mt-10 flex w-full sm:w-auto flex-col sm:flex-row gap-4 sm:gap-5 justify-center"
         >
           <Link href="/products" className="w-full sm:w-auto">
-            <button className="w-full sm:w-auto px-6 py-2 rounded-xl bg-gradient-to-r from-purple-500 to-cyan-500 hover:scale-105 transition-transform font-semibold">
+            <button className="w-full sm:w-auto px-7 py-3 rounded-xl bg-gradient-to-r from-purple-500 to-cyan-500 hover:scale-105 transition-transform font-semibold">
               Explore Products
             </button>
           </Link>
