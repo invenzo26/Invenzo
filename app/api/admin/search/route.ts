@@ -12,7 +12,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ results: [] })
   }
 
-  const supabaseServer = getSupabaseServerClient()
+  const { client: supabaseServer } = getSupabaseServerClient()
   const supabase = supabaseServer ?? auth.supabase
 
   const [productsResult, contactsResult, authUsersResult] = await Promise.all([

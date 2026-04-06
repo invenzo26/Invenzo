@@ -4,7 +4,7 @@ import { getSupabaseServerClient } from '@/lib/supabaseServer'
 import { isMissingSiteSettingsTable, readFallbackSiteSetting } from '@/lib/siteSettingsFallback'
 
 export async function GET() {
-  const supabase = getSupabaseServerClient()
+  const { client: supabase } = getSupabaseServerClient()
 
   if (!supabase) {
     const settings = await readFallbackSiteSetting('home_promo_card', defaultPromoSettings)

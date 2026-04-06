@@ -6,7 +6,7 @@ export async function GET() {
   const auth = await requireAdminApiUser()
   if (auth.error) return auth.error
 
-  const supabaseServer = getSupabaseServerClient()
+  const { client: supabaseServer } = getSupabaseServerClient()
 
   if (!supabaseServer) {
     const { data, error } = await auth.supabase

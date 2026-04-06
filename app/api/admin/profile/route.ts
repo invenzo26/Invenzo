@@ -15,7 +15,7 @@ export async function GET() {
   const auth = await requireAdminApiUser()
   if (auth.error) return auth.error
 
-  const supabase = getSupabaseServerClient()
+  const { client: supabase } = getSupabaseServerClient()
 
   if (!supabase) {
     const profile = await readFallbackSiteSetting('admin_profile', defaultProfile)
@@ -60,7 +60,7 @@ export async function PUT(req: NextRequest) {
   const auth = await requireAdminApiUser()
   if (auth.error) return auth.error
 
-  const supabase = getSupabaseServerClient()
+  const { client: supabase } = getSupabaseServerClient()
 
   const body = await req.json()
   const profile = {

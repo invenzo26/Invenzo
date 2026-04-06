@@ -12,7 +12,7 @@ export async function GET() {
   const auth = await requireAdminApiUser()
   if (auth.error) return auth.error
 
-  const supabase = getSupabaseServerClient()
+  const { client: supabase } = getSupabaseServerClient()
 
   if (!supabase) {
     const settings = await readFallbackSiteSetting('home_promo_card', defaultPromoSettings)
@@ -65,7 +65,7 @@ export async function PUT(req: NextRequest) {
   const auth = await requireAdminApiUser()
   if (auth.error) return auth.error
 
-  const supabase = getSupabaseServerClient()
+  const { client: supabase } = getSupabaseServerClient()
 
   const body = await req.json()
   const settings = {

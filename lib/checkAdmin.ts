@@ -1,7 +1,7 @@
 import { getSupabaseServerClient } from './supabaseServer'
 
 export async function isAdmin(userId: string) {
-  const supabaseServer = getSupabaseServerClient()
+  const { client: supabaseServer } = getSupabaseServerClient()
 
   if (!supabaseServer) {
     return false
