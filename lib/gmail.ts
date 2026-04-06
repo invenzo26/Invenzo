@@ -30,10 +30,10 @@ function getGmailConfig(): { config: GmailConfig | null; error: string | null } 
 
   return {
     config: {
-      clientId,
-      clientSecret,
-      refreshToken,
-      senderEmail,
+      clientId: clientId as string,
+      clientSecret: clientSecret as string,
+      refreshToken: refreshToken as string,
+      senderEmail: senderEmail as string,
     },
     error: null,
   }
