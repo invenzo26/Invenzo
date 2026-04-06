@@ -65,10 +65,6 @@ export default function AdminContacts() {
     null
 
   useEffect(() => {
-    if (!selectedContactId && filteredContacts[0]?.id) {
-      setSelectedContactId(filteredContacts[0].id)
-    }
-
     if (selectedContactId && !filteredContacts.some((contact) => contact.id === selectedContactId)) {
       setSelectedContactId(filteredContacts[0]?.id ?? null)
     }
@@ -80,6 +76,27 @@ export default function AdminContacts() {
     setReplyBody('')
     setReplyMessage(null)
     setIsReplyOpen(true)
+  }
+
+  async function handleDelete(contactId: string) {
+    const confirmed = window.confirm('Delete this contact message?')
+    if (!confirmed) return
+
+    setDeleting(true)
+    const response = await fetch(`/api/admin/contacts/${contactId}`, {
+      method: 'DELETE',
+      credentials: 'include',
+    })
+    const payload = await response.json()
+
+    if (!response.ok) {
+      setError(payload.error || 'Failed to delete contact.')
+      setDeleting(false)
+      return
+    }
+
+    setContacts((current) => current.filter((contact) => contact.id !== contactId))
+    setDeleting(false)
   }
 
   return (
@@ -104,7 +121,7 @@ export default function AdminContacts() {
         </div>
       </section>
 
-      <section className="grid gap-4 xl:grid-cols-[0.9fr,1.1fr]">
+      <section className="space-y-4">
         <div className="space-y-3">
           {error && (
             <div className="rounded-2xl border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-200">
@@ -117,123 +134,64 @@ export default function AdminContacts() {
             </div>
           ) : (
             filteredContacts.map((contact) => (
-              <button
+              <article
                 key={contact.id}
-                type="button"
-                onClick={() => setSelectedContactId(contact.id)}
                 className={`w-full rounded-[1.4rem] border p-4 text-left transition ${
                   selectedContact?.id === contact.id
                     ? 'border-cyan-400/30 bg-[linear-gradient(145deg,rgba(34,211,238,0.14),rgba(83,28,129,0.16))]'
                     : 'border-white/10 bg-[linear-gradient(145deg,rgba(24,10,42,0.92),rgba(12,16,34,0.9))] hover:bg-[linear-gradient(145deg,rgba(29,12,50,0.95),rgba(16,20,38,0.92))]'
                 }`}
               >
-                <div className="flex items-start justify-between gap-4">
-                  <div className="min-w-0">
-                    <p className="font-medium text-white">{contact.name}</p>
-                    <p className="mt-1 truncate text-sm text-slate-400">{contact.email}</p>
-                    <p className="mt-3 truncate text-sm text-purple-300">
-                      {contact.subject || 'No subject provided'}
-                    </p>
+                <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+                  <div className="flex items-start gap-4">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white/10 text-cyan-300 ring-1 ring-white/10">
+                      <Mail size={18} />
+                    </div>
+
+                    <div className="min-w-0">
+                      <p className="font-medium text-white">{contact.name}</p>
+                      <p className="mt-1 break-all text-sm text-slate-400">{contact.email}</p>
+                      <p className="mt-2 text-sm font-medium text-purple-300">
+                        {contact.subject || 'No subject provided'}
+                      </p>
+                    </div>
                   </div>
 
-                  <div className="flex shrink-0 flex-col items-end gap-3">
-                    <button
-                      type="button"
-                      onClick={(event) => {
-                        event.stopPropagation()
-                        openReplyCard(contact)
-                      }}
-                      className="inline-flex items-center gap-2 rounded-2xl border border-cyan-400/20 bg-cyan-500/10 px-3 py-2 text-xs font-medium text-cyan-200 transition hover:bg-cyan-500/15"
-                    >
-                      <Reply size={14} />
-                      Reply
-                    </button>
+                  <div className="flex flex-col items-start gap-3 sm:items-end">
+                    <div className="flex flex-wrap gap-3 sm:justify-end">
+                      <button
+                        type="button"
+                        onClick={() => openReplyCard(contact)}
+                        className="inline-flex items-center gap-2 rounded-2xl bg-gradient-to-r from-purple-500 to-cyan-500 px-4 py-2.5 text-sm font-medium text-white transition hover:scale-[1.01]"
+                      >
+                        <Reply size={16} />
+                        Reply
+                      </button>
 
-                    <span className="text-xs text-slate-500">
-                      {new Date(contact.created_at).toLocaleDateString()}
-                    </span>
+                      <button
+                        type="button"
+                        onClick={() => handleDelete(contact.id)}
+                        disabled={deleting}
+                        className="inline-flex items-center gap-2 rounded-2xl border border-red-500/20 bg-red-500/10 px-4 py-2.5 text-sm font-medium text-red-200 transition hover:bg-red-500/15 disabled:opacity-60"
+                      >
+                        <Trash2 size={16} />
+                        {deleting ? 'Deleting...' : 'Delete'}
+                      </button>
+                    </div>
+
+                    <div className="text-sm text-slate-500">
+                      {new Date(contact.created_at).toLocaleString()}
+                    </div>
                   </div>
                 </div>
-              </button>
+
+                <div className="mt-4 rounded-[1.4rem] border border-white/10 bg-[#0e1120]/80 p-4">
+                  <p className="text-sm leading-7 text-slate-300">
+                    {contact.message || 'No message body available.'}
+                  </p>
+                </div>
+              </article>
             ))
-          )}
-        </div>
-
-        <div className="rounded-[1.4rem] border border-white/10 bg-[linear-gradient(145deg,rgba(24,10,42,0.92),rgba(12,16,34,0.9))] p-4 shadow-[0_18px_45px_rgba(4,8,20,0.24)]">
-          {selectedContact ? (
-            <>
-              <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-                <div className="flex items-start gap-4">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white/10 text-cyan-300 ring-1 ring-white/10">
-                    <Mail size={18} />
-                  </div>
-
-                  <div>
-                    <h3 className="text-lg font-semibold text-white">{selectedContact.name}</h3>
-                    <p className="mt-1 text-sm text-slate-400">{selectedContact.email}</p>
-                    <p className="mt-2 text-sm font-medium text-purple-300">
-                      {selectedContact.subject || 'No subject provided'}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex flex-col items-start gap-3 sm:items-end">
-                  <div className="flex flex-wrap gap-3 sm:justify-end">
-                    <button
-                      type="button"
-                      onClick={() => openReplyCard(selectedContact)}
-                      className="inline-flex items-center gap-2 rounded-2xl bg-gradient-to-r from-purple-500 to-cyan-500 px-4 py-2.5 text-sm font-medium text-white transition hover:scale-[1.01]"
-                    >
-                      <Reply size={16} />
-                      Reply
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={async () => {
-                        const confirmed = window.confirm('Delete this contact message?')
-                        if (!confirmed) return
-
-                        setDeleting(true)
-                        const response = await fetch(`/api/admin/contacts/${selectedContact.id}`, {
-                          method: 'DELETE',
-                          credentials: 'include',
-                        })
-                        const payload = await response.json()
-
-                        if (!response.ok) {
-                          setError(payload.error || 'Failed to delete contact.')
-                          setDeleting(false)
-                          return
-                        }
-
-                        setContacts((current) => current.filter((contact) => contact.id !== selectedContact.id))
-                        setDeleting(false)
-                      }}
-                      disabled={deleting}
-                      className="inline-flex items-center gap-2 rounded-2xl border border-red-500/20 bg-red-500/10 px-4 py-2.5 text-sm font-medium text-red-200 transition hover:bg-red-500/15 disabled:opacity-60"
-                    >
-                      <Trash2 size={16} />
-                      {deleting ? 'Deleting...' : 'Delete'}
-                    </button>
-                  </div>
-
-                  <div className="text-sm text-slate-500">
-                    {new Date(selectedContact.created_at).toLocaleString()}
-                  </div>
-                </div>
-              </div>
-
-              <div className="mt-4 rounded-[1.4rem] border border-white/10 bg-[#0e1120]/80 p-4">
-                <p className="text-sm leading-7 text-slate-300">
-                  {selectedContact.message || 'No message body available.'}
-                </p>
-              </div>
-            </>
-          ) : (
-            <div className="rounded-3xl border border-dashed border-white/10 bg-white/[0.02] px-6 py-14 text-center text-slate-400">
-              Select a message to view the full contact details.
-            </div>
           )}
         </div>
       </section>

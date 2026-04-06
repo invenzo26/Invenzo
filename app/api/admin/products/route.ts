@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { requireAdminApiUser } from '@/lib/adminApi'
+import { getSupabaseServerClient } from '@/lib/supabaseServer'
 
 export async function GET() {
   const auth = await requireAdminApiUser()
@@ -23,7 +24,10 @@ export async function POST(req: NextRequest) {
   const auth = await requireAdminApiUser()
   if (auth.error) return auth.error
 
-  const supabase = auth.supabase
+  const supabase = getSupabaseServerClient()
+  if (!supabase) {
+    return NextResponse.json({ error: 'Server Supabase client is not configured.' }, { status: 500 })
+  }
 
   const body = await req.json()
 
