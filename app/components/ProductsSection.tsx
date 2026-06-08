@@ -19,17 +19,31 @@ interface Product {
 export function ProductsSection() {
   const [products, setProducts] = useState<Product[]>([])
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
+        setError(null)
         const response = await fetch('/api/admin/products', {
           cache: 'no-store',
         })
+
+        if (!response.ok) {
+          throw new Error(`Failed to fetch products: ${response.statusText}`)
+        }
+
         const data = await response.json()
+
+        if (data.error) {
+          throw new Error(data.error)
+        }
+
         setProducts(data.products || [])
-      } catch (error) {
-        console.error('Failed to fetch products:', error)
+      } catch (err) {
+        const errorMessage = err instanceof Error ? err.message : 'Failed to load products'
+        console.error('Failed to fetch products:', err)
+        setError(errorMessage)
       } finally {
         setLoading(false)
       }
@@ -94,6 +108,38 @@ export function ProductsSection() {
                 style={{ backgroundColor: 'var(--bg-card)' }}
               />
             ))}
+          </div>
+        ) : error ? (
+          <div
+            className="rounded-lg p-8 text-center"
+            style={{
+              backgroundColor: 'var(--bg-card)',
+              borderLeft: '4px solid var(--color-error)',
+            }}
+          >
+            <p
+              className="text-base transition-colors duration-300"
+              style={{ color: 'var(--text-secondary)' }}
+            >
+              Unable to load products. Please try again later.
+            </p>
+            {process.env.NODE_ENV === 'development' && (
+              <p
+                className="text-sm mt-2 transition-colors duration-300"
+                style={{ color: 'var(--color-error)' }}
+              >
+                {error}
+              </p>
+            )}
+          </div>
+        ) : products.length === 0 ? (
+          <div className="text-center py-12">
+            <p
+              className="text-lg transition-colors duration-300"
+              style={{ color: 'var(--text-secondary)' }}
+            >
+              No products available at the moment.
+            </p>
           </div>
         ) : (
           <motion.div

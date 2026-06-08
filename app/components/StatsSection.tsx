@@ -80,10 +80,10 @@ export function StatsSection() {
         </motion.div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
-          <StatCounter number={50} label="Products Built" suffix="+" />
-          <StatCounter number={1000} label="Active Users" suffix="+" />
-          <StatCounter number={98} label="Client Satisfaction" suffix="%" />
-          <StatCounter number={8} label="Years of Innovation" suffix="+" />
+          <StatCounter number={5} label="Products Built" suffix="+" />
+          <StatCounter number={10} label="Active Users" suffix="+" />
+          <StatCounter number={10} label="Client Satisfaction" suffix="%" />
+          <StatCounter number={1} label="Year of Innovation" suffix="+" />
         </div>
       </div>
     </section>
