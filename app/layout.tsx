@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import './globals.css'
 import Navbar from './components/Navbar'
+import { ThemeProvider } from './providers/ThemeProvider'
 
 export const metadata: Metadata = {
   title: 'Invenzo AI Solutions',
@@ -26,8 +27,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <Navbar />
-        {children}
+        <ThemeProvider>
+          <Navbar />
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   )

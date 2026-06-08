@@ -3,10 +3,10 @@ import { requireAdminApiUser } from '@/lib/adminApi'
 import { getSupabaseServerClient } from '@/lib/supabaseServer'
 
 export async function GET() {
-  const auth = await requireAdminApiUser()
-  if (auth.error) return auth.error
-
-  const supabase = auth.supabase
+  const { client: supabase, error: supabaseError } = getSupabaseServerClient()
+  if (!supabase) {
+    return NextResponse.json({ error: supabaseError || 'Server Supabase client is not configured.' }, { status: 500 })
+  }
 
   const { data, error } = await supabase
     .from('products')

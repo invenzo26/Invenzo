@@ -53,9 +53,9 @@ export default async function AdminLayout({
         <AdminSidebar />
 
         <section className="min-w-0 flex-1">
-          <div className="mx-auto max-w-7xl px-3 py-4 sm:px-5 sm:py-5 xl:px-7">
+          <div className="mx-auto max-w-7xl px-3 py-3 sm:px-5 sm:py-5 xl:px-7">
             <AdminTopbar />
-            <div className="rounded-[1.6rem] border border-white/10 bg-[linear-gradient(145deg,rgba(28,12,48,0.86),rgba(15,13,36,0.88)_55%,rgba(8,20,36,0.82))] p-4 shadow-[0_24px_80px_rgba(5,8,20,0.55)] backdrop-blur-xl sm:p-5 lg:p-6">
+            <div className="rounded-[1.35rem] border border-white/10 bg-[linear-gradient(145deg,rgba(28,12,48,0.86),rgba(15,13,36,0.88)_55%,rgba(8,20,36,0.82))] p-3 shadow-[0_24px_80px_rgba(5,8,20,0.55)] backdrop-blur-xl sm:rounded-[1.6rem] sm:p-5 lg:p-6">
               {children}
             </div>
           </div>

@@ -1,45 +1,23 @@
 export default function Loading() {
   return (
-    <main className="
-      relative min-h-screen
-      flex items-center justify-center
-      bg-gradient-to-br
-      from-black via-purple-950 to-black
-      text-white
-      overflow-hidden
-    ">
+    <main
+      className="relative min-h-screen flex items-center justify-center overflow-hidden transition-colors duration-300"
+      style={{ background: 'var(--bg-layered)', color: 'var(--text-primary)' }}
+    >
 
-      {/* Glow Background */}
-      <div className="
-        absolute
-        w-[700px] h-[700px]
-        bg-purple-600/20
-        blur-[160px]
-        rounded-full
-      " />
+      <div className="absolute h-[700px] w-[700px] rounded-full blur-[160px] opacity-20" style={{ background: 'var(--metallic-highlight)' }} />
 
       <div className="relative z-10 flex flex-col items-center gap-6">
 
-        {/* Spinner */}
-        <div className="
-          w-16 h-16
-          border-4
-          border-purple-500/30
-          border-t-cyan-400
-          rounded-full
-          animate-spin
-        " />
+        <div
+          className="w-16 h-16 border-4 rounded-full animate-spin"
+          style={{
+            borderColor: 'var(--border-color)',
+            borderTopColor: 'var(--gold-primary)',
+          }}
+        />
 
-        {/* Text */}
-        <h2 className="
-          text-xl font-semibold
-          bg-gradient-to-r
-          from-purple-400
-          via-pink-400
-          to-cyan-400
-          bg-clip-text
-          text-transparent
-        ">
+        <h2 className="text-xl font-semibold" style={{ color: 'var(--gold-primary)' }}>
           Loading...
         </h2>
 

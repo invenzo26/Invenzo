@@ -88,7 +88,7 @@ export default function AdminTopbar() {
           <button
             type="button"
             onClick={() => setIsSearchOpen(true)}
-            className="flex items-center gap-3 rounded-2xl border border-purple-300/15 bg-[linear-gradient(135deg,rgba(255,255,255,0.05),rgba(168,85,247,0.08),rgba(34,211,238,0.06))] px-4 py-2.5 text-slate-300 transition hover:brightness-110 hover:text-white"
+            className="flex w-full items-center justify-center gap-3 rounded-2xl border border-purple-300/15 bg-[linear-gradient(135deg,rgba(255,255,255,0.05),rgba(168,85,247,0.08),rgba(34,211,238,0.06))] px-4 py-2.5 text-slate-300 transition hover:brightness-110 hover:text-white sm:w-auto"
           >
             <Search size={18} />
             <span className="text-sm">Quick search</span>
@@ -96,7 +96,7 @@ export default function AdminTopbar() {
 
           <button
             type="button"
-            className="inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-purple-300/15 bg-[linear-gradient(135deg,rgba(255,255,255,0.05),rgba(168,85,247,0.08),rgba(34,211,238,0.06))] text-slate-300 transition hover:brightness-110 hover:text-white"
+            className="inline-flex h-11 w-full items-center justify-center rounded-2xl border border-purple-300/15 bg-[linear-gradient(135deg,rgba(255,255,255,0.05),rgba(168,85,247,0.08),rgba(34,211,238,0.06))] text-slate-300 transition hover:brightness-110 hover:text-white sm:w-11"
             aria-label="Notifications"
           >
             <Bell size={18} />
@@ -115,9 +115,9 @@ export default function AdminTopbar() {
           aria-label="Close quick search"
         />
 
-        <div className={`absolute left-1/2 top-24 w-[min(92vw,760px)] -translate-x-1/2 transition-all ${isSearchOpen ? 'translate-y-0 opacity-100' : '-translate-y-4 opacity-0'}`}>
+        <div className={`absolute left-1/2 top-20 w-[min(94vw,760px)] -translate-x-1/2 transition-all sm:top-24 ${isSearchOpen ? 'translate-y-0 opacity-100' : '-translate-y-4 opacity-0'}`}>
           <div className="rounded-[2rem] border border-white/10 bg-[linear-gradient(145deg,rgba(29,10,49,0.94),rgba(15,12,38,0.96)_58%,rgba(7,21,36,0.96))] shadow-2xl shadow-black/40 backdrop-blur-2xl">
-            <div className="flex items-center gap-3 border-b border-white/10 px-5 py-4">
+            <div className="flex items-center gap-3 border-b border-white/10 px-4 py-4 sm:px-5">
               <Search size={18} className="text-slate-400" />
               <input
                 autoFocus={isSearchOpen}
@@ -136,9 +136,9 @@ export default function AdminTopbar() {
               </button>
             </div>
 
-            <div className="px-5 py-3 text-sm text-slate-400">{helperText}</div>
+            <div className="px-4 py-3 text-sm text-slate-400 sm:px-5">{helperText}</div>
 
-            <div className="max-h-[55vh] overflow-y-auto px-4 pb-4">
+            <div className="max-h-[55vh] overflow-y-auto px-3 pb-3 sm:px-4 sm:pb-4">
               {results.map((result) => (
                 <Link
                   key={`${result.type}-${result.id}`}

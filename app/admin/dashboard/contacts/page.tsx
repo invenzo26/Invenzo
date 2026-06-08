@@ -36,24 +36,39 @@ export default function AdminContacts() {
   const [deleteTarget, setDeleteTarget] = useState<DeleteTarget | null>(null)
 
   useEffect(() => {
-    loadContacts()
-  }, [])
+    let isActive = true
 
-  async function loadContacts() {
-    const supabaseResponse = await fetch('/api/admin/contacts', {
-      credentials: 'include',
-      cache: 'no-store',
-    }).catch(() => null)
+    const loadInitialContacts = async () => {
+      const supabaseResponse = await fetch('/api/admin/contacts', {
+        credentials: 'include',
+        cache: 'no-store',
+      }).catch(() => null)
 
-    if (supabaseResponse && supabaseResponse.ok) {
-      const payload = await supabaseResponse.json()
-      setContacts((payload.contacts as Contact[]) || [])
-      setError(null)
-      return
+      if (!isActive) {
+        return
+      }
+
+      if (supabaseResponse && supabaseResponse.ok) {
+        const payload = await supabaseResponse.json()
+
+        if (!isActive) {
+          return
+        }
+
+        setContacts((payload.contacts as Contact[]) || [])
+        setError(null)
+        return
+      }
+
+      setError('Failed to load contacts.')
     }
 
-    setError('Failed to load contacts.')
-  }
+    void loadInitialContacts()
+
+    return () => {
+      isActive = false
+    }
+  }, [])
 
   const filteredContacts = useMemo(() => {
     const term = query.trim().toLowerCase()
@@ -80,12 +95,6 @@ export default function AdminContacts() {
     filteredContacts.find((contact) => contact.id === selectedContactId) ??
     filteredContacts[0] ??
     null
-
-  useEffect(() => {
-    if (selectedContactId && !filteredContacts.some((contact) => contact.id === selectedContactId)) {
-      setSelectedContactId(filteredContacts[0]?.id ?? null)
-    }
-  }, [filteredContacts, selectedContactId])
 
   function openReplyCard(contact: Contact) {
     setSelectedContactId(contact.id)
@@ -245,8 +254,8 @@ export default function AdminContacts() {
 
       {isReplyOpen && selectedContact && (
         <div className="fixed inset-0 z-[80] flex items-start justify-center overflow-y-auto bg-black/70 px-4 py-8 backdrop-blur-sm">
-          <div className="w-full max-w-3xl rounded-[1.6rem] border border-white/10 bg-[linear-gradient(145deg,rgba(30,10,50,0.96),rgba(15,12,38,0.97)_58%,rgba(7,21,36,0.97))] p-5 shadow-2xl shadow-black/50 backdrop-blur-2xl">
-            <div className="flex items-center justify-between gap-3">
+          <div className="w-full max-w-3xl rounded-[1.35rem] border border-white/10 bg-[linear-gradient(145deg,rgba(30,10,50,0.96),rgba(15,12,38,0.97)_58%,rgba(7,21,36,0.97))] p-4 shadow-2xl shadow-black/50 backdrop-blur-2xl sm:rounded-[1.6rem] sm:p-5">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <h3 className="text-lg font-semibold text-white">Reply to {selectedContact.name}</h3>
                 <p className="mt-1 text-sm text-slate-400">
@@ -257,7 +266,7 @@ export default function AdminContacts() {
               <button
                 type="button"
                 onClick={() => setIsReplyOpen(false)}
-                className="inline-flex items-center gap-2 rounded-2xl border border-white/10 bg-white/[0.05] px-3 py-2 text-sm text-slate-200 transition hover:bg-white/[0.1]"
+                className="inline-flex w-full items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/[0.05] px-3 py-2 text-sm text-slate-200 transition hover:bg-white/[0.1] sm:w-auto"
               >
                 <X size={14} />
                 Close
@@ -367,7 +376,7 @@ export default function AdminContacts() {
                   setSendingReply(false)
                   setActiveTab('replied')
                 }}
-                className="inline-flex items-center gap-2 rounded-2xl bg-gradient-to-r from-purple-500 to-cyan-500 px-5 py-2.5 font-medium text-white transition hover:scale-[1.01] disabled:opacity-60"
+                className="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-purple-500 to-cyan-500 px-5 py-2.5 font-medium text-white transition hover:scale-[1.01] disabled:opacity-60 sm:w-auto"
               >
                 <Send size={16} />
                 {sendingReply ? 'Sending...' : 'Send reply'}
@@ -397,11 +406,11 @@ export default function AdminContacts() {
               </button>
             </div>
 
-            <div className="mt-5 flex justify-end gap-3">
+            <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:justify-end">
               <button
                 type="button"
                 onClick={() => setDeleteTarget(null)}
-                className="inline-flex items-center gap-2 rounded-2xl border border-white/10 bg-white/[0.05] px-4 py-2.5 text-sm font-medium text-slate-200 transition hover:bg-white/[0.1]"
+                className="inline-flex w-full items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/[0.05] px-4 py-2.5 text-sm font-medium text-slate-200 transition hover:bg-white/[0.1] sm:w-auto"
               >
                 Cancel
               </button>
@@ -410,7 +419,7 @@ export default function AdminContacts() {
                 type="button"
                 onClick={() => handleDelete(deleteTarget.id)}
                 disabled={deleting}
-                className="inline-flex items-center gap-2 rounded-2xl border border-red-500/20 bg-red-500/10 px-4 py-2.5 text-sm font-medium text-red-200 transition hover:bg-red-500/15 disabled:opacity-60"
+                className="inline-flex w-full items-center justify-center gap-2 rounded-2xl border border-red-500/20 bg-red-500/10 px-4 py-2.5 text-sm font-medium text-red-200 transition hover:bg-red-500/15 disabled:opacity-60 sm:w-auto"
               >
                 <Trash2 size={14} />
                 {deleting ? 'Deleting...' : 'Delete'}

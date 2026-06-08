@@ -1,27 +1,21 @@
 export default function Loading() {
   return (
-    <main className="
-      min-h-screen
-      flex flex-col
-      items-center
-      justify-center
-      bg-gradient-to-br
-      from-black via-purple-950 to-black
-      text-white
-    ">
+    <main
+      className="min-h-screen flex flex-col items-center justify-center transition-colors duration-300"
+      style={{ background: 'var(--bg-layered)', color: 'var(--text-primary)' }}
+    >
 
       <div className="flex flex-col items-center gap-6">
 
-        <div className="
-          w-14 h-14
-          border-4
-          border-purple-500/30
-          border-t-cyan-400
-          rounded-full
-          animate-spin
-        " />
+        <div
+          className="w-14 h-14 border-4 rounded-full animate-spin"
+          style={{
+            borderColor: 'var(--border-color)',
+            borderTopColor: 'var(--gold-primary)',
+          }}
+        />
 
-        <p className="text-lg text-slate-300">
+        <p className="text-lg" style={{ color: 'var(--text-secondary)' }}>
           Loading Products...
         </p>
 

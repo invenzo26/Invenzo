@@ -60,10 +60,6 @@ export default function ProductsPage() {
   const [isFormOpen, setIsFormOpen] = useState(false)
   const [deleteTarget, setDeleteTarget] = useState<DeleteTarget | null>(null)
 
-  useEffect(() => {
-    fetchProducts()
-  }, [])
-
   async function fetchProducts() {
     const response = await fetch('/api/admin/products', {
       credentials: 'include',
@@ -79,6 +75,36 @@ export default function ProductsPage() {
 
     setLoading(false)
   }
+
+  useEffect(() => {
+    let isActive = true
+
+    const loadInitialProducts = async () => {
+      const response = await fetch('/api/admin/products', {
+        credentials: 'include',
+        cache: 'no-store',
+      })
+      const payload = await response.json()
+
+      if (!isActive) {
+        return
+      }
+
+      if (response.ok) {
+        setProducts((payload.products as Product[]) || [])
+      } else {
+        setError(payload.error || 'Failed to load products.')
+      }
+
+      setLoading(false)
+    }
+
+    void loadInitialProducts()
+
+    return () => {
+      isActive = false
+    }
+  }, [])
 
   const filteredProducts = useMemo(() => {
     const term = search.trim().toLowerCase()
@@ -266,7 +292,7 @@ export default function ProductsPage() {
           ) : (
             filteredProducts.map((product) => (
               <div key={product.id} className="rounded-[1.4rem] border border-white/10 bg-[linear-gradient(145deg,rgba(24,10,42,0.92),rgba(12,16,34,0.9))] p-4 shadow-[0_18px_45px_rgba(4,8,20,0.24)]">
-                <div className="flex items-start justify-between gap-4">
+                <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                   <div>
                     <h3 className="text-lg font-semibold text-white">{product.name}</h3>
                     <div className="mt-1.5 flex flex-wrap items-center gap-2 text-xs text-slate-400">
@@ -281,11 +307,11 @@ export default function ProductsPage() {
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-2">
+                  <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
                     <button
                       type="button"
                       onClick={() => beginEdit(product)}
-                      className="inline-flex items-center gap-2 rounded-2xl border border-white/10 bg-white/[0.05] px-3 py-2 text-sm text-slate-200 transition hover:bg-white/[0.1]"
+                      className="inline-flex w-full items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/[0.05] px-3 py-2 text-sm text-slate-200 transition hover:bg-white/[0.1] sm:w-auto"
                     >
                       <Pencil size={14} />
                       Edit
@@ -294,7 +320,7 @@ export default function ProductsPage() {
                       type="button"
                       onClick={() => setDeleteTarget({ id: product.id, name: product.name })}
                       disabled={deletingId === product.id}
-                      className="inline-flex items-center gap-2 rounded-2xl border border-red-500/20 bg-red-500/10 px-3 py-2 text-sm text-red-200 transition hover:bg-red-500/15 disabled:opacity-60"
+                      className="inline-flex w-full items-center justify-center gap-2 rounded-2xl border border-red-500/20 bg-red-500/10 px-3 py-2 text-sm text-red-200 transition hover:bg-red-500/15 disabled:opacity-60 sm:w-auto"
                     >
                       <Trash2 size={14} />
                       {deletingId === product.id ? 'Deleting...' : 'Delete'}
@@ -344,8 +370,8 @@ export default function ProductsPage() {
 
       {isFormOpen && (
         <div className="fixed inset-0 z-[80] flex items-start justify-center overflow-y-auto bg-black/70 px-4 py-8 backdrop-blur-sm">
-          <div className="w-full max-w-3xl rounded-[1.6rem] border border-white/10 bg-[linear-gradient(145deg,rgba(30,10,50,0.96),rgba(15,12,38,0.97)_58%,rgba(7,21,36,0.97))] p-5 shadow-2xl shadow-black/50 backdrop-blur-2xl">
-            <div className="flex items-center justify-between gap-3">
+          <div className="w-full max-w-3xl rounded-[1.35rem] border border-white/10 bg-[linear-gradient(145deg,rgba(30,10,50,0.96),rgba(15,12,38,0.97)_58%,rgba(7,21,36,0.97))] p-4 shadow-2xl shadow-black/50 backdrop-blur-2xl sm:rounded-[1.6rem] sm:p-5">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <h3 className="text-lg font-semibold text-white">
                   {editingProductId ? 'Edit Product' : 'Create Product'}
@@ -362,7 +388,7 @@ export default function ProductsPage() {
                   setEditingProductId(null)
                   setForm(emptyForm)
                 }}
-                className="inline-flex items-center gap-2 rounded-2xl border border-white/10 bg-white/[0.05] px-3 py-2 text-sm text-slate-200 transition hover:bg-white/[0.1]"
+                className="inline-flex w-full items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/[0.05] px-3 py-2 text-sm text-slate-200 transition hover:bg-white/[0.1] sm:w-auto"
               >
                 <X size={14} />
                 Close
@@ -463,11 +489,11 @@ export default function ProductsPage() {
               </button>
             </div>
 
-            <div className="mt-5 flex justify-end gap-3">
+            <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:justify-end">
               <button
                 type="button"
                 onClick={() => setDeleteTarget(null)}
-                className="inline-flex items-center gap-2 rounded-2xl border border-white/10 bg-white/[0.05] px-4 py-2.5 text-sm font-medium text-slate-200 transition hover:bg-white/[0.1]"
+                className="inline-flex w-full items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/[0.05] px-4 py-2.5 text-sm font-medium text-slate-200 transition hover:bg-white/[0.1] sm:w-auto"
               >
                 Cancel
               </button>
@@ -476,7 +502,7 @@ export default function ProductsPage() {
                 type="button"
                 onClick={() => handleDelete(deleteTarget.id)}
                 disabled={deletingId === deleteTarget.id}
-                className="inline-flex items-center gap-2 rounded-2xl border border-red-500/20 bg-red-500/10 px-4 py-2.5 text-sm font-medium text-red-200 transition hover:bg-red-500/15 disabled:opacity-60"
+                className="inline-flex w-full items-center justify-center gap-2 rounded-2xl border border-red-500/20 bg-red-500/10 px-4 py-2.5 text-sm font-medium text-red-200 transition hover:bg-red-500/15 disabled:opacity-60 sm:w-auto"
               >
                 <Trash2 size={14} />
                 {deletingId === deleteTarget.id ? 'Deleting...' : 'Delete'}

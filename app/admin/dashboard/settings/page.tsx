@@ -182,7 +182,7 @@ export default function SettingsPage() {
           <button
             type="submit"
             disabled={saving || !promoStorageReady}
-            className="inline-flex items-center gap-2 rounded-2xl bg-gradient-to-r from-purple-500 to-cyan-500 px-5 py-2.5 font-medium text-white transition hover:scale-[1.01] disabled:opacity-60"
+            className="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-purple-500 to-cyan-500 px-5 py-2.5 font-medium text-white transition hover:scale-[1.01] disabled:opacity-60 sm:w-auto"
           >
             <Save size={16} />
             {saving ? 'Saving...' : promoStorageReady ? 'Save promo settings' : 'Migration required'}
