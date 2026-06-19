@@ -20,9 +20,13 @@ interface Product {
 const getImageUrl = (path?: string) => {
   if (!path) return ''
 
-  const { data } = getSupabaseClient().storage
-    .from('products')
-    .getPublicUrl(path)
+  const supabase = getSupabaseClient()
+
+if (!supabase) return ''
+
+const { data } = supabase.storage
+  .from('products')
+  .getPublicUrl(path)
 
   return data.publicUrl
 }
