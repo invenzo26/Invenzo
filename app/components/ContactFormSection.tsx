@@ -85,19 +85,14 @@ export function ContactFormSection() {
           whileInView={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.2, duration: 0.6 }}
           viewport={{ once: true }}
-          className="rounded-lg p-8 lg:p-10 border transition-all duration-300"
-          style={{
-            background: 'var(--card-bg)',
-            borderColor: 'var(--border-color)',
-            boxShadow: 'var(--shadow-card)',
-          }}
+          className="glass-panel-elevated p-8 lg:p-12 border-0"
         >
           <div className="grid sm:grid-cols-2 gap-6 mb-6">
             <div>
               <label
                 htmlFor="name"
-                className="block text-sm font-medium mb-2 transition-colors duration-300"
-                style={{ color: 'var(--text-secondary)' }}
+                className="block text-xs font-semibold mb-3 transition-colors duration-300 uppercase tracking-wide"
+                style={{ color: 'var(--text-primary)', letterSpacing: '0.5px' }}
               >
                 Name
               </label>
@@ -107,7 +102,7 @@ export function ContactFormSection() {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Your name"
-                className="input w-full"
+                className="glass-input w-full"
                 required
               />
             </div>
@@ -115,8 +110,8 @@ export function ContactFormSection() {
             <div>
               <label
                 htmlFor="email"
-                className="block text-sm font-medium mb-2 transition-colors duration-300"
-                style={{ color: 'var(--text-secondary)' }}
+                className="block text-xs font-semibold mb-3 transition-colors duration-300 uppercase tracking-wide"
+                style={{ color: 'var(--text-primary)', letterSpacing: '0.5px' }}
               >
                 Email
               </label>
@@ -126,7 +121,7 @@ export function ContactFormSection() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="your@email.com"
-                className="input w-full"
+                className="glass-input w-full"
                 required
               />
             </div>
@@ -135,8 +130,8 @@ export function ContactFormSection() {
           <div className="mb-6">
             <label
               htmlFor="subject"
-              className="block text-sm font-medium mb-2 transition-colors duration-300"
-              style={{ color: 'var(--text-secondary)' }}
+              className="block text-xs font-semibold mb-3 transition-colors duration-300 uppercase tracking-wide"
+              style={{ color: 'var(--text-primary)', letterSpacing: '0.5px' }}
             >
               Subject
             </label>
@@ -146,7 +141,7 @@ export function ContactFormSection() {
               value={subject}
               onChange={(e) => setSubject(e.target.value)}
               placeholder="What is this about?"
-              className="input w-full"
+              className="glass-input w-full"
               required
             />
           </div>
@@ -154,8 +149,8 @@ export function ContactFormSection() {
           <div className="mb-8">
             <label
               htmlFor="message"
-              className="block text-sm font-medium mb-2 transition-colors duration-300"
-              style={{ color: 'var(--text-secondary)' }}
+              className="block text-xs font-semibold mb-3 transition-colors duration-300 uppercase tracking-wide"
+              style={{ color: 'var(--text-primary)', letterSpacing: '0.5px' }}
             >
               Message
             </label>
@@ -164,7 +159,7 @@ export function ContactFormSection() {
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               placeholder="Tell us more about your project..."
-              className="input w-full resize-none"
+              className="glass-input w-full resize-none"
               rows={6}
               required
             />
@@ -174,9 +169,8 @@ export function ContactFormSection() {
             <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="mb-6 p-4 rounded-lg text-sm transition-colors duration-300"
+              className="mb-6 p-4 rounded-lg text-sm transition-all duration-300 glass-panel"
               style={{
-                backgroundColor: 'rgba(16, 185, 129, 0.1)',
                 borderColor: 'rgba(16, 185, 129, 0.3)',
                 color: 'var(--color-success)',
               }}
@@ -189,9 +183,8 @@ export function ContactFormSection() {
             <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="mb-6 p-4 rounded-lg text-sm transition-colors duration-300"
+              className="mb-6 p-4 rounded-lg text-sm transition-all duration-300 glass-panel"
               style={{
-                backgroundColor: 'rgba(239, 68, 68, 0.1)',
                 borderColor: 'rgba(239, 68, 68, 0.3)',
                 color: 'var(--color-error)',
               }}

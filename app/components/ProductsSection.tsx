@@ -1,11 +1,10 @@
 'use client'
-
+import { getSupabaseClient } from '@/lib/supabaseClient'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { PremiumCard } from './PremiumCard'
 import { PremiumButton } from './PremiumButton'
-import { getProductIcon } from '@/lib/productMeta'
 
 interface Product {
   id: string
@@ -13,9 +12,20 @@ interface Product {
   slug: string
   tagline: string
   description: string
-  features?: string[]
+  image_url?: string
+  status?: string
+  project_type?: string
+  featured?: boolean
 }
+const getImageUrl = (path?: string) => {
+  if (!path) return ''
 
+  const { data } = getSupabaseClient().storage
+    .from('products')
+    .getPublicUrl(path)
+
+  return data.publicUrl
+}
 export function ProductsSection() {
   const [products, setProducts] = useState<Product[]>([])
   const [loading, setLoading] = useState(true)
@@ -89,7 +99,7 @@ export function ProductsSection() {
             className="text-4xl sm:text-5xl font-bold mb-4 transition-colors duration-300"
             style={{ color: 'var(--text-primary)' }}
           >
-            Our Products
+            Featured Products
           </h2>
           <p
             className="text-lg max-w-2xl mx-auto transition-colors duration-300"
@@ -150,18 +160,27 @@ export function ProductsSection() {
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
           >
             {products.map((product) => {
-              const Icon = getProductIcon(product.slug)
               return (
                 <motion.div key={product.id} variants={itemVariants}>
                   <PremiumCard>
+                    {product.image_url && (
+                      <img src={getImageUrl(product.image_url)} alt={product.name} className="w-full h-52 object-cover rounded-lg mb-4"/>
+                  )}
+                    <div className="flex gap-2 mb-3">
+                      {product.status && (
+                         <span
+                            className="text-xs px-3 py-1 rounded-full border"
+                          style={{
+                           borderColor: 'var(--gold-primary)',
+                           color: 'var(--gold-primary)',
+                          }}>
+                          {product.status}
+                         </span>
+                    )}
+                    </div>
                     <div className="flex items-start justify-between mb-4">
                       <div className="flex-1">
-                        {Icon && (
-                          <Icon
-                            className="w-10 h-10 mb-4"
-                            style={{ color: 'var(--gold-primary)' }}
-                          />
-                        )}
+                        
                         <h3
                           className="text-xl font-bold mb-1 transition-colors duration-300"
                           style={{ color: 'var(--text-primary)' }}
@@ -176,41 +195,13 @@ export function ProductsSection() {
                         </p>
                       </div>
                     </div>
-
-                    <p
-                      className="text-sm leading-relaxed mb-6 transition-colors duration-300"
-                      style={{ color: 'var(--text-secondary)' }}
-                    >
-                      {product.description}
-                    </p>
-
-                    {product.features && product.features.length > 0 && (
-                      <ul className="space-y-2 mb-6">
-                        {product.features.slice(0, 3).map((feature, idx) => (
-                          <li
-                            key={idx}
-                            className="flex items-center text-sm transition-colors duration-300"
-                            style={{ color: 'var(--text-secondary)' }}
-                          >
-                            <span
-                              className="w-1.5 h-1.5 rounded-full mr-3"
-                              style={{
-                                backgroundColor: 'var(--gold-primary)',
-                              }}
-                            />
-                            {feature}
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-
                     <Link href={`/products/${product.slug}`}>
                       <PremiumButton
                         variant="secondary"
                         size="sm"
                         className="w-full"
                       >
-                        Learn More
+                        View Project →
                       </PremiumButton>
                     </Link>
                   </PremiumCard>

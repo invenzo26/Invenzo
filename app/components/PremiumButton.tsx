@@ -25,13 +25,11 @@ export function PremiumButton({
 
   const variantStyles = {
     primary: `
-      bg-gold-primary text-bg-primary shadow-lg shadow-gold-primary/20
-      hover:-translate-y-0.5 active:scale-95
+      premium-button-primary
       focus:ring-gold-primary
     `,
     secondary: `
-      bg-transparent border-2 border-gold-primary text-gold-primary
-      hover:bg-hover-overlay hover:-translate-y-0.5 active:scale-95
+      premium-button-secondary
       focus:ring-gold-primary
     `,
     ghost: `
@@ -42,9 +40,9 @@ export function PremiumButton({
   }
 
   const sizeStyles = {
-    sm: 'px-4 py-2 text-sm',
-    md: 'px-6 py-3 text-base',
-    lg: 'px-8 py-4 text-lg',
+    sm: 'px-4 py-2 text-sm tracking-wide',
+    md: 'px-6 py-3 text-base tracking-wide',
+    lg: 'px-8 py-4 text-lg tracking-wider',
   }
 
   return (

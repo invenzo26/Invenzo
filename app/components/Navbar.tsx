@@ -29,15 +29,8 @@ export default function Navbar() {
 
   return (
     <>
-      <nav
-        className="fixed top-0 left-0 w-full z-50 backdrop-blur-md border-b transition-all duration-300"
-        style={{
-          background: 'var(--nav-bg)',
-          borderColor: 'var(--border-color)',
-          boxShadow: 'var(--shadow-soft)',
-        }}
-      >
-        <div className="max-w-7xl mx-auto h-16 px-3 sm:px-6 flex items-center justify-between gap-3">
+      <nav className="fixed top-0 left-0 right-0 z-50 px-4 sm:px-6 lg:px-8 pt-4 transition-all duration-300">
+        <div className="max-w-7xl mx-auto h-16 px-4 sm:px-6 flex items-center justify-between gap-4 glass-panel-elevated rounded-2xl">
           <div className="flex items-center gap-3">
             <button
               type="button"
@@ -58,7 +51,7 @@ export default function Navbar() {
                 priority
               />
               <span
-                className="hidden sm:block text-xl font-bold transition-colors duration-300"
+                className="hidden sm:block text-xl font-bold transition-colors duration-300 tracking-tight"
                 style={{ color: 'var(--text-primary)' }}
               >
                 Invenzo
@@ -66,13 +59,20 @@ export default function Navbar() {
             </a>
           </div>
 
-          <div className="hidden sm:flex items-center gap-8 text-sm">
+          <div className="hidden sm:flex items-center gap-12 text-sm font-medium">
             {homepageSections.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
                 onClick={(e) => handleSectionClick(link.id, e)}
-                className="whitespace-nowrap transition-colors duration-300 relative pb-0.5 cursor-pointer"
+                className={`
+                  whitespace-nowrap transition-all duration-400 relative pb-1 cursor-pointer
+                  tracking-wide
+                  ${isActive(link.id)
+                    ? 'font-semibold nav-link-active'
+                    : 'font-medium hover:font-semibold'
+                  }
+                `}
                 style={{
                   color: isActive(link.id) ? 'var(--gold-primary)' : 'var(--text-secondary)',
                 }}
@@ -80,8 +80,11 @@ export default function Navbar() {
                 {link.label}
                 {isActive(link.id) && (
                   <div
-                    className="absolute bottom-0 left-0 right-0 h-0.5 transition-all duration-300"
-                    style={{ backgroundColor: 'var(--gold-primary)' }}
+                    className="absolute bottom-0 left-0 right-0 h-0.5 transition-all duration-400"
+                    style={{
+                      backgroundColor: 'var(--gold-primary)',
+                      boxShadow: '0 0 12px rgba(212, 175, 55, 0.6)',
+                    }}
                   />
                 )}
               </a>
@@ -113,9 +116,8 @@ export default function Navbar() {
         <aside
           className={`absolute left-0 top-0 h-full w-72 max-w-[82vw] border-r transition-transform duration-300 ${
             isOpen ? 'translate-x-0' : '-translate-x-full'
-          }`}
+          } glass-panel`}
           style={{
-            backgroundColor: 'var(--bg-surface)',
             borderColor: 'var(--border-color)',
           }}
         >
