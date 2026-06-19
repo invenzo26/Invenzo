@@ -6,7 +6,6 @@ import { getSupabaseClient } from '@/lib/supabaseClient'
 
 export default function SettingsPage() {
   const [status, setStatus] = useState<'checking' | 'connected' | 'offline'>('checking')
-  const [promo, setPromo] = useState<PromoSettings>(defaultPromoSettings)
   const [saving, setSaving] = useState(false)
   const [message, setMessage] = useState<string | null>(null)
   const [promoStorageReady, setPromoStorageReady] = useState(true)
@@ -31,7 +30,6 @@ export default function SettingsPage() {
         cache: 'no-store',
       })
       const payload = await response.json()
-      setPromo(payload.settings || defaultPromoSettings)
       setPromoStorageReady(payload.storageReady ?? true)
       setPromoWarning(payload.warning ?? null)
     }
@@ -51,7 +49,6 @@ export default function SettingsPage() {
         'Content-Type': 'application/json',
       },
       credentials: 'include',
-      body: JSON.stringify(promo),
     })
 
     const payload = await response.json()
@@ -61,8 +58,6 @@ export default function SettingsPage() {
       setSaving(false)
       return
     }
-
-    setPromo(payload.settings || promo)
     setMessage('Promo card settings saved successfully.')
     setSaving(false)
   }
@@ -128,8 +123,6 @@ export default function SettingsPage() {
           <label className="inline-flex items-center gap-3 rounded-full border border-white/10 bg-white/[0.05] px-4 py-2 text-sm text-white">
             <input
               type="checkbox"
-              checked={promo.enabled}
-              onChange={(e) => setPromo((current) => ({ ...current, enabled: e.target.checked }))}
               className="h-4 w-4 rounded border-white/20 bg-transparent"
             />
             Promo enabled
@@ -141,41 +134,6 @@ export default function SettingsPage() {
             {message || promoWarning}
           </div>
         )}
-
-        <div className="mt-5 grid gap-3 lg:grid-cols-2">
-          <Field label="Promo title">
-            <input
-              value={promo.title}
-              onChange={(e) => setPromo((current) => ({ ...current, title: e.target.value }))}
-              className="w-full rounded-2xl border border-white/10 bg-[#0e1120]/85 px-4 py-3 text-white outline-none transition focus:border-purple-400"
-            />
-          </Field>
-
-          <Field label="Button label">
-            <input
-              value={promo.ctaLabel}
-              onChange={(e) => setPromo((current) => ({ ...current, ctaLabel: e.target.value }))}
-              className="w-full rounded-2xl border border-white/10 bg-[#0e1120]/85 px-4 py-3 text-white outline-none transition focus:border-cyan-400"
-            />
-          </Field>
-
-          <Field label="Card link" className="lg:col-span-2">
-            <input
-              value={promo.href}
-              onChange={(e) => setPromo((current) => ({ ...current, href: e.target.value }))}
-              className="w-full rounded-2xl border border-white/10 bg-[#0e1120]/85 px-4 py-3 text-white outline-none transition focus:border-cyan-400"
-            />
-          </Field>
-
-          <Field label="Promo description" className="lg:col-span-2">
-            <textarea
-              rows={4}
-              value={promo.description}
-              onChange={(e) => setPromo((current) => ({ ...current, description: e.target.value }))}
-              className="w-full rounded-2xl border border-white/10 bg-[#0e1120]/85 px-4 py-3 text-white outline-none transition focus:border-purple-400"
-            />
-          </Field>
-        </div>
 
         <div className="mt-5 flex justify-end">
           <button
