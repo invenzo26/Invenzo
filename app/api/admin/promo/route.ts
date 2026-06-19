@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { requireAdminApiUser } from '@/lib/adminApi'
-import { defaultPromoSettings } from '@/lib/promoSettings'
 import { getSupabaseServerClient } from '@/lib/supabaseServer'
 import {
   isMissingSiteSettingsTable,
