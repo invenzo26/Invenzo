@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react'
 import { CheckCircle2, Database, Link2, Save, Shield } from 'lucide-react'
 import { getSupabaseClient } from '@/lib/supabaseClient'
-import { defaultPromoSettings, type PromoSettings } from '@/lib/promoSettings'
 
 export default function SettingsPage() {
   const [status, setStatus] = useState<'checking' | 'connected' | 'offline'>('checking')
