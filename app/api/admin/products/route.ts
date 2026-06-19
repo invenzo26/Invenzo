@@ -11,7 +11,7 @@ export async function GET() {
 
     const { data, error } = await supabase
       .from('products')
-      .select(' id, name, slug, tagline, description, image_url, status, featured, live_url')
+      .select(' id, name, slug, tagline, description, image_url, status, featured, project_type, live_url')
 
     if (error) {
       console.error('Supabase query error:', error)
@@ -40,7 +40,7 @@ export async function POST(req: NextRequest) {
   const { data, error } = await supabase
     .from('products')
     .insert([body])
-    .select('id, name, slug, tagline, description, image_url, status, featured, live_url')
+    .select('id, name, slug, tagline, description, image_url, status, featured, project_type, live_url')
     .single()
 
   if (error) {

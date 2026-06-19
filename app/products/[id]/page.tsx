@@ -3,7 +3,6 @@
 import { useParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { getSupabaseClient } from '@/lib/supabaseClient'
-import { getProductIcon } from '@/lib/productMeta'
 
 type Product = {
   name: string
@@ -19,7 +18,6 @@ export default function ProductDetails() {
   const [product, setProduct] = useState<Product | null>(null)
   const [loading, setLoading] = useState(true)
   const productId = typeof id === 'string' ? id : undefined
-  const ProductIcon = getProductIcon(productId)
 
   useEffect(() => {
     async function fetchProduct() {
@@ -92,17 +90,6 @@ export default function ProductDetails() {
 
       <div className="relative max-w-4xl mx-auto">
         <div className="mb-8 flex items-center gap-4 sm:gap-5">
-          <div
-            className="inline-flex h-16 w-16 shrink-0 items-center justify-center rounded-lg border"
-            style={{
-              background: 'var(--card-bg)',
-              borderColor: 'var(--border-color)',
-              color: 'var(--gold-primary)',
-              boxShadow: 'var(--shadow-card)',
-            }}
-          >
-            <ProductIcon size={30} />
-          </div>
 
           <div className="min-w-0">
             <h1 className="text-3xl sm:text-5xl font-bold leading-tight">{product.name}</h1>

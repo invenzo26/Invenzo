@@ -30,89 +30,6 @@ const { data } = supabase.storage
 
   return data.publicUrl
 }
-const getStatusStyles = (status?: string) => {
-  switch (status) {
-    case 'Live':
-      return {
-        backgroundColor: 'rgba(16, 185, 129, 0.12)',
-        borderColor: '#60ff04',
-        color: '#00ff1a',
-      }
-
-    case 'Beta':
-      return {
-        backgroundColor: 'rgba(34, 197, 94, 0.12)',
-        borderColor: '#00fbff',
-        color: '#00ffff',
-      }
-
-    case 'Developing':
-      return {
-        backgroundColor: 'rgba(59, 130, 246, 0.12)',
-        borderColor: '#fc06c3',
-        color: '#e76fd7',
-      }
-
-    case 'Planning':
-      return {
-        backgroundColor: 'rgba(168, 85, 247, 0.12)',
-        borderColor: '#A855F7',
-        color: '#A855F7',
-      }
-
-    case 'Research':
-      return {
-        backgroundColor: 'rgba(139, 92, 246, 0.12)',
-        borderColor: '#8B5CF6',
-        color: '#8B5CF6',
-      }
-
-    default:
-      return {
-        backgroundColor: 'rgba(245, 158, 11, 0.12)',
-        borderColor: '#F59E0B',
-        color: '#F59E0B',
-      }
-  }
-}
-const getProjectTypeStyles = (type?: string) => {
-  switch (type) {
-    case 'EdTech':
-      return {
-        color: '#9436ff',
-        borderColor: 'rgba(147,197,253,0.25)',
-        backgroundColor: 'rgba(147,197,253,0.08)',
-      }
-
-    case 'CareerTech':
-      return {
-        color: '#C4B5FD',
-        borderColor: 'rgba(196,181,253,0.25)',
-        backgroundColor: 'rgba(196,181,253,0.08)',
-      }
-
-    case 'Automation':
-      return {
-        color: '#FDBA74',
-        borderColor: 'rgba(253,186,116,0.25)',
-        backgroundColor: 'rgba(253,186,116,0.08)',
-      }
-
-    case 'SaaS':
-      return {
-        color: '#67E8F9',
-        borderColor: 'rgba(103,232,249,0.25)',
-        backgroundColor: 'rgba(103,232,249,0.08)',
-      }
-
-    default:
-      return {
-        color: '#D1D5DB',
-        borderColor: 'rgba(209,213,219,0.2)',
-        backgroundColor: 'rgba(209,213,219,0.05)',
-      }
-  }
-}
 export function ProductsSection() {
   const [products, setProducts] = useState<Product[]>([])
   const [loading, setLoading] = useState(true)
@@ -254,18 +171,17 @@ export function ProductsSection() {
                       <img src={getImageUrl(product.image_url)} alt={product.name} className="w-full h-52 object-cover rounded-lg mb-4"/>
                   )}
                     <div className="flex gap-2 mb-3">
-                      {product.project_type && (
-                       <span
-                            className="text-xs px-3 py-1 rounded-full border backdrop-blur-sm"
-                            style={getProjectTypeStyles(product.project_type)}>
-                              {product.project_type}
-                        </span>
-                      )}
                       {product.status && (
                          <span
-                          className="text-xs px-3 py-1 rounded-full border"
-                          style={getStatusStyles(product.status)}>{product.status}</span>)}
-                        </div>
+                            className="text-xs px-3 py-1 rounded-full border"
+                          style={{
+                           borderColor: 'var(--gold-primary)',
+                           color: 'var(--gold-primary)',
+                          }}>
+                          {product.status}
+                         </span>
+                    )}
+                    </div>
                     <div className="flex items-start justify-between mb-4">
                       <div className="flex-1">
                         
