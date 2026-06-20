@@ -194,8 +194,18 @@ export function ProductsSection() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [activeIndex, setActiveIndex] = useState(0)
+  const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
+    const checkMobile = () => {
+    setIsMobile(window.innerWidth < 1024)
+  }
+
+  checkMobile()
+
+  window.addEventListener('resize', checkMobile)
+
+ 
     const fetchProducts = async () => {
       try {
         setError(null)
@@ -239,6 +249,8 @@ setProducts(sortedProducts)
     }
 
     fetchProducts()
+     return () =>
+    window.removeEventListener('resize', checkMobile)
   }, [])
 
   const containerVariants = {
@@ -360,7 +372,8 @@ const goNext = () => {
               No products available at the moment.
             </p>
           </div>
-        ):<div className="relative flex items-center justify-center min-h-[260px]">
+        ):(
+        <div className="relative flex items-center justify-center min-h-[260px]">
   <motion.button
   onClick={goPrevious}
   whileHover={{
@@ -382,6 +395,8 @@ const goNext = () => {
   {/* Active Card */}
   <motion.div
     key={activeProduct?.id}
+    drag={isMobile ? 'x' : false}
+    dragConstraints={{ left: 0, right: 0 }}
     initial={{ opacity: 0, scale: 0.95 }}
     animate={{
       opacity: 1,
@@ -391,6 +406,15 @@ const goNext = () => {
     transition={{
       duration: 0.4,
     }}
+    onDragEnd={(event, info) => {
+  if (info.offset.x < -80) {
+    goNext()
+  }
+
+  if (info.offset.x > 80) {
+    goPrevious()
+  }
+}}
     className="w-full max-w-[420px] z-20"
   >
     <PremiumCard className="flex flex-col flex items-center text-center box-shadow: 0 0 0 1px rgba(255,215,0,0.08),0 20px 80px rgba(255,215,0,0.06);;">
@@ -481,8 +505,7 @@ className="w-full"
   />
 </motion.button>
 </div>
-
-    }
+        )}
     <div className="flex justify-center items-center gap-3 mt-5">
 
 
