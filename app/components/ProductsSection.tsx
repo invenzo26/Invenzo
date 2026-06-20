@@ -113,10 +113,87 @@ const getProjectTypeStyles = (type?: string) => {
       }
   }
 }
+function MiniCard({
+  product,
+}: {
+  product: Product
+}) {
+  return (
+    <div
+      className="
+      w-[220px]
+      h-[320px]
+      rounded-xl
+      border
+      border-white/10
+      bg-white/[0.02]
+      backdrop-blur-xl
+      overflow-hidden
+      "
+    >
+      {product.image_url && (
+        <img
+          src={getImageUrl(product.image_url)}
+          alt={product.name}
+         className="
+            w-full
+            max-h-[220px] object-contain bg-[#0f1117] p-2
+            rounded-t-3xl
+"
+        />
+      )}
+
+      <div className="p-4">
+
+        <div className="flex gap-2 mb-3">
+
+          {product.project_type && (
+            <span
+              className="text-[10px] px-2 py-1 rounded-full border"
+              style={getProjectTypeStyles(product.project_type)}
+            >
+              {product.project_type}
+            </span>
+          )}
+
+          {product.status && (
+            <span
+              className="text-[10px] px-2 py-1 rounded-full border"
+              style={getStatusStyles(product.status)}
+            >
+              {product.status}
+            </span>
+          )}
+
+        </div>
+
+        <h4
+          className="text-lg font-bold"
+          style={{
+            color: 'var(--text-primary)',
+          }}
+        >
+          {product.name}
+        </h4>
+
+        <p
+          className="text-sm mt-2 line-clamp-2"
+          style={{
+            color: 'var(--gold-primary)',
+          }}
+        >
+          {product.tagline}
+        </p>
+
+      </div>
+    </div>
+  )
+}
 export function ProductsSection() {
   const [products, setProducts] = useState<Product[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [activeIndex, setActiveIndex] = useState(0)
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -136,7 +213,22 @@ export function ProductsSection() {
           throw new Error(data.error)
         }
 
-        setProducts(data.products || [])
+        const statusPriority: Record<string, number> = {
+  Live: 1,
+  Beta: 2,
+  Developing: 3,
+  Planning: 4,
+  Research: 5,
+}
+
+const sortedProducts = [...(data.products || [])].sort((a, b) => {
+  const aPriority = statusPriority[a.status || ''] ?? 999
+  const bPriority = statusPriority[b.status || ''] ?? 999
+
+  return aPriority - bPriority
+})
+
+setProducts(sortedProducts)
       } catch (err) {
         const errorMessage = err instanceof Error ? err.message : 'Failed to load products'
         console.error('Failed to fetch products:', err)
@@ -168,6 +260,36 @@ export function ProductsSection() {
     },
   }
 
+  const activeProduct = products[activeIndex]
+
+const prevIndex =
+  activeIndex === 0
+    ? products.length - 1
+    : activeIndex - 1
+
+const nextIndex =
+  activeIndex === products.length - 1
+    ? 0
+    : activeIndex + 1
+
+const previousProduct = products[prevIndex]
+const nextProduct = products[nextIndex]
+
+const goPrevious = () => {
+  setActiveIndex(prev =>
+    prev === 0
+      ? products.length - 1
+      : prev - 1
+  )
+}
+
+const goNext = () => {
+  setActiveIndex(prev =>
+    prev === products.length - 1
+      ? 0
+      : prev + 1
+  )
+}
   return (
     <section
       id="products"
@@ -189,7 +311,7 @@ export function ProductsSection() {
             Featured Products
           </h2>
           <p
-            className="text-lg max-w-2xl mx-auto transition-colors duration-300"
+            className="text-lg max-w-xl mx-auto transition-colors duration-300"
             style={{ color: 'var(--text-secondary)' }}
           >
             Intelligent solutions built to solve real business challenges and drive measurable impact.
@@ -238,66 +360,152 @@ export function ProductsSection() {
               No products available at the moment.
             </p>
           </div>
-        ) : (
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+        ):<div className="relative flex items-center justify-center min-h-[260px]">
+  <motion.button
+  onClick={goPrevious}
+  whileHover={{
+    scale: 0.86,
+  }}
+  className="
+  absolute
+  left-[25%]
+  hidden
+  lg:block
+  z-10
+  cursor-pointer
+  "
+>
+  <MiniCard
+    product={previousProduct}
+  />
+</motion.button>
+  {/* Active Card */}
+  <motion.div
+    key={activeProduct?.id}
+    initial={{ opacity: 0, scale: 0.95 }}
+    animate={{
+      opacity: 1,
+      scale: 1,
+      x: 0,
+    }}
+    transition={{
+      duration: 0.4,
+    }}
+    className="w-full max-w-[420px] z-20"
+  >
+    <PremiumCard className="flex flex-col flex items-center text-center box-shadow: 0 0 0 1px rgba(255,215,0,0.08),0 20px 80px rgba(255,215,0,0.06);;">
+      {/*<div className="flex flex-col items-center text-center"></div>*/}
+
+      {activeProduct?.image_url && (
+        <div className="mb-4">
+  <img
+    src={getImageUrl(activeProduct.image_url)}
+    alt={activeProduct.name}
+    className="
+w-full
+h-52
+object-cover
+rounded-xl
+mb-4
+"
+  />
+  </div>
+)}
+
+      <div className="flex justify-center gap-2 mb-4">
+
+        {activeProduct?.project_type && (
+          <span
+            className="text-xs px-3 py-1 rounded-full border"
+            style={getProjectTypeStyles(activeProduct.project_type)}
           >
-            {products.map((product) => {
-              return (
-                <motion.div key={product.id} variants={itemVariants}>
-                  <PremiumCard>
-                    {product.image_url && (
-                      <img src={getImageUrl(product.image_url)} alt={product.name} className="w-full h-52 object-cover rounded-lg mb-4"/>
-                  )}
-                    <div className="flex gap-2 mb-3">
-                      {product.project_type && (
-                       <span
-                            className="text-xs px-3 py-1 rounded-full border backdrop-blur-sm"
-                            style={getProjectTypeStyles(product.project_type)}>
-                              {product.project_type}
-                        </span>
-                      )}
-                      {product.status && (
-                         <span
-                          className="text-xs px-3 py-1 rounded-full border"
-                          style={getStatusStyles(product.status)}>{product.status}</span>)}
-                        </div>
-                    <div className="flex items-start justify-between mb-4">
-                      <div className="flex-1">
-                        
-                        <h3
-                          className="text-xl font-bold mb-1 transition-colors duration-300"
-                          style={{ color: 'var(--text-primary)' }}
-                        >
-                          {product.name}
-                        </h3>
-                        <p
-                          className="text-sm font-medium"
-                          style={{ color: 'var(--gold-primary)' }}
-                        >
-                          {product.tagline}
-                        </p>
-                      </div>
-                    </div>
-                    <Link href={`/products/${product.slug}`}>
-                      <PremiumButton
-                        variant="secondary"
-                        size="sm"
-                        className="w-full"
-                      >
-                        View Project →
-                      </PremiumButton>
-                    </Link>
-                  </PremiumCard>
-                </motion.div>
-              )
-            })}
-          </motion.div>
+            {activeProduct.project_type}
+          </span>
         )}
+
+        {activeProduct?.status && (
+          <span
+            className="text-xs px-3 py-1 rounded-full border"
+            style={getStatusStyles(activeProduct.status)}
+          >
+            {activeProduct.status}
+          </span>
+        )}
+
+      </div>
+      <div className="flex flex-col items-center text-center">
+
+      <h2
+        className="text-2xl font-bold mb-2"
+        style={{ color: 'var(--text-primary)' }}
+      >
+        {activeProduct?.name}
+      </h2>
+
+      <p
+        className="text-sm mb-4"
+        style={{ color: 'var(--gold-primary)' }}
+      >
+        {activeProduct?.tagline}
+      </p>
+      </div>
+<div className="flex justify-center">
+      <Link href={`/products/${activeProduct?.slug}`}>
+        <PremiumButton
+variant="secondary"
+size="sm"
+className="w-full"
+>
+          View Project →
+        </PremiumButton>
+      </Link>
+</div>
+    </PremiumCard>
+  </motion.div>
+<motion.button
+  onClick={goNext}
+  whileHover={{
+    scale: 0.86,
+  }}
+  className="
+  absolute
+  right-[25%]
+  hidden
+  lg:block
+  z-10
+  cursor-pointer
+  "
+>
+  <MiniCard
+    product={nextProduct}
+  />
+</motion.button>
+</div>
+
+    }
+    <div className="flex justify-center items-center gap-3 mt-5">
+
+
+  <span
+    className="text-sm"
+    style={{ color: 'var(--text-secondary)' }}
+  >
+    <div className="flex gap-2">
+  {products.map((_, index) => (
+    <button
+      key={index}
+      onClick={() => setActiveIndex(index)}
+      className={`h-2 rounded-full transition-all ${
+        activeIndex === index
+          ? 'w-8 bg-yellow-400'
+          : 'w-2 bg-gray-600'
+      }`}
+    />
+  ))}
+</div>
+  </span>
+
+</div>
       </div>
     </section>
   )
