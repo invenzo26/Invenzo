@@ -15,8 +15,8 @@ export default function Navbar() {
 
   const logoSrc =
     theme === 'light'
-      ? '/logo-light.png'
-      : '/logo-dark.png'
+      ? '/logo.png'
+      : '/logo.png'
   const pathname = usePathname()
   const activeSection = useScrollSpy()
 
@@ -55,7 +55,6 @@ export default function Navbar() {
                 alt="Invenzo Logo"
                 width={40}
                 height={40}
-                className={theme === 'dark' ? 'scale-100' : 'scale-100'}
                 priority
               />
               <span
@@ -106,7 +105,7 @@ export default function Navbar() {
       </nav>
 
       <div
-        className={`sm:hidden fixed inset-0 z-40 transition-opacity ${
+        className={`sm:hidden fixed inset-0 z-60 transition-opacity ${
           isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
         }`}
         aria-hidden={!isOpen}
