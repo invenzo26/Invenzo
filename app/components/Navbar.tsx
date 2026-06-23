@@ -55,7 +55,7 @@ export default function Navbar() {
                 alt="Invenzo Logo"
                 width={40}
                 height={40}
-                priority
+                className='rounded-lg'
               />
               <span
                 className="hidden sm:block text-xl font-bold transition-colors duration-300 tracking-tight"
@@ -144,6 +144,7 @@ export default function Navbar() {
                 alt="Invenzo Logo"
                 width={36}
                 height={36}
+                className='rounded-lg'
               />
               <span
                 className="text-lg font-bold transition-colors duration-300"
