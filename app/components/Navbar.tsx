@@ -5,11 +5,18 @@ import { usePathname } from 'next/navigation'
 import { useState } from 'react'
 import { Menu, X } from 'lucide-react'
 import { ThemeToggle } from './ThemeToggle'
+import { useTheme } from '@/app/providers/ThemeProvider'
 import { useScrollSpy } from './ScrollSpy'
 import { homepageSections, scrollToHomepageSection } from './sectionNavigation'
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
+  const { theme } = useTheme()
+
+  const logoSrc =
+    theme === 'light'
+      ? '/logo-light.png'
+      : '/logo-dark.png'
   const pathname = usePathname()
   const activeSection = useScrollSpy()
 
@@ -44,10 +51,11 @@ export default function Navbar() {
 
             <a href="#hero" className="flex items-center gap-3" onClick={(e) => handleSectionClick('hero', e)}>
               <Image
-                src="/logo.png"
+                src={logoSrc}
                 alt="Invenzo Logo"
                 width={40}
                 height={40}
+                className={theme === 'dark' ? 'scale-100' : 'scale-100'}
                 priority
               />
               <span
@@ -133,7 +141,7 @@ export default function Navbar() {
               }}
             >
               <Image
-                src="/logo.png"
+                src={logoSrc}
                 alt="Invenzo Logo"
                 width={36}
                 height={36}
