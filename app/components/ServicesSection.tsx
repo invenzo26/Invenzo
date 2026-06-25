@@ -12,35 +12,30 @@ import {
 
 const services = [
   {
-    icon: Zap,
-    title: 'AI Solutions',
-    description:
-      'Custom AI and machine learning implementations that drive automation and insights for your business.',
-  },
-  {
-    icon: Globe,
-    title: 'Web Development',
-    description:
-      'Modern, scalable web applications built with latest technologies and best practices.',
-  },
-  {
-    icon: Package,
-    title: 'SaaS Development',
-    description:
-      'End-to-end SaaS product development from concept to launch and beyond.',
-  },
-  {
-    icon: Cog,
-    title: 'Automation Solutions',
-    description:
-      'Streamline operations with intelligent automation tailored to your workflow.',
-  },
-  {
-    icon: Palette,
-    title: 'UI/UX Design',
-    description:
-      'Beautiful, intuitive interfaces that delight users and drive engagement.',
-  },
+  number: '01',
+  title: 'AI Solutions',
+  description: 'Custom AI systems and intelligent workflows designed to automate operations and accelerate growth.'
+},
+{
+  number: '02',
+  title: 'SaaS Products',
+  description: 'Scalable cloud software engineered for performance and long-term growth.'
+},
+{
+  number: '03',
+  title: 'Automation Systems',
+  description: 'Reduce repetitive work through smart business process automation.'
+},
+{
+  number: '04',
+  title: 'Custom Platforms',
+  description: 'Tailor-made digital platforms built around unique operational requirements.'
+},
+{
+  number: '05',
+  title: 'Experience Design',
+  description: 'User experiences that feel intuitive, premium, and conversion-focused.'
+}
 ]
 
 export function ServicesSection() {
@@ -81,13 +76,15 @@ export function ServicesSection() {
             className="text-4xl sm:text-5xl font-bold mb-4 transition-colors duration-300"
             style={{ color: 'var(--text-primary)' }}
           >
-            Our Services
+            What We Build
           </h2>
           <p
             className="text-lg max-w-2xl mx-auto transition-colors duration-300"
             style={{ color: 'var(--text-secondary)' }}
           >
-            Comprehensive solutions designed to transform your vision into reality.
+            Engineering Intelligent
+            Digital Products
+            From AI-powered systems to scalable SaaS platforms, we build technology that solves real business challenges.
           </p>
         </motion.div>
 
@@ -96,34 +93,50 @@ export function ServicesSection() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6"
         >
           {services.map((service, index) => {
-            const Icon = service.icon
             return (
               <motion.div key={index} variants={itemVariants}>
-                <PremiumCard hover className="h-full">
-                  <Icon
-                    className="w-8 h-8 mb-4"
-                    style={{ color: 'var(--gold-primary)' }}
-                  />
+                <PremiumCard hover className="transition-all duration-300 hover:-translate-y-2 hover:scale-[1.02]">
+                  <div
+                    className="text-5xl font-bold mb-6 opacity-20"
+                    style={{color: 'var(--gold-primary)'}}
+                  >
+                    {service.number}
+                  </div>
                   <h3
-                    className="text-lg font-semibold mb-3 transition-colors duration-300"
+                    className="text-2xl font-bold mb-4 transition-colors duration-300"
                     style={{ color: 'var(--text-primary)' }}
                   >
                     {service.title}
                   </h3>
                   <p
-                    className="text-sm leading-relaxed transition-colors duration-300"
-                    style={{ color: 'var(--text-secondary)' }}
+                    className="leading-relaxed text-base"
+                    style={{color: 'var(--text-secondary)',}}
                   >
-                    {service.description}
+                  {service.description}
                   </p>
                 </PremiumCard>
               </motion.div>
             )
           })}
         </motion.div>
+        <div className="mt-20 flex flex-wrap justify-center items-center gap-4 text-sm">
+        <span>Discover</span>
+        <span style={{ color: 'var(--gold-primary)' }}>
+           →
+        </span>
+        <span>Design</span>
+        <span style={{ color: 'var(--gold-primary)' }}>
+           →
+        </span>
+        <span>Develop</span>
+        <span style={{ color: 'var(--gold-primary)' }}>
+           →
+        </span>
+        <span>Deploy</span>
+        </div>
       </div>
     </section>
   )
