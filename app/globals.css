@@ -238,8 +238,8 @@ body {
   background: rgba(20, 20, 32, 0.6);
   backdrop-filter: blur(var(--glass-blur-sm));
   border: 1px solid rgba(212, 175, 55, 0.15);
-  border-radius: 10px;
-  padding: 12px 14px;
+  border-radius: 16px;
+  padding: 0.75rem 1rem;
   outline: none;
   transition: var(--transition-smooth);
   color: var(--text-primary);

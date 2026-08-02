@@ -1,9 +1,16 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import {
+  BrainCircuit,
+  Layers3,
+  Workflow,
+  Handshake,
+} from 'lucide-react'
 import { useState } from 'react'
 import { getSupabaseClient } from '@/lib/supabaseClient'
 import { PremiumButton } from './PremiumButton'
+
 
 export function ContactFormSection() {
   const [name, setName] = useState('')
@@ -57,26 +64,91 @@ export function ContactFormSection() {
       className="py-20 lg:py-32 px-4 sm:px-6 lg:px-8 transition-colors duration-300"
       style={{ background: 'var(--section-primary-bg)' }}
     >
-      <div className="max-w-3xl mx-auto">
+      <div className="max-w-6xl mx-auto">
+        <div className="grid lg:grid-cols-2 gap-20 items-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="text-center mb-12"
+          className="mb-12 lg:mb-0"
         >
           <h2
-            className="text-4xl sm:text-5xl font-bold mb-4 transition-colors duration-300"
+  className="text-4xl lg:text-6xl font-light leading-tight mb-6 transition-colors duration-300"
             style={{ color: 'var(--text-primary)' }}
           >
-            Get in Touch
+            <>
+  Let's build your
+  <span
+    className="block font-semibold"
+    style={{ color: 'var(--gold-primary)' }}
+  >
+    next big idea.
+  </span>
+</>
           </h2>
           <p
             className="text-lg transition-colors duration-300"
             style={{ color: 'var(--text-secondary)' }}
           >
-            Let's discuss how we can help build your next great product.
+            Whether you're launching a startup, automating your business, or building an AI-powered product, Invenzo helps transform ambitious ideas into scalable digital experiences.
           </p>
+          <div className="mt-16 space-y-5">
+
+  {[
+  {
+    icon: BrainCircuit,
+    title: "AI-Powered Applications",
+  },
+  {
+    icon: Layers3,
+    title: "Custom SaaS Platforms",
+  },
+  {
+    icon: Workflow,
+    title: "Business Automation",
+  },
+  {
+    icon: Handshake,
+    title: "Long-Term Technical Partnership",
+  },
+].map((item) => {
+  const Icon = item.icon
+
+  return (
+    <div
+      key={item.title}
+      className="flex items-center gap-4"
+    >
+      <div
+        className="w-10 h-10 rounded-xl flex items-center justify-center"
+        style={{
+          background: 'rgba(212,175,55,0.08)',
+          border: '1px solid rgba(212,175,55,0.18)',
+        }}
+      >
+        <Icon
+          className="w-5 h-5"
+          style={{
+            color: 'var(--gold-primary)',
+          }}
+        />
+      </div>
+
+      <span
+        className="text-lg"
+        style={{
+          color: 'var(--text-primary)',
+        }}
+      >
+        {item.title}
+      </span>
+    </div>
+  )
+})}
+
+
+</div>
         </motion.div>
 
         <motion.form
@@ -85,7 +157,7 @@ export function ContactFormSection() {
           whileInView={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.2, duration: 0.6 }}
           viewport={{ once: true }}
-          className="glass-panel-elevated p-8 lg:p-12 border-0"
+          className="glass-panel-elevated rounded-3xl p-10 lg:p-14 border border-[var(--border-color)]"
         >
           <div className="grid sm:grid-cols-2 gap-6 mb-6">
             <div>
@@ -101,7 +173,7 @@ export function ContactFormSection() {
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="Your name"
+                placeholder="John Doe"
                 className="glass-input w-full"
                 required
               />
@@ -120,7 +192,7 @@ export function ContactFormSection() {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="your@email.com"
+                placeholder="john@company.com"
                 className="glass-input w-full"
                 required
               />
@@ -140,7 +212,7 @@ export function ContactFormSection() {
               type="text"
               value={subject}
               onChange={(e) => setSubject(e.target.value)}
-              placeholder="What is this about?"
+              placeholder="Project Title"
               className="glass-input w-full"
               required
             />
@@ -158,7 +230,7 @@ export function ContactFormSection() {
               id="message"
               value={message}
               onChange={(e) => setMessage(e.target.value)}
-              placeholder="Tell us more about your project..."
+              placeholder="Tell us about your idea, goals, timeline, or any specific requirements..."
               className="glass-input w-full resize-none"
               rows={6}
               required
@@ -195,10 +267,11 @@ export function ContactFormSection() {
 
           <div className="flex justify-center">
             <PremiumButton type="submit" disabled={loading} size="lg">
-              {loading ? 'Sending...' : 'Send Message'}
+              {loading ? 'Sending...' : 'Start the Conversation →'}
             </PremiumButton>
           </div>
         </motion.form>
+        </div>
       </div>
     </section>
   )
