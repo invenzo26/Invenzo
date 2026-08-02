@@ -10,14 +10,27 @@ import {
   Zap,
 } from 'lucide-react'
 
-const technologies = [
-  { name: 'React', icon: Code2 },
-  { name: 'Next.js', icon: Zap },
-  { name: 'Node.js', icon: Code2 },
-  { name: 'TypeScript', icon: Braces },
-  { name: 'Python', icon: Code2 },
-  { name: 'PostgreSQL', icon: Database },
-  { name: 'AI/ML', icon: Brain },
+const techCategories = [
+  {
+    title: 'Frontend',
+    items: ['React', 'Next.js', 'TypeScript'],
+    icon: Code2,
+  },
+  {
+    title: 'Backend',
+    items: ['Node.js', 'PostgreSQL', 'Supabase'],
+    icon: Database,
+  },
+  {
+    title: 'Artificial Intelligence',
+    items: ['Python', 'OpenAI', 'Automation'],
+    icon: Brain,
+  },
+  {
+    title: 'Experience',
+    items: ['Framer Motion', 'Responsive UI', 'Performance'],
+    icon: Zap,
+  },
 ]
 
 export function TechStackSection() {
@@ -61,11 +74,13 @@ export function TechStackSection() {
             Technology Stack
           </h2>
           <p
-            className="text-lg max-w-2xl mx-auto transition-colors duration-300"
-            style={{ color: 'var(--text-secondary)' }}
-          >
-            Built with modern tools and frameworks trusted by leading companies worldwide.
-          </p>
+  className="text-lg max-w-3xl mx-auto leading-relaxed transition-colors duration-300"
+  style={{ color: 'var(--text-secondary)' }}
+>
+  Every technology we choose is driven by one goal—building scalable,
+  intelligent, and high-performance products that are ready for real-world
+  growth.
+</p>
         </motion.div>
 
         <motion.div
@@ -73,51 +88,56 @@ export function TechStackSection() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-6"
+          className="grid md:grid-cols-2 xl:grid-cols-4 gap-8"
         >
-          {technologies.map((tech, index) => {
-            const Icon = tech.icon
-            return (
-              <motion.div
-                key={index}
-                variants={itemVariants}
-                whileHover={{ scale: 1.1 }}
-                className="group"
-              >
-                <div
-                  className="
-                    h-20 rounded-lg
-                    flex items-center justify-center
-                    group-hover:shadow-lg transition-all duration-300 border
-                  "
-                  style={{
-                    background: 'var(--card-bg)',
-                    borderColor: 'var(--border-color)',
-                    boxShadow: 'var(--shadow-card)',
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.borderColor = 'var(--gold-primary)'
-                    e.currentTarget.style.background = 'var(--metallic-highlight)'
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.borderColor = 'var(--border-color)'
-                    e.currentTarget.style.background = 'var(--card-bg)'
-                  }}
-                >
-                  <Icon
-                    className="w-8 h-8"
-                    style={{ color: 'var(--gold-primary)' }}
-                  />
-                </div>
-                <p
-                  className="text-center text-sm mt-3 font-medium transition-colors duration-300"
-                  style={{ color: 'var(--text-secondary)' }}
-                >
-                  {tech.name}
-                </p>
-              </motion.div>
-            )
-          })}
+          {techCategories.map((category, index) => {
+  const Icon = category.icon
+
+  return (
+    <motion.div
+      key={index}
+      variants={itemVariants}
+      whileHover={{ y: -8 }}
+    >
+      <div
+  className="rounded-2xl border p-7 h-full transition-all duration-300 hover:-translate-y-2 hover:border-[var(--gold-primary)]"        style={{
+          background: 'var(--card-bg)',
+          borderColor: 'var(--border-color)',
+          boxShadow: 'var(--shadow-card)',
+        }}
+      >
+        <Icon
+  className="w-10 h-10 mb-6"
+          style={{ color: 'var(--gold-primary)' }}
+        />
+
+        <h3
+          className="text-xl font-semibold mb-5"
+          style={{ color: 'var(--text-primary)' }}
+        >
+          {category.title}
+        </h3>
+
+        <div className="space-y-3">
+          {category.items.map((item) => (
+            <p
+              key={item}
+              className="text-sm"
+              style={{ color: 'var(--text-secondary)' }}
+            >
+              <span
+  style={{ color: 'var(--gold-primary)' }}
+>
+  ✓
+</span>{' '}
+{item}
+            </p>
+          ))}
+        </div>
+      </div>
+    </motion.div>
+  )
+})}
         </motion.div>
       </div>
     </section>
