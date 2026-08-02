@@ -8,6 +8,7 @@ import { TechStackSection } from '@/app/components/TechStackSection'
 import { StatsSection } from '@/app/components/StatsSection'
 import { VisionSection } from '@/app/components/VisionSection'
 import { ContactFormSection } from '@/app/components/ContactFormSection'
+import { Footer } from './components/Footer'
 
 export default function Home() {
   return (
@@ -20,6 +21,7 @@ export default function Home() {
       <StatsSection />
       <VisionSection />
       <ContactFormSection />
+      <Footer />
     </main>
   )
 }
