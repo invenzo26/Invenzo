@@ -25,16 +25,22 @@ export function VisionSection() {
           viewport={{ once: true }}
           className="text-center"
         >
+          <p
+  className="uppercase tracking-[0.3em] text-sm font-semibold mb-6"
+  style={{ color: 'var(--gold-primary)' }}
+>
+  OUR VISION
+</p>
           <h2
-            className="text-5xl sm:text-6xl lg:text-7xl font-light leading-tight mb-8 transition-colors duration-300"
+            className="text-4xl sm:text-5xl lg:text-6xl font-light leading-tight mb-8 transition-colors duration-300"
             style={{ color: 'var(--text-primary)' }}
           >
-            We believe technology should solve real problems,
+            We don't just build software.
             <span
               className="block font-semibold mt-4 transition-colors duration-300"
               style={{ color: 'var(--gold-primary)' }}
             >
-              not create more complexity.
+              We build intelligent systems.
             </span>
           </h2>
 
@@ -42,23 +48,64 @@ export function VisionSection() {
             className="text-lg max-w-2xl mx-auto leading-relaxed transition-colors duration-300"
             style={{ color: 'var(--text-secondary)' }}
           >
-            At Invenzo, we partner with visionary companies to build products that matter. Every line of code, every design decision, and every feature is crafted with purpose—to deliver genuine value and drive meaningful impact.
+            At Invenzo, we believe technology should simplify complexity—not add to it. Every product we build is designed to solve real business problems, empower teams, and create lasting value through intelligent engineering.
           </p>
         </motion.div>
+        <motion.div
+  initial={{ opacity: 0, y: 20 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.8, delay: 0.2 }}
+  viewport={{ once: true }}
+  className="mt-20 max-w-3xl mx-auto text-center"
+>
+  <div
+    className="rounded-3xl border px-8 py-10"
+    style={{
+      borderColor: 'var(--border-color)',
+      background: 'var(--card-bg)',
+    }}
+  >
+    <p
+      className="text-xl md:text-2xl italic leading-relaxed"
+      style={{ color: 'var(--text-primary)' }}
+    >
+      “Technology should
+      <span style={{ color: 'var(--gold-primary)' }}>
+        {' '}empower people{' '}
+      </span>
+      — not overwhelm them.”
+    </p>
+
+    <div
+      className="w-16 h-px mx-auto my-6"
+      style={{ background: 'var(--gold-primary)' }}
+    />
+
+    <p
+      className="uppercase tracking-[0.25em] text-xs"
+      style={{ color: 'var(--text-secondary)' }}
+    >
+      Invenzo Philosophy
+    </p>
+  </div>
+</motion.div>
 
         {/* Subtle decorative elements */}
         <motion.div
-          animate={{ y: [0, 10, 0] }}
-          transition={{ duration: 4, repeat: Infinity }}
-          className="absolute bottom-20 right-10 w-32 h-32 rounded-full filter blur-3xl opacity-10"
-          style={{ background: 'var(--metallic-highlight)' }}
-        />
-        <motion.div
-          animate={{ y: [0, -10, 0] }}
-          transition={{ duration: 5, repeat: Infinity }}
-          className="absolute top-40 left-10 w-32 h-32 rounded-full filter blur-3xl opacity-10"
-          style={{ background: 'var(--metallic-sheen)' }}
-        />
+  animate={{
+    scale: [1, 1.08, 1],
+    opacity: [0.08, 0.15, 0.08],
+  }}
+  transition={{
+    duration: 8,
+    repeat: Infinity,
+    ease: "easeInOut",
+  }}
+  className="absolute left-1/2 bottom-10 -translate-x-1/2 w-[500px] h-[500px] rounded-full blur-3xl -z-10"
+  style={{
+    background: "var(--gold-primary)",
+  }}
+/>
       </div>
     </section>
   )
