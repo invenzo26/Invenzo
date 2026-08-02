@@ -130,7 +130,7 @@ export function StatsSection() {
 />
 
 <StatCounter
-  number={50}
+  number={100}
   label="Client Satisfaction"
   description="Committed to delivering quality in every project."
   suffix="%"
