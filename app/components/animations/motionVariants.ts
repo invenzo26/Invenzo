@@ -1,4 +1,4 @@
-import { ReactNode } from 'react'
+import type { Variants } from 'framer-motion'
 
 
 export const fadeUp: Variants = {
