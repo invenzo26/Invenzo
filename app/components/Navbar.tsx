@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Menu, X } from 'lucide-react'
 import { ThemeToggle } from './ThemeToggle'
 import { useTheme } from '@/app/providers/ThemeProvider'
@@ -11,6 +11,7 @@ import { homepageSections, scrollToHomepageSection } from './sectionNavigation'
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
+  const [isScrolled, setIsScrolled] = useState(false)
   const { theme } = useTheme()
 
   const logoSrc =
@@ -19,7 +20,15 @@ export default function Navbar() {
       : '/logo.png'
   const pathname = usePathname()
   const activeSection = useScrollSpy()
+  useEffect(() => {
+  const handleScroll = () => {
+    setIsScrolled(window.scrollY > 20)
+  }
 
+  window.addEventListener('scroll', handleScroll)
+
+  return () => window.removeEventListener('scroll', handleScroll)
+}, [])
   if (pathname.startsWith('/admin')) {
     return null
   }
@@ -36,9 +45,25 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className="fixed top-0 left-0 right-0 z-50 px-4 sm:px-6 lg:px-8 pt-4 transition-all duration-300">
-        <div className="max-w-7xl mx-auto h-16 px-4 sm:px-6 flex items-center justify-between gap-4 glass-panel-elevated rounded-2xl">
-          <div className="flex items-center gap-3">
+      <nav
+  className={`
+    fixed top-0 left-0 right-0 z-50
+    px-4 sm:px-6 lg:px-8
+    transition-all duration-500
+    ${isScrolled ? 'pt-2' : 'pt-4'}
+  `}
+>
+        <div
+  className={`
+    max-w-7xl mx-auto
+    px-4 sm:px-6
+    flex items-center justify-between gap-4
+    glass-panel-elevated
+    rounded-2xl
+    transition-all duration-500
+    ${isScrolled ? 'h-14 shadow-2xl' : 'h-16'}
+  `}
+>
             <button
               type="button"
               onClick={() => setIsOpen(true)}
@@ -64,7 +89,6 @@ export default function Navbar() {
                 Invenzo
               </span>
             </a>
-          </div>
 
           <div className="hidden sm:flex items-center gap-12 text-sm font-medium">
             {homepageSections.map((link) => (

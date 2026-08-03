@@ -68,7 +68,9 @@ export function TechStackSection() {
           className="text-center mb-16"
         >
           <h2
-            className="text-4xl sm:text-5xl font-bold mb-4 transition-colors duration-300"
+            className="text-4xl sm:text-3xl
+sm:text-4xl
+lg:text-6xl font-bold mb-4 transition-colors duration-300"
             style={{ color: 'var(--text-primary)' }}
           >
             Technology Stack

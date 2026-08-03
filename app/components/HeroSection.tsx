@@ -3,6 +3,8 @@
 import { motion } from 'framer-motion'
 import { PremiumButton } from './PremiumButton'
 import { scrollToHomepageSection } from './sectionNavigation'
+import FloatingParticles from './FloatingParticles'
+import BackgroundGrid from './BackgroundGrid'
 
 export function HeroSection() {
   return (
@@ -11,13 +13,75 @@ export function HeroSection() {
       className="relative min-h-screen overflow-hidden pt-20 px-4 sm:px-6 lg:px-8 transition-colors duration-300"
       style={{ background: 'var(--hero-bg)' }}
     >
-
+      
+      <motion.div
+  animate={{
+    x: [0, 40, -20, 0],
+    y: [0, -30, 20, 0],
+    scale: [1, 1.1, 1, 1.05, 1],
+  }}
+  transition={{
+    duration: 18,
+    repeat: Infinity,
+    ease: "easeInOut",
+  }}
+  className="absolute -top-40 -right-32 w-[550px] h-[550px] rounded-full blur-[180px] opacity-[0.06] pointer-events-none"
+  style={{
+    background:
+      "radial-gradient(circle, var(--gold-primary), transparent 70%)",
+  }}
+/>
+<motion.div
+  animate={{
+    x: [0, -30, 20, 0],
+    y: [0, 25, -15, 0],
+    scale: [1, 1.05, 1],
+  }}
+  transition={{
+    duration: 22,
+    repeat: Infinity,
+    ease: "easeInOut",
+  }}
+  className="absolute -bottom-40 -left-32 w-[450px] h-[450px] rounded-full blur-3xl opacity-5 pointer-events-none"
+  style={{
+    background:
+      "radial-gradient(circle, var(--gold-primary), transparent 70%)",
+  }}
+/>
+      <motion.div
+  animate={{
+    scale: [1, 1.12, 1],
+    rotate: [0, 8, -8, 0],
+  }}
+  transition={{
+    duration: 30,
+    repeat: Infinity,
+    ease: 'easeInOut',
+  }}
+  className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[320px] h-[320px] rounded-full blur-[140px] opacity-[0.025] pointer-events-none"
+  style={{
+    background:
+      'radial-gradient(circle, var(--gold-primary), transparent 75%)',
+  }}
+/>
+      <div
+  className="absolute inset-0 pointer-events-none opacity-[0.02]"
+  style={{
+    backgroundImage:
+      'radial-gradient(circle at 1px 1px, rgba(255,255,255,0.15) 1px, transparent 0)',
+    backgroundSize: '24px 24px',
+  }}
+/>
+<BackgroundGrid />
+      <FloatingParticles />
       <div className="relative z-10 max-w-5xl mx-auto flex flex-col items-center justify-center min-h-[calc(100vh-80px)] text-center">
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight tracking-tight mb-6 transition-colors duration-300 [-webkit-font-smoothing:antialiased]"
+          className="text-3xl sm:text-4xl md:text-4xl
+sm:text-5xl
+lg:text-7xl font-bold leading-tight tracking-tight mb-6 transition-colors duration-300 [-webkit-font-smoothing:antialiased]"
           style={{ color: 'var(--text-primary)' }}
         >
           AI Systems, SaaS Products<br />
@@ -50,11 +114,13 @@ export function HeroSection() {
           transition={{ delay: 0.4, duration: 0.8 }}
           className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto justify-center"
         >
-          <PremiumButton size="lg" onClick={() => scrollToHomepageSection('contact')}>
+          <PremiumButton
+className="w-full sm:w-auto" size="lg" onClick={() => scrollToHomepageSection('contact')}>
             Start a Project
           </PremiumButton>
 
-          <PremiumButton variant="secondary" size="lg" onClick={() => scrollToHomepageSection('products')}>
+          <PremiumButton
+className="w-full sm:w-auto" variant="secondary" size="lg" onClick={() => scrollToHomepageSection('products')}>
             View Our Work
           </PremiumButton>
         </motion.div>

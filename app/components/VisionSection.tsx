@@ -32,7 +32,9 @@ export function VisionSection() {
   OUR VISION
 </p>
           <h2
-            className="text-4xl sm:text-5xl lg:text-6xl font-light leading-tight mb-8 transition-colors duration-300"
+            className="text-4xl sm:text-3xl
+sm:text-4xl
+lg:text-6xl font-light leading-tight mb-8 transition-colors duration-300"
             style={{ color: 'var(--text-primary)' }}
           >
             We don't just build software.

@@ -73,7 +73,9 @@ export function ServicesSection() {
           className="text-center mb-16"
         >
           <h2
-            className="text-4xl sm:text-5xl font-bold mb-4 transition-colors duration-300"
+            className="text-4xl sm:text-3xl
+sm:text-4xl
+lg:text-6xl font-bold mb-4 transition-colors duration-300"
             style={{ color: 'var(--text-primary)' }}
           >
             What We Build
@@ -100,7 +102,9 @@ export function ServicesSection() {
               <motion.div key={index} variants={itemVariants}>
                 <PremiumCard hover className="transition-all duration-300 hover:-translate-y-2 hover:scale-[1.02]">
                   <div
-                    className="text-5xl font-bold mb-6 opacity-20"
+                    className="text-3xl
+sm:text-4xl
+lg:text-6xl font-bold mb-6 opacity-20"
                     style={{color: 'var(--gold-primary)'}}
                   >
                     {service.number}

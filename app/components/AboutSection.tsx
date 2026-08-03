@@ -9,7 +9,7 @@ export function AboutSection() {
       className="py-24 lg:py-32 px-4 sm:px-6 lg:px-8 relative overflow-hidden"
       style={{ background: 'var(--background)' }}
     >
-      <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-20 items-start">
+      <div className="max-w-7xl mx-auto grid gap-16 lg:grid-cols-2 gap-20 items-start">
 
         {/* Header */}
         <motion.div
@@ -27,7 +27,9 @@ export function AboutSection() {
           </span>
 
           <h2
-            className="mt-6 text-5xl md:text-6xl font-light leading-tight"
+            className="mt-6 text-3xl
+sm:text-4xl
+lg:text-6xl md:text-6xl font-light leading-tight"
             style={{ color: 'var(--text-primary)' }}
           >
             Building intelligent
@@ -55,7 +57,7 @@ export function AboutSection() {
   whileInView={{ opacity: 1, x: 0 }}
   transition={{ duration: 0.7 }}
   viewport={{ once: true }}
-  className="grid sm:grid-cols-2 gap-6"
+  className="grid grid-cols-1 sm:grid-cols-2 gap-6"
 >
 
   {[

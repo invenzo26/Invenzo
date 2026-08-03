@@ -40,7 +40,9 @@ function StatCounter({
       className="rounded-2xl border p-8 text-center transition-all duration-300 hover:-translate-y-2 hover:border-[var(--gold-primary)]"
     >
       <motion.div
-        className="text-5xl sm:text-6xl font-bold mb-2 transition-colors duration-300"
+        className="text-3xl
+sm:text-4xl
+lg:text-6xl font-bold mb-2 transition-colors duration-300"
         style={{ color: 'var(--gold-primary)' }}
       >
         {displayValue}
@@ -78,7 +80,9 @@ export function StatsSection() {
           className="text-center mb-16"
         >
           <h2
-            className="text-4xl sm:text-5xl font-bold mb-4 transition-colors duration-300"
+            className="text-4xl sm:text-3xl
+sm:text-4xl
+lg:text-6xl font-bold mb-4 transition-colors duration-300"
             style={{ color: 'var(--text-primary)' }}
           >
             Built with Purpose.
@@ -113,7 +117,8 @@ export function StatsSection() {
       },
     },
   }}
-  className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"
+  className="grid grid-cols-2
+lg:grid-cols-4 gap-8"
 >
           <StatCounter
   number={5}

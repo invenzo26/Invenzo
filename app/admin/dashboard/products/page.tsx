@@ -21,7 +21,6 @@ type Product = {
   tagline: string | null
   description: string | null
   live_url: string | null
-  features: string[] | null
 }
 
 type ProductFormState = {
@@ -30,7 +29,6 @@ type ProductFormState = {
   tagline: string
   description: string
   live_url: string
-  featuresText: string
 }
 
 type DeleteTarget = {
@@ -44,7 +42,6 @@ const emptyForm: ProductFormState = {
   tagline: '',
   description: '',
   live_url: '',
-  featuresText: '',
 }
 
 export default function ProductsPage() {
@@ -144,7 +141,6 @@ export default function ProductsPage() {
       tagline: product.tagline || '',
       description: product.description || '',
       live_url: product.live_url || '',
-      featuresText: (product.features || []).join('\n'),
     })
     setError(null)
     setSuccess(null)
@@ -173,10 +169,6 @@ export default function ProductsPage() {
       tagline: form.tagline.trim() || null,
       description: form.description.trim() || null,
       live_url: form.live_url.trim() || null,
-      features: form.featuresText
-        .split('\n')
-        .map((entry) => entry.trim())
-        .filter(Boolean),
     }
 
     const response = await fetch(
@@ -300,10 +292,6 @@ export default function ProductsPage() {
                         <Tag size={12} />
                         {product.slug || 'no-slug'}
                       </span>
-                        <span className="inline-flex items-center gap-1 rounded-full border border-white/10 bg-white/[0.05] px-2.5 py-1">
-                        <Sparkles size={12} />
-                        {(product.features || []).length} features
-                      </span>
                     </div>
                   </div>
 
@@ -332,17 +320,6 @@ export default function ProductsPage() {
                 <p className="mt-2 text-sm text-slate-400 line-clamp-3">
                   {product.description || 'No description available for this product yet.'}
                 </p>
-
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {(product.features || []).slice(0, 4).map((feature) => (
-                    <span
-                      key={feature}
-                      className="rounded-full border border-white/10 bg-white/[0.05] px-3 py-1 text-xs text-slate-300"
-                    >
-                      {feature}
-                    </span>
-                  ))}
-                </div>
 
                 <div className="mt-4">
                   {product.live_url ? (
@@ -446,15 +423,6 @@ export default function ProductsPage() {
                 />
               </Field>
 
-              <Field label="Features">
-                <textarea
-                  value={form.featuresText}
-                  onChange={(e) => updateForm('featuresText', e.target.value)}
-                  rows={5}
-                  className="w-full rounded-2xl border border-white/10 bg-[#0e1120]/85 px-4 py-2.5 text-white outline-none transition focus:border-cyan-400"
-                  placeholder={'Add one feature per line\nFeature one\nFeature two'}
-                />
-              </Field>
 
               <button
                 type="submit"

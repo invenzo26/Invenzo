@@ -111,13 +111,13 @@ export function Footer() {
       className="mb-4"
       style={{ color: 'var(--text-primary)' }}
     >
-      hello@invenzoai.in
+      invenzo26@gmail.com
     </p>
 
     <p
       style={{ color: 'var(--text-secondary)' }}
     >
-      Chennai, Tamil Nadu, India
+      Coimbatore, Tamil Nadu, India
     </p>
     <div className="flex gap-4 mt-8">
 
@@ -198,7 +198,7 @@ export function Footer() {
       behavior: 'smooth',
     })
   }
-  className="absolute right-8 bottom-8 w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 hover:-translate-y-2"
+  className="fixed right-5 bottom-5 z-[9999] w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 hover:-translate-y-2"
   style={{
     background: 'var(--gold-primary)',
     color: '#000',

@@ -317,7 +317,9 @@ const goNext = () => {
           className="text-center mb-16"
         >
           <h2
-            className="text-4xl sm:text-5xl font-bold mb-4 transition-colors duration-300"
+            className="text-4xl sm:text-3xl
+sm:text-4xl
+lg:text-6xl font-bold mb-4 transition-colors duration-300"
             style={{ color: 'var(--text-primary)' }}
           >
             Featured Products
@@ -331,11 +333,13 @@ const goNext = () => {
         </motion.div>
 
         {loading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 grid-cols-1
+md:grid-cols-2
+lg:grid-cols-3 gap-8">
             {[1, 2, 3].map((i) => (
               <div
                 key={i}
-                className="h-64 rounded-lg animate-pulse transition-colors duration-300"
+                className="h-48 md:h-64 rounded-lg animate-pulse transition-colors duration-300"
                 style={{ backgroundColor: 'var(--bg-card)' }}
               />
             ))}
@@ -436,7 +440,7 @@ mb-4
   </div>
 )}
 
-      <div className="flex justify-center gap-2 mb-4">
+      <div className="flex justify-center w-full gap-2 mb-4">
 
         {activeProduct?.project_type && (
           <span
@@ -473,12 +477,12 @@ mb-4
         {activeProduct?.tagline}
       </p>
       </div>
-<div className="flex justify-center">
+<div className="flex justify-center w-full">
       <Link href={`/products/${activeProduct?.slug}`}>
-        <PremiumButton
+       <PremiumButton
+className="w-full sm:w-auto" 
 variant="secondary"
 size="sm"
-className="w-full"
 >
           View Project →
         </PremiumButton>
@@ -506,7 +510,7 @@ className="w-full"
 </motion.button>
 </div>
         )}
-    <div className="flex justify-center items-center gap-3 mt-5">
+    <div className="flex justify-center w-fullitems-center gap-3 mt-5">
 
 
   <span

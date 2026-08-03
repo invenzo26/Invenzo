@@ -65,7 +65,7 @@ export function ContactFormSection() {
       style={{ background: 'var(--section-primary-bg)' }}
     >
       <div className="max-w-6xl mx-auto">
-        <div className="grid lg:grid-cols-2 gap-20 items-center">
+        <div className="grid gap-16 lg:grid-cols-2 gap-20 items-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -74,7 +74,9 @@ export function ContactFormSection() {
           className="mb-12 lg:mb-0"
         >
           <h2
-  className="text-4xl lg:text-6xl font-light leading-tight mb-6 transition-colors duration-300"
+  className="text-4xl lg:text-3xl
+sm:text-4xl
+lg:text-6xl font-light leading-tight mb-6 transition-colors duration-300"
             style={{ color: 'var(--text-primary)' }}
           >
             <>
@@ -155,11 +157,17 @@ export function ContactFormSection() {
           onSubmit={handleSubmit}
           initial={{ opacity: 0, scale: 0.95 }}
           whileInView={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.2, duration: 0.6 }}
+          whileHover={{
+  y: -4,
+}}
+          transition={{
+  duration: 0.3,
+  ease: [0.22, 1, 0.36, 1],
+}}
           viewport={{ once: true }}
           className="glass-panel-elevated rounded-3xl p-10 lg:p-14 border border-[var(--border-color)]"
         >
-          <div className="grid sm:grid-cols-2 gap-6 mb-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
             <div>
               <label
                 htmlFor="name"
@@ -265,8 +273,9 @@ export function ContactFormSection() {
             </motion.div>
           )}
 
-          <div className="flex justify-center">
-            <PremiumButton type="submit" disabled={loading} size="lg">
+          <div className="flex justify-center w-full">
+            <PremiumButton
+className="w-full sm:w-auto" type="submit" disabled={loading} size="lg">
               {loading ? 'Sending...' : 'Start the Conversation →'}
             </PremiumButton>
           </div>

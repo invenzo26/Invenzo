@@ -1,4 +1,5 @@
 import { ReactNode } from 'react'
+import { motion } from 'framer-motion'
 
 type Variant = 'primary' | 'secondary' | 'ghost'
 type Size = 'sm' | 'md' | 'lg'
@@ -21,7 +22,7 @@ export function PremiumButton({
   ...props
 }: PremiumButtonProps) {
   const baseStyles =
-    'inline-flex items-center justify-center font-semibold rounded-lg transition-all duration-300 ease-out disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-bg-primary'
+    'inline-flex cursor-pointer items-center justify-center font-semibold rounded-lg transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-bg-primary'
 
   const variantStyles = {
     primary: `
@@ -46,12 +47,44 @@ export function PremiumButton({
   }
 
   return (
-    <button
-      className={`${baseStyles} ${variantStyles[variant]} ${sizeStyles[size]} ${className}`}
+  <motion.button
+  whileHover={{
+    y: -2,
+    scale: 1.02,
+  }}
+  whileTap={{
+    scale: 0.97,
+  }}
+  transition={{
+    duration: 0.3,
+    ease: [0.22, 1, 0.36, 1],
+  }}
+  className={`
+    relative overflow-hidden
+    ${baseStyles}
+    ${variantStyles[variant]}
+    ${sizeStyles[size]}
+    ${className}
+  `}
       disabled={disabled}
       {...props}
     >
-      {children}
-    </button>
+      <motion.span
+  initial={{ x: '-120%' }}
+  whileHover={{ x: '220%' }}
+  transition={{
+    duration: 0.8,
+    ease: 'easeInOut',
+  }}
+  className="absolute inset-y-0 left-0 w-10 -skew-x-12"
+  style={{
+    background:
+      'linear-gradient(90deg, transparent, rgba(255,255,255,0.45), transparent)',
+  }}
+/>
+      <span className="relative z-10">
+  {children}
+</span>
+    </motion.button>
   )
 }
