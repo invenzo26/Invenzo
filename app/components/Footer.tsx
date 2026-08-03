@@ -128,11 +128,11 @@ export function Footer() {
     },
     {
       icon: Linkedin,
-      href: "#",
+      href: "https://www.linkedin.com/in/invenzo-solutions-91006a3b1/",
     },
     {
       icon: Instagram,
-      href: "#",
+      href: "https://www.instagram.com/invenzo_ai_solutions/",
     },
   ].map((item, index) => {
 

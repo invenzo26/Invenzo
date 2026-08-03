@@ -16,8 +16,8 @@ export default function Navbar() {
 
   const logoSrc =
     theme === 'light'
-      ? '/logo.png'
-      : '/logo.png'
+      ? '/favicon-96x96.png'
+      : '/favicon-96x96.png'
   const pathname = usePathname()
   const activeSection = useScrollSpy()
   useEffect(() => {
