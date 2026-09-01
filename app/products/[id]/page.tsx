@@ -51,8 +51,14 @@ export default function ProductDetails() {
         className="min-h-screen px-4 sm:px-6 pt-24 sm:pt-32 pb-20 relative overflow-hidden transition-colors duration-300"
         style={{ background: 'var(--bg-layered)', color: 'var(--text-primary)' }}
       >
-        <div className="absolute top-[-150px] left-1/2 -translate-x-1/2 h-[300px] w-[300px] rounded-full blur-[140px] opacity-20 sm:h-[600px] sm:w-[600px]" style={{ background: 'var(--metallic-highlight)' }} />
-        <div className="absolute bottom-[-120px] right-[-120px] h-[240px] w-[240px] rounded-full blur-[140px] opacity-20 sm:h-[400px] sm:w-[400px]" style={{ background: 'var(--metallic-sheen)' }} />
+        <div
+          className="pointer-events-none absolute left-1/2 top-0 h-[380px] w-[min(100vw,760px)] -translate-x-1/2 opacity-20"
+          style={{ background: 'radial-gradient(ellipse at top, var(--metallic-highlight), transparent 70%)' }}
+        />
+        <div
+          className="pointer-events-none absolute bottom-0 right-0 h-[300px] w-[min(80vw,560px)] opacity-15"
+          style={{ background: 'radial-gradient(ellipse at bottom right, var(--metallic-sheen), transparent 72%)' }}
+        />
 
         <div className="relative max-w-4xl mx-auto">
           <div className="h-12 w-3/4 rounded-lg animate-pulse" style={{ backgroundColor: 'var(--bg-card)' }} />
@@ -85,8 +91,14 @@ export default function ProductDetails() {
       className="min-h-screen px-4 sm:px-6 pt-24 sm:pt-32 pb-20 relative overflow-hidden transition-colors duration-300"
       style={{ background: 'var(--bg-layered)', color: 'var(--text-primary)' }}
     >
-      <div className="absolute top-[-150px] left-1/2 -translate-x-1/2 h-[300px] w-[300px] rounded-full blur-[140px] opacity-20 sm:h-[600px] sm:w-[600px]" style={{ background: 'var(--metallic-highlight)' }} />
-      <div className="absolute bottom-[-120px] right-[-120px] h-[240px] w-[240px] rounded-full blur-[140px] opacity-20 sm:h-[400px] sm:w-[400px]" style={{ background: 'var(--metallic-sheen)' }} />
+      <div
+        className="pointer-events-none absolute left-1/2 top-0 h-[380px] w-[min(100vw,760px)] -translate-x-1/2 opacity-20"
+        style={{ background: 'radial-gradient(ellipse at top, var(--metallic-highlight), transparent 70%)' }}
+      />
+      <div
+        className="pointer-events-none absolute bottom-0 right-0 h-[300px] w-[min(80vw,560px)] opacity-15"
+        style={{ background: 'radial-gradient(ellipse at bottom right, var(--metallic-sheen), transparent 72%)' }}
+      />
 
       <div className="relative max-w-4xl mx-auto">
         <div className="mb-8 flex items-center gap-4 sm:gap-5">

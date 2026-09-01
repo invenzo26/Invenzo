@@ -1,16 +1,18 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import {
-  BrainCircuit,
-  Layers3,
-  Workflow,
-  Handshake,
-} from 'lucide-react'
-import { useState } from 'react'
+import { BrainCircuit, CheckCircle2, Handshake, Layers3, Workflow, XCircle } from 'lucide-react'
+import { type FormEvent, type ReactNode, useState } from 'react'
 import { getSupabaseClient } from '@/lib/supabaseClient'
 import { PremiumButton } from './PremiumButton'
+import { MotionSection } from './animations/MotionSection'
 
+const contactSignals = [
+  { icon: BrainCircuit, title: 'AI-Powered Applications' },
+  { icon: Layers3, title: 'Custom SaaS Platforms' },
+  { icon: Workflow, title: 'Business Automation' },
+  { icon: Handshake, title: 'Long-Term Technical Partnership' },
+]
 
 export function ContactFormSection() {
   const [name, setName] = useState('')
@@ -21,7 +23,7 @@ export function ContactFormSection() {
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
     setLoading(true)
     setError(null)
@@ -61,179 +63,70 @@ export function ContactFormSection() {
   return (
     <section
       id="contact"
-      className="py-20 lg:py-32 px-4 sm:px-6 lg:px-8 transition-colors duration-300"
+      className="relative z-10 overflow-hidden px-4 py-24 sm:px-6 lg:px-8 lg:py-36"
       style={{ background: 'var(--section-primary-bg)' }}
     >
-      <div className="max-w-6xl mx-auto">
-        <div className="grid gap-16 lg:grid-cols-2 gap-20 items-center">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          className="mb-12 lg:mb-0"
-        >
-          <h2
-  className="text-4xl lg:text-3xl
-sm:text-4xl
-lg:text-6xl font-light leading-tight mb-6 transition-colors duration-300"
-            style={{ color: 'var(--text-primary)' }}
-          >
-            <>
-  Let's build your
-  <span
-    className="block font-semibold"
-    style={{ color: 'var(--gold-primary)' }}
-  >
-    next big idea.
-  </span>
-</>
-          </h2>
-          <p
-            className="text-lg transition-colors duration-300"
-            style={{ color: 'var(--text-secondary)' }}
-          >
-            Whether you're launching a startup, automating your business, or building an AI-powered product, Invenzo helps transform ambitious ideas into scalable digital experiences.
-          </p>
-          <div className="mt-16 space-y-5">
-
-  {[
-  {
-    icon: BrainCircuit,
-    title: "AI-Powered Applications",
-  },
-  {
-    icon: Layers3,
-    title: "Custom SaaS Platforms",
-  },
-  {
-    icon: Workflow,
-    title: "Business Automation",
-  },
-  {
-    icon: Handshake,
-    title: "Long-Term Technical Partnership",
-  },
-].map((item) => {
-  const Icon = item.icon
-
-  return (
-    <div
-      key={item.title}
-      className="flex items-center gap-4"
-    >
+      <div className="absolute inset-x-0 top-0 h-px" style={{ background: 'linear-gradient(to right, transparent, var(--gold-primary), transparent)' }} />
       <div
-        className="w-10 h-10 rounded-xl flex items-center justify-center"
-        style={{
-          background: 'rgba(212,175,55,0.08)',
-          border: '1px solid rgba(212,175,55,0.18)',
-        }}
-      >
-        <Icon
-          className="w-5 h-5"
-          style={{
-            color: 'var(--gold-primary)',
-          }}
-        />
-      </div>
+        className="absolute right-[-10rem] top-20 h-[400px] w-[400px] rounded-full opacity-12"
+        style={{ background: 'radial-gradient(circle, rgba(212, 175, 55, 0.16), transparent 72%)' }}
+      />
 
-      <span
-        className="text-lg"
-        style={{
-          color: 'var(--text-primary)',
-        }}
-      >
-        {item.title}
-      </span>
-    </div>
-  )
-})}
+      <div className="relative mx-auto grid max-w-7xl gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
+        <MotionSection className="max-w-2xl">
+          <p className="mb-5 text-xs font-semibold uppercase" style={{ color: 'var(--gold-primary)', letterSpacing: '0.24em' }}>
+            Start the Build
+          </p>
+          <h2 className="text-[clamp(2.6rem,7vw,6.4rem)] font-semibold leading-[0.96]" style={{ color: 'var(--text-primary)' }}>
+            Let us turn the next big idea into a working system.
+          </h2>
+          <p className="mt-8 text-base leading-8 sm:text-lg" style={{ color: 'var(--text-secondary)' }}>
+            Whether you are launching a startup, automating operations, or building an AI-powered product, Invenzo helps shape the idea, engineer the platform, and polish the experience.
+          </p>
 
-
-</div>
-        </motion.div>
+          <div className="mt-12 grid gap-3 sm:grid-cols-2">
+            {contactSignals.map((item) => {
+              const Icon = item.icon
+              return (
+                <div key={item.title} className="flex items-center gap-3 rounded-xl border px-4 py-3" style={{ background: 'var(--card-bg)', borderColor: 'var(--border-color)' }}>
+                  <Icon className="h-5 w-5" style={{ color: 'var(--gold-primary)' }} />
+                  <span className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>{item.title}</span>
+                </div>
+              )
+            })}
+          </div>
+        </MotionSection>
 
         <motion.form
           onSubmit={handleSubmit}
-          initial={{ opacity: 0, scale: 0.95 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          whileHover={{
-  y: -4,
-}}
-          transition={{
-  duration: 0.3,
-  ease: [0.22, 1, 0.36, 1],
-}}
-          viewport={{ once: true }}
-          className="glass-panel-elevated rounded-3xl p-10 lg:p-14 border border-[var(--border-color)]"
+          initial={{ opacity: 0, y: 34, rotateX: 4 }}
+          whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.8 }}
+          className="relative rounded-2xl border p-5 sm:p-8 lg:p-10"
+          style={{
+            background: 'var(--card-bg)',
+            borderColor: 'var(--border-color)',
+            boxShadow: 'var(--shadow-card)',
+            transformStyle: 'preserve-3d',
+          }}
         >
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
-            <div>
-              <label
-                htmlFor="name"
-                className="block text-xs font-semibold mb-3 transition-colors duration-300 uppercase tracking-wide"
-                style={{ color: 'var(--text-primary)', letterSpacing: '0.5px' }}
-              >
-                Name
-              </label>
-              <input
-                id="name"
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="John Doe"
-                className="glass-input w-full"
-                required
-              />
-            </div>
+          <div className="absolute right-6 top-6 h-2 w-2 rounded-full" style={{ background: 'var(--gold-primary)', boxShadow: '0 0 18px rgba(212,175,55,0.8)' }} />
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+            <FormField label="Name" htmlFor="name">
+              <input id="name" type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="John Doe" className="glass-input w-full" required />
+            </FormField>
 
-            <div>
-              <label
-                htmlFor="email"
-                className="block text-xs font-semibold mb-3 transition-colors duration-300 uppercase tracking-wide"
-                style={{ color: 'var(--text-primary)', letterSpacing: '0.5px' }}
-              >
-                Email
-              </label>
-              <input
-                id="email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="john@company.com"
-                className="glass-input w-full"
-                required
-              />
-            </div>
+            <FormField label="Email" htmlFor="email">
+              <input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="john@company.com" className="glass-input w-full" required />
+            </FormField>
           </div>
 
-          <div className="mb-6">
-            <label
-              htmlFor="subject"
-              className="block text-xs font-semibold mb-3 transition-colors duration-300 uppercase tracking-wide"
-              style={{ color: 'var(--text-primary)', letterSpacing: '0.5px' }}
-            >
-              Subject
-            </label>
-            <input
-              id="subject"
-              type="text"
-              value={subject}
-              onChange={(e) => setSubject(e.target.value)}
-              placeholder="Project Title"
-              className="glass-input w-full"
-              required
-            />
-          </div>
+          <FormField label="Subject" htmlFor="subject" className="mt-5">
+            <input id="subject" type="text" value={subject} onChange={(e) => setSubject(e.target.value)} placeholder="Project title" className="glass-input w-full" required />
+          </FormField>
 
-          <div className="mb-8">
-            <label
-              htmlFor="message"
-              className="block text-xs font-semibold mb-3 transition-colors duration-300 uppercase tracking-wide"
-              style={{ color: 'var(--text-primary)', letterSpacing: '0.5px' }}
-            >
-              Message
-            </label>
+          <FormField label="Message" htmlFor="message" className="mt-5">
             <textarea
               id="message"
               value={message}
@@ -243,45 +136,54 @@ lg:text-6xl font-light leading-tight mb-6 transition-colors duration-300"
               rows={6}
               required
             />
-          </div>
+          </FormField>
 
           {success && (
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="mb-6 p-4 rounded-lg text-sm transition-all duration-300 glass-panel"
-              style={{
-                borderColor: 'rgba(16, 185, 129, 0.3)',
-                color: 'var(--color-success)',
-              }}
-            >
-              ✓ Message sent successfully! We'll get back to you soon.
+            <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="mt-5 flex items-center gap-3 rounded-xl border p-4 text-sm" style={{ borderColor: 'rgba(16,185,129,0.35)', color: 'var(--color-success)', background: 'var(--card-bg)' }}>
+              <CheckCircle2 className="h-5 w-5" />
+              Message sent successfully. We will get back to you soon.
             </motion.div>
           )}
 
           {error && (
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="mb-6 p-4 rounded-lg text-sm transition-all duration-300 glass-panel"
-              style={{
-                borderColor: 'rgba(239, 68, 68, 0.3)',
-                color: 'var(--color-error)',
-              }}
-            >
-              ✕ {error}
+            <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="mt-5 flex items-center gap-3 rounded-xl border p-4 text-sm" style={{ borderColor: 'rgba(239,68,68,0.35)', color: 'var(--color-error)', background: 'var(--card-bg)' }}>
+              <XCircle className="h-5 w-5" />
+              {error}
             </motion.div>
           )}
 
-          <div className="flex justify-center w-full">
-            <PremiumButton
-className="w-full sm:w-auto" type="submit" disabled={loading} size="lg">
-              {loading ? 'Sending...' : 'Start the Conversation →'}
+          <div className="mt-8">
+            <PremiumButton className="w-full sm:w-auto" type="submit" disabled={loading} size="lg">
+              {loading ? 'Sending...' : 'Start the Conversation'}
             </PremiumButton>
           </div>
         </motion.form>
-        </div>
       </div>
     </section>
+  )
+}
+
+function FormField({
+  label,
+  htmlFor,
+  children,
+  className = '',
+}: {
+  label: string
+  htmlFor: string
+  children: ReactNode
+  className?: string
+}) {
+  return (
+    <div className={className}>
+      <label
+        htmlFor={htmlFor}
+        className="mb-3 block text-xs font-semibold uppercase"
+        style={{ color: 'var(--text-primary)', letterSpacing: '0.12em' }}
+      >
+        {label}
+      </label>
+      {children}
+    </div>
   )
 }

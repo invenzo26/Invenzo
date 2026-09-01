@@ -16,6 +16,7 @@
 :root:not([data-theme]) {
   color-scheme: dark;
   --bg-primary: #0a0a14;
+  --background: var(--bg-primary);
   --bg-surface: #121218;
   --bg-card: #141420;
   --text-primary: #ffffff;
@@ -40,9 +41,9 @@
   --shadow-card: 0 4px 16px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(212, 175, 55, 0.12);
 
   /* Glass & Blur Effects */
-  --glass-blur-lg: 20px;
-  --glass-blur-md: 12px;
-  --glass-blur-sm: 8px;
+  --glass-blur-lg: 0px;
+  --glass-blur-md: 0px;
+  --glass-blur-sm: 0px;
 
   /* Enhanced Shadow System */
   --shadow-glow: 0 0 40px rgba(212, 175, 55, 0.12);
@@ -68,6 +69,7 @@
 :root[data-theme="light"] {
   color-scheme: light;
   --bg-primary: #ffffff;
+  --background: var(--bg-primary);
   --bg-surface: #fafafa;
   --bg-card: #ffffff;
   --text-primary: #1a1a1a;
@@ -92,9 +94,9 @@
   --shadow-card: 0 4px 16px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(212, 175, 55, 0.1);
 
   /* Glass & Blur Effects */
-  --glass-blur-lg: 20px;
-  --glass-blur-md: 12px;
-  --glass-blur-sm: 8px;
+  --glass-blur-lg: 0px;
+  --glass-blur-md: 0px;
+  --glass-blur-sm: 0px;
 
   /* Enhanced Shadow System */
   --shadow-glow: 0 0 40px rgba(212, 175, 55, 0.12);
@@ -117,13 +119,14 @@
 }
 
 * {
-  scroll-behavior: smooth;
+  scroll-behavior: auto;
 }
 
 html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', 'Geist Sans', sans-serif;
   background: var(--bg-layered);
   scroll-padding-top: 4rem;
+  position: relative;
 }
 
 body {
@@ -131,6 +134,24 @@ body {
   color: var(--text-primary);
   font-family: inherit;
   transition: background 300ms ease, color 300ms ease;
+  overflow-x: hidden;
+  position: relative;
+}
+
+::selection {
+  background: var(--gold-primary);
+  color: var(--bg-primary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
 }
 
 .input {
@@ -195,7 +216,6 @@ body {
 /* Glass Panels */
 .glass-panel {
   background: rgba(18, 18, 24, 0.7);
-  backdrop-filter: blur(var(--glass-blur-lg));
   border: 1px solid var(--gold-primary);
   border-radius: 16px;
   box-shadow:
@@ -215,7 +235,6 @@ body {
 
 .glass-panel-elevated {
   background: rgba(18, 18, 24, 0.85);
-  backdrop-filter: blur(var(--glass-blur-md));
   border: 1px solid rgba(212, 175, 55, 0.2);
   border-radius: 14px;
   box-shadow:
@@ -236,18 +255,16 @@ body {
 /* Glass Inputs */
 .glass-input {
   background: rgba(20, 20, 32, 0.6);
-  backdrop-filter: blur(var(--glass-blur-sm));
   border: 1px solid rgba(212, 175, 55, 0.15);
   border-radius: 16px;
   padding: 0.75rem 1rem;
   outline: none;
-  transition: var(--transition-smooth);
+  transition: border-color 180ms ease, background-color 180ms ease, box-shadow 180ms ease;
   color: var(--text-primary);
   font-size: 16px;
   box-shadow:
     inset 0 2px 4px rgba(0, 0, 0, 0.2),
     inset 0 1px 0 rgba(212, 175, 55, 0.08);
-  will-change: background, border-color, box-shadow;
 }
 
 [data-theme="light"] .glass-input {
@@ -313,7 +330,6 @@ body {
 /* Theme Toggle Button */
 .theme-toggle-button {
   background: rgba(20, 20, 32, 0.6);
-  backdrop-filter: blur(8px);
   border-color: rgba(212, 175, 55, 0.25);
   box-shadow: 0 0 20px rgba(212, 175, 55, 0.08), inset 0 1px 0 rgba(212, 175, 55, 0.12);
 }
@@ -345,7 +361,6 @@ body {
   font-weight: 600;
   border-radius: 10px;
   transition: var(--transition-smooth);
-  will-change: transform, box-shadow;
   transform: translateZ(0);
   overflow: hidden;
   position: relative;
@@ -453,7 +468,7 @@ body {
     ),
     radial-gradient(
       circle 500px at 70% 60%,
-      rgba(59, 130, 246, 0.05) 0%,
+      rgba(212, 175, 55, 0.035) 0%,
       transparent 50%
     ),
     radial-gradient(
@@ -470,7 +485,7 @@ body {
   background-image:
     radial-gradient(circle 700px at 50% 25%, rgba(242, 201, 76, 0.14) 0%, rgba(212, 175, 55, 0.07) 25%, transparent 65%),
     radial-gradient(circle 800px at 50% 40%, rgba(212, 175, 55, 0.04) 0%, transparent 60%),
-    radial-gradient(circle 500px at 70% 60%, rgba(59, 130, 246, 0.06) 0%, transparent 50%),
+    radial-gradient(circle 500px at 70% 60%, rgba(212, 175, 55, 0.045) 0%, transparent 50%),
     radial-gradient(circle 400px at 30% 80%, rgba(212, 175, 55, 0.03) 0%, transparent 55%),
     radial-gradient(ellipse 150% 100% at 50% 0%, transparent 0%, rgba(0, 0, 0, 0.03) 100%);
   background-size: cover, cover, cover, cover, cover;
@@ -490,7 +505,7 @@ body {
   color: rgba(212, 175, 55, 0.002);
   pointer-events: none;
   z-index: 0;
-  filter: blur(20px);
+  filter: none;
   letter-spacing: -0.02em;
   line-height: 1;
   -webkit-font-smoothing: antialiased;
@@ -500,7 +515,7 @@ body {
 
 [data-theme="light"] #hero::after {
   color: rgba(212, 175, 55, 0.007);
-  filter: blur(18px);
+  filter: none;
   opacity: 0.95;
 }
 

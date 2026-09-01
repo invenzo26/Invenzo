@@ -17,6 +17,6 @@ export function scrollToHomepageSection(sectionId: HomepageSectionId) {
     return
   }
 
-  element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  element.scrollIntoView({ behavior: 'auto', block: 'start' })
   window.history.replaceState(null, '', sectionId === 'hero' ? '/' : `#${sectionId}`)
 }

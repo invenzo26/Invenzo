@@ -5,7 +5,10 @@ export default function Loading() {
       style={{ background: 'var(--bg-layered)', color: 'var(--text-primary)' }}
     >
 
-      <div className="absolute h-[700px] w-[700px] rounded-full blur-[160px] opacity-20" style={{ background: 'var(--metallic-highlight)' }} />
+      <div
+        className="pointer-events-none absolute h-[540px] w-[min(100vw,760px)] opacity-20"
+        style={{ background: 'radial-gradient(ellipse at center, var(--metallic-highlight), transparent 70%)' }}
+      />
 
       <div className="relative z-10 flex flex-col items-center gap-6">
 

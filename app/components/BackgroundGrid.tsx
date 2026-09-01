@@ -1,18 +1,6 @@
-'use client'
-
-import { motion } from 'framer-motion'
-
 export default function BackgroundGrid() {
   return (
-    <motion.div
-      animate={{
-        backgroundPosition: ['0px 0px', '60px 60px'],
-      }}
-      transition={{
-        duration: 40,
-        repeat: Infinity,
-        ease: 'linear',
-      }}
+    <div
       className="absolute inset-0 pointer-events-none opacity-[0.03]"
       style={{
         backgroundImage: `

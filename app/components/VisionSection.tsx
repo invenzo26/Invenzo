@@ -1,113 +1,51 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import { Quote } from 'lucide-react'
+import { MotionSection } from './animations/MotionSection'
 
 export function VisionSection() {
   return (
     <section
       id="vision"
-      className="py-20 lg:py-32 px-4 sm:px-6 lg:px-8 relative overflow-hidden transition-colors duration-300"
-      style={{ background: 'var(--section-surface-bg)' }}
+      className="relative z-10 overflow-hidden px-4 py-24 sm:px-6 lg:px-8 lg:py-36"
+      style={{ background: 'var(--section-primary-bg)' }}
     >
-      {/* Subtle accent line */}
       <div
-        className="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-1 bg-gradient-to-r from-transparent via-gold-primary to-transparent"
-        style={{
-          background: `linear-gradient(to right, transparent, var(--gold-primary), transparent)`,
-        }}
+        className="absolute left-1/2 top-0 h-[420px] w-[420px] -translate-x-1/2 rounded-full opacity-12"
+        style={{ background: 'radial-gradient(circle, rgba(212, 175, 55, 0.16), transparent 72%)' }}
       />
 
-      <div className="max-w-4xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="text-center"
-        >
-          <p
-  className="uppercase tracking-[0.3em] text-sm font-semibold mb-6"
-  style={{ color: 'var(--gold-primary)' }}
->
-  OUR VISION
-</p>
-          <h2
-            className="text-4xl sm:text-3xl
-sm:text-4xl
-lg:text-6xl font-light leading-tight mb-8 transition-colors duration-300"
-            style={{ color: 'var(--text-primary)' }}
-          >
-            We don't just build software.
-            <span
-              className="block font-semibold mt-4 transition-colors duration-300"
-              style={{ color: 'var(--gold-primary)' }}
-            >
-              We build intelligent systems.
-            </span>
+      <div className="relative mx-auto max-w-5xl text-center">
+        <MotionSection>
+          <p className="mb-6 text-xs font-semibold uppercase" style={{ color: 'var(--gold-primary)', letterSpacing: '0.24em' }}>
+            Our Vision
+          </p>
+          <h2 className="text-[clamp(2.6rem,7vw,6.2rem)] font-semibold leading-none" style={{ color: 'var(--text-primary)' }}>
+            We do not just build software. We build intelligent systems.
           </h2>
+          <p className="mx-auto mt-8 max-w-3xl text-base leading-8 sm:text-lg" style={{ color: 'var(--text-secondary)' }}>
+            Technology should simplify complexity. Every product we build is designed to solve real business problems, empower teams, and create lasting value through careful engineering.
+          </p>
+        </MotionSection>
 
-          <p
-            className="text-lg max-w-2xl mx-auto leading-relaxed transition-colors duration-300"
-            style={{ color: 'var(--text-secondary)' }}
-          >
-            At Invenzo, we believe technology should simplify complexity—not add to it. Every product we build is designed to solve real business problems, empower teams, and create lasting value through intelligent engineering.
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.8 }}
+          className="mx-auto mt-16 max-w-3xl rounded-2xl border p-7 sm:p-10"
+          style={{ background: 'var(--card-bg)', borderColor: 'var(--border-color)', boxShadow: 'var(--shadow-card)' }}
+        >
+          <Quote className="mx-auto mb-6 h-8 w-8" style={{ color: 'var(--gold-primary)' }} />
+          <p className="text-xl leading-9 sm:text-2xl" style={{ color: 'var(--text-primary)' }}>
+            Technology should empower people, not overwhelm them.
+          </p>
+          <div className="mx-auto my-7 h-px w-16" style={{ background: 'var(--gold-primary)' }} />
+          <p className="text-xs font-semibold uppercase" style={{ color: 'var(--text-secondary)', letterSpacing: '0.2em' }}>
+            Invenzo Philosophy
           </p>
         </motion.div>
-        <motion.div
-  initial={{ opacity: 0, y: 20 }}
-  whileInView={{ opacity: 1, y: 0 }}
-  transition={{ duration: 0.8, delay: 0.2 }}
-  viewport={{ once: true }}
-  className="mt-20 max-w-3xl mx-auto text-center"
->
-  <div
-    className="rounded-3xl border px-8 py-10"
-    style={{
-      borderColor: 'var(--border-color)',
-      background: 'var(--card-bg)',
-    }}
-  >
-    <p
-      className="text-xl md:text-2xl italic leading-relaxed"
-      style={{ color: 'var(--text-primary)' }}
-    >
-      “Technology should
-      <span style={{ color: 'var(--gold-primary)' }}>
-        {' '}empower people{' '}
-      </span>
-      — not overwhelm them.”
-    </p>
-
-    <div
-      className="w-16 h-px mx-auto my-6"
-      style={{ background: 'var(--gold-primary)' }}
-    />
-
-    <p
-      className="uppercase tracking-[0.25em] text-xs"
-      style={{ color: 'var(--text-secondary)' }}
-    >
-      Invenzo Philosophy
-    </p>
-  </div>
-</motion.div>
-
-        {/* Subtle decorative elements */}
-        <motion.div
-  animate={{
-    scale: [1, 1.08, 1],
-    opacity: [0.08, 0.15, 0.08],
-  }}
-  transition={{
-    duration: 8,
-    repeat: Infinity,
-    ease: "easeInOut",
-  }}
-  className="absolute left-1/2 bottom-10 -translate-x-1/2 w-[500px] h-[500px] rounded-full blur-3xl -z-10"
-  style={{
-    background: "var(--gold-primary)",
-  }}
-/>
       </div>
     </section>
   )
