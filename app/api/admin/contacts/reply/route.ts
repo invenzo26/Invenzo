@@ -27,6 +27,13 @@ export async function POST(req: NextRequest) {
     )
   }
 
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(to)) {
+    return NextResponse.json(
+      { success: false, error: 'The contact has an invalid email address.' },
+      { status: 400 }
+    )
+  }
+
   try {
     const emailTemplate = buildReplyEmailTemplate({
       recipientName: String(body.name || '').trim(),

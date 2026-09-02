@@ -133,7 +133,7 @@ export function ProductsSection() {
         </MotionSection>
 
         {loading ? (
-          <div className="grid gap-6 lg:grid-cols-[1fr_0.42fr]">
+          <div className="grid min-w-0 gap-6 lg:grid-cols-[1fr_0.42fr]">
             <div className="h-[400px] animate-pulse rounded-2xl border sm:h-[560px]" style={{ background: 'var(--card-bg)', borderColor: 'var(--border-color)' }} />
             <div className="hidden h-[560px] animate-pulse rounded-2xl border lg:block" style={{ background: 'var(--card-bg)', borderColor: 'var(--border-color)' }} />
           </div>
@@ -147,8 +147,8 @@ export function ProductsSection() {
             <p className="text-lg" style={{ color: 'var(--text-secondary)' }}>No products available at the moment.</p>
           </div>
         ) : (
-          <div className="grid gap-6 lg:grid-cols-[1fr_0.42fr]">
-            <div className="relative min-h-[520px] overflow-hidden rounded-2xl border p-4 pb-20 sm:min-h-[590px] sm:p-6 sm:pb-6 lg:p-8" style={{ background: 'var(--card-bg)', borderColor: 'var(--border-color)', perspective: '1100px' }}>
+          <div className="grid min-w-0 gap-6 lg:grid-cols-[1fr_0.42fr]">
+            <div className="relative min-w-0 min-h-[520px] overflow-hidden rounded-2xl border p-4 pb-20 sm:min-h-[590px] sm:p-6 sm:pb-6 lg:p-8" style={{ background: 'var(--card-bg)', borderColor: 'var(--border-color)', perspective: '1100px' }}>
               <AnimatePresence mode="wait">
                 <motion.div
                   key={activeProduct.id}
@@ -156,7 +156,7 @@ export function ProductsSection() {
                   initial={reduceMotion ? { opacity: 0 } : 'enter'}
                   animate={reduceMotion ? { opacity: 1 } : 'center'}
                   exit={reduceMotion ? { opacity: 0 } : 'exit'}
-                  className="grid h-full gap-8 lg:grid-cols-[0.58fr_0.42fr] lg:items-center"
+                  className="grid h-full min-w-0 gap-8 lg:grid-cols-[0.58fr_0.42fr] lg:items-center"
                 >
                   <div className="relative min-h-[300px] overflow-hidden rounded-2xl border sm:min-h-[430px]" style={{ borderColor: 'var(--border-color)', background: 'var(--bg-primary)' }}>
                     {imageUrl ? (
@@ -184,7 +184,7 @@ export function ProductsSection() {
                     </div>
                   </div>
 
-                  <div>
+                  <div className="min-w-0">
                     <p className="mb-5 text-xs font-semibold uppercase" style={{ color: 'var(--gold-primary)', letterSpacing: '0.2em' }}>
                       Featured system {String(activeIndex + 1).padStart(2, '0')}
                     </p>
@@ -218,12 +218,12 @@ export function ProductsSection() {
               </div>
             </div>
 
-            <div className="space-y-3">
+            <div className="min-w-0 space-y-3">
               {products.map((product, index) => (
                 <button
                   key={product.id}
                   onClick={() => setActiveIndex(index)}
-                  className="group flex w-full items-center gap-4 rounded-2xl border p-4 text-left transition-all duration-300"
+                  className="group flex min-w-0 w-full items-center gap-3 rounded-2xl border p-3 text-left transition-all duration-300 sm:gap-4 sm:p-4"
                   style={{
                     background: index === activeIndex ? 'var(--hover-overlay)' : 'var(--card-bg)',
                     borderColor: index === activeIndex ? 'var(--gold-primary)' : 'var(--border-color)',

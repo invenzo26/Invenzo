@@ -40,11 +40,26 @@ function getGmailConfig(): { config: GmailConfig | null; error: string | null } 
 }
 
 function toBase64Url(value: string) {
-  return Buffer.from(value)
+  return Buffer.from(value, 'utf8')
     .toString('base64')
     .replace(/\+/g, '-')
     .replace(/\//g, '_')
     .replace(/=+$/g, '')
+}
+
+function encodeMimeHeader(value: string) {
+  const sanitized = value.replace(/[\r\n]/g, ' ').trim()
+
+  if (/^[\x20-\x7E]*$/.test(sanitized)) {
+    return sanitized
+  }
+
+  return `=?UTF-8?B?${Buffer.from(sanitized, 'utf8').toString('base64')}?=`
+}
+
+function encodeMimeBody(value: string) {
+  const encoded = Buffer.from(value, 'utf8').toString('base64')
+  return encoded.match(/.{1,76}/g)?.join('\r\n') || ''
 }
 
 function buildRawEmail({
@@ -62,35 +77,35 @@ function buildRawEmail({
 }) {
   const mime = html
     ? [
-        `From: ${from}`,
-        `To: ${to}`,
-        `Subject: ${subject}`,
+        `From: ${encodeMimeHeader(from)}`,
+        `To: ${encodeMimeHeader(to)}`,
+        `Subject: ${encodeMimeHeader(subject)}`,
         'MIME-Version: 1.0',
         'Content-Type: multipart/alternative; boundary="invenzo-boundary"',
         '',
         '--invenzo-boundary',
         'Content-Type: text/plain; charset="UTF-8"',
-        'Content-Transfer-Encoding: 7bit',
+        'Content-Transfer-Encoding: base64',
         '',
-        text,
+        encodeMimeBody(text),
         '',
         '--invenzo-boundary',
         'Content-Type: text/html; charset="UTF-8"',
-        'Content-Transfer-Encoding: 7bit',
+        'Content-Transfer-Encoding: base64',
         '',
-        html,
+        encodeMimeBody(html),
         '',
         '--invenzo-boundary--',
       ].join('\r\n')
     : [
-        `From: ${from}`,
-        `To: ${to}`,
-        `Subject: ${subject}`,
+        `From: ${encodeMimeHeader(from)}`,
+        `To: ${encodeMimeHeader(to)}`,
+        `Subject: ${encodeMimeHeader(subject)}`,
         'MIME-Version: 1.0',
         'Content-Type: text/plain; charset="UTF-8"',
-        'Content-Transfer-Encoding: 7bit',
+        'Content-Transfer-Encoding: base64',
         '',
-        text,
+        encodeMimeBody(text),
       ].join('\r\n')
 
   return toBase64Url(mime)
@@ -134,6 +149,10 @@ export async function sendGmailMessage({
 
   if (!config) {
     throw new Error(error || 'Gmail API is not configured.')
+  }
+
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(to)) {
+    throw new Error('The recipient email address is invalid.')
   }
 
   const accessToken = await getAccessToken(config)
