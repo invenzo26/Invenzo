@@ -1,6 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import { useRouter } from 'next/navigation'
 import { ArrowDown, Bot, Cpu, Network, Sparkles } from 'lucide-react'
 import { PremiumButton } from './PremiumButton'
 import BackgroundGrid from './BackgroundGrid'
@@ -16,6 +17,8 @@ const signals = [
 ]
 
 export function HeroSection() {
+  const router = useRouter()
+
   return (
     <section
       id="hero"
@@ -80,54 +83,56 @@ export function HeroSection() {
             <PremiumButton className="w-full sm:w-auto" size="lg" onClick={() => scrollToHomepageSection('contact')}>
               Start a Project
             </PremiumButton>
-            <PremiumButton className="w-full sm:w-auto" variant="secondary" size="lg" onClick={() => scrollToHomepageSection('products')}>
+            <PremiumButton className="w-full sm:w-auto" variant="secondary" size="lg" onClick={() => router.push('/products')}>
               Explore Work
             </PremiumButton>
           </motion.div>
         </div>
 
-        <MouseParallax className="relative hidden min-h-[620px] lg:block" strength={10}>
+        <MouseParallax className="relative hidden min-h-[620px] lg:flex lg:items-center lg:justify-center" strength={10}>
           <motion.div
             initial={{ opacity: 0, scale: 0.92, rotateX: 8 }}
             animate={{ opacity: 1, scale: 1, rotateX: 0 }}
             transition={{ delay: 0.18, duration: 1, ease: cinematicEase }}
-            className="absolute inset-0"
+            className="relative w-full max-w-[620px]"
           >
-            <div className="absolute left-10 top-24 h-[390px] w-[390px] rounded-full border" style={{ borderColor: 'var(--border-color)' }} />
-            <div className="absolute left-20 top-32 h-[300px] w-[300px] rounded-full border opacity-70" style={{ borderColor: 'var(--border-color)' }} />
             <div
-              className="absolute left-32 top-44 h-[180px] w-[180px] rounded-full opacity-45"
-              style={{ background: 'radial-gradient(circle, rgba(212, 175, 55, 0.34), transparent 70%)' }}
-            />
-
-            <div className="absolute left-0 top-10">
-              <SignalPanel title="Realtime intelligence" value="AI" icon={Bot} />
-            </div>
-            <div className="absolute right-2 top-44">
-              <SignalPanel title="Scalable product layer" value="SaaS" icon={Cpu} />
-            </div>
-            <div className="absolute bottom-24 left-16">
-              <SignalPanel title="Workflow orchestration" value="Ops" icon={Network} />
-            </div>
-
-            <div
-              className="absolute left-40 top-36 h-72 w-72 rounded-[2rem] border p-5"
+              className="relative aspect-[1.12] overflow-visible"
               style={{
-                background: 'var(--card-bg)',
-                borderColor: 'var(--border-color)',
-                boxShadow: 'var(--shadow-card)',
-                transform: 'perspective(1000px) rotateX(42deg) rotateZ(-18deg)',
+                transformStyle: 'preserve-3d',
               }}
             >
-              <div className="grid h-full grid-cols-3 gap-3">
-                {Array.from({ length: 9 }).map((_, index) => (
-                  <div
-                    key={index}
-                    className="rounded-lg border"
-                    style={{ borderColor: 'var(--border-color)', background: index % 2 ? 'var(--hover-overlay)' : 'transparent' }}
-                  />
-                ))}
+              <motion.div
+                className="absolute left-[19%] top-[17%] h-[66%] w-[66%] rounded-full"
+                style={{ background: 'radial-gradient(circle, rgba(212,175,55,0.12), transparent 68%)', transform: 'translateZ(-30px)' }}
+                animate={{ scale: [0.96, 1.04, 0.96], opacity: [0.55, 0.8, 0.55] }}
+                transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }}
+              />
+
+              <div className="pointer-events-none absolute inset-0" style={{ transform: 'translateZ(40px)' }}>
+                <motion.div className="absolute left-[-3%] top-[4%]" animate={{ y: [0, -5, 0] }} transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}>
+                  <SignalPanel title="Realtime intelligence" value="AI" icon={Bot} />
+                </motion.div>
+                <motion.div className="absolute right-[-2%] top-[30%]" animate={{ y: [0, 6, 0] }} transition={{ duration: 5.8, repeat: Infinity, ease: 'easeInOut', delay: 0.4 }}>
+                  <SignalPanel title="Scalable product layer" value="SaaS" icon={Cpu} />
+                </motion.div>
+                <motion.div className="absolute bottom-[3%] left-[11%]" animate={{ y: [0, -4, 0] }} transition={{ duration: 5.4, repeat: Infinity, ease: 'easeInOut', delay: 0.8 }}>
+                  <SignalPanel title="Workflow orchestration" value="Ops" icon={Network} />
+                </motion.div>
               </div>
+
+              <motion.div
+                className="pointer-events-none absolute left-[27%] top-[27%] h-[47%] w-[47%] rounded-[1.5rem] border p-4"
+                style={{ borderColor: 'rgba(242,201,76,0.24)', background: 'rgba(8,8,18,0.08)', transform: 'translateZ(55px) rotateX(38deg) rotateZ(-15deg)', boxShadow: '0 0 30px rgba(212,175,55,0.08)' }}
+                animate={{ rotateZ: [-15, -13.5, -15], y: [0, -3, 0] }}
+                transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }}
+              >
+                <div className="grid h-full grid-cols-3 gap-2 opacity-80">
+                  {Array.from({ length: 9 }).map((_, index) => (
+                    <span key={index} className="rounded-md border" style={{ borderColor: 'rgba(212,175,55,0.22)', background: index % 2 ? 'rgba(212,175,55,0.1)' : 'rgba(8,8,18,0.18)' }} />
+                  ))}
+                </div>
+              </motion.div>
             </div>
           </motion.div>
         </MouseParallax>
@@ -156,7 +161,7 @@ export function HeroSection() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1 }}
-        onClick={() => scrollToHomepageSection('products')}
+        onClick={() => router.push('/products')}
         className="relative z-20 mx-auto mb-5 hidden h-12 w-12 shrink-0 items-center justify-center rounded-full border sm:flex"
         style={{ borderColor: 'var(--border-color)', color: 'var(--text-secondary)' }}
         aria-label="Scroll to products"
@@ -185,6 +190,7 @@ function SignalPanel({
         background: 'var(--card-bg)',
         borderColor: 'var(--border-color)',
         boxShadow: 'var(--shadow-card)',
+        backdropFilter: 'blur(10px)',
       }}
     >
       <div className="flex items-center justify-between">
@@ -193,7 +199,12 @@ function SignalPanel({
       </div>
       <p className="mt-5 text-sm font-semibold" style={{ color: 'var(--text-primary)' }}>{title}</p>
       <div className="mt-4 h-1.5 overflow-hidden rounded-full" style={{ background: 'var(--hover-overlay)' }}>
-        <div className="h-full w-2/3 rounded-full" style={{ background: 'var(--gold-gradient-1)' }} />
+        <motion.div
+          className="h-full w-2/3 origin-left rounded-full"
+          style={{ background: 'var(--gold-gradient-1)' }}
+          animate={{ scaleX: [0.72, 1, 0.84, 0.72] }}
+          transition={{ duration: 4.5, repeat: Infinity, ease: 'easeInOut' }}
+        />
       </div>
     </div>
   )

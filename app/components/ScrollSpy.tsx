@@ -8,38 +8,36 @@ export function useScrollSpy(): SectionId {
   const [activeSection, setActiveSection] = useState<SectionId>('hero')
 
   useEffect(() => {
-    // Create intersection observer to detect visible sections
+    if (window.location.pathname !== '/') return
+
+    const sectionElements = Array.from(document.querySelectorAll<HTMLElement>('section[id]'))
+    const updateActiveSection = () => {
+      const midpoint = window.innerHeight * 0.35
+      const closest = sectionElements
+        .map((section) => ({ section, distance: Math.abs(section.getBoundingClientRect().top - midpoint) }))
+        .filter(({ section }) => section.getBoundingClientRect().bottom > 0 && section.getBoundingClientRect().top < window.innerHeight)
+        .sort((a, b) => a.distance - b.distance)[0]
+
+      if (closest) setActiveSection(closest.section.id as SectionId)
+    }
+
+    updateActiveSection()
+    window.addEventListener('scroll', updateActiveSection, { passive: true })
+    window.addEventListener('resize', updateActiveSection)
+
     const observer = new IntersectionObserver(
-      (entries: IntersectionObserverEntry[]) => {
-        // Find the section that is most visible (highest intersection ratio)
-        let maxRatio = 0
-        let maxEntry: IntersectionObserverEntry | null = null
-
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && entry.intersectionRatio > maxRatio) {
-            maxRatio = entry.intersectionRatio
-            maxEntry = entry
-          }
-        })
-
-        // If we found a visible section, update active state
-        if (maxEntry) {
-          const id = (maxEntry as IntersectionObserverEntry).target.id as unknown as SectionId
-          setActiveSection(id)
-        }
-      },
+      () => updateActiveSection(),
       {
-        threshold: [0, 0.25, 0.5, 0.75, 1],
-        rootMargin: '-50% 0px -50% 0px', // Trigger when section is in middle of viewport
+        threshold: [0, 0.1, 0.25, 0.5, 0.75, 1],
       }
     )
 
-    // Observe all section elements
-    const sections = document.querySelectorAll('section[id]')
-    sections.forEach((section) => observer.observe(section))
+    sectionElements.forEach((section) => observer.observe(section))
 
     return () => {
-      sections.forEach((section) => observer.unobserve(section))
+      window.removeEventListener('scroll', updateActiveSection)
+      window.removeEventListener('resize', updateActiveSection)
+      sectionElements.forEach((section) => observer.unobserve(section))
     }
   }, [])
 

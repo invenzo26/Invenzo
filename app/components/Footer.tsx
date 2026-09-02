@@ -2,7 +2,8 @@
 
 import { motion } from 'framer-motion'
 import { ArrowUp, Github, Instagram, Linkedin } from 'lucide-react'
-import { homepageSections, scrollToHomepageSection } from './sectionNavigation'
+import Link from 'next/link'
+import { navigationItems, scrollToHomepageSection } from './sectionNavigation'
 
 const socialLinks = [
   { icon: Github, href: 'https://github.com/Invenzo26', label: 'GitHub' },
@@ -53,7 +54,7 @@ export function Footer() {
               Navigate
             </p>
             <div className="grid gap-3">
-              {homepageSections.map((link) => (
+              {navigationItems.map((link) => link.kind === 'scroll' ? (
                 <a
                   key={link.href}
                   href={link.href}
@@ -66,6 +67,10 @@ export function Footer() {
                 >
                   {link.label}
                 </a>
+              ) : (
+                <Link key={link.href} href={link.href} className="transition-colors duration-300 hover:text-gold-primary" style={{ color: 'var(--text-secondary)' }}>
+                  {link.label}
+                </Link>
               ))}
             </div>
           </div>
