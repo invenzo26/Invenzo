@@ -41,7 +41,7 @@ export function Footer() {
             <p className="mb-5 text-xs font-semibold uppercase" style={{ color: 'var(--gold-primary)', letterSpacing: '0.24em' }}>
               Invenzo AI Solutions
             </p>
-            <h2 className="max-w-2xl text-[clamp(2.6rem,6vw,6rem)] font-semibold leading-none" style={{ color: 'var(--text-primary)' }}>
+            <h2 className="max-w-2xl text-[clamp(2.35rem,6vw,6rem)] font-semibold leading-[0.98]" style={{ color: 'var(--text-primary)' }}>
               Build what your business will run on next.
             </h2>
             <p className="mt-7 max-w-lg leading-8" style={{ color: 'var(--text-secondary)' }}>

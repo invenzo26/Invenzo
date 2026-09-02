@@ -134,7 +134,7 @@ export function ProductsSection() {
 
         {loading ? (
           <div className="grid gap-6 lg:grid-cols-[1fr_0.42fr]">
-            <div className="h-[560px] animate-pulse rounded-2xl border" style={{ background: 'var(--card-bg)', borderColor: 'var(--border-color)' }} />
+            <div className="h-[400px] animate-pulse rounded-2xl border sm:h-[560px]" style={{ background: 'var(--card-bg)', borderColor: 'var(--border-color)' }} />
             <div className="hidden h-[560px] animate-pulse rounded-2xl border lg:block" style={{ background: 'var(--card-bg)', borderColor: 'var(--border-color)' }} />
           </div>
         ) : error ? (
@@ -148,7 +148,7 @@ export function ProductsSection() {
           </div>
         ) : (
           <div className="grid gap-6 lg:grid-cols-[1fr_0.42fr]">
-            <div className="relative min-h-[590px] overflow-hidden rounded-2xl border p-4 sm:p-6 lg:p-8" style={{ background: 'var(--card-bg)', borderColor: 'var(--border-color)', perspective: '1100px' }}>
+            <div className="relative min-h-[520px] overflow-hidden rounded-2xl border p-4 pb-20 sm:min-h-[590px] sm:p-6 sm:pb-6 lg:p-8" style={{ background: 'var(--card-bg)', borderColor: 'var(--border-color)', perspective: '1100px' }}>
               <AnimatePresence mode="wait">
                 <motion.div
                   key={activeProduct.id}
@@ -209,10 +209,10 @@ export function ProductsSection() {
               </AnimatePresence>
 
               <div className="absolute bottom-5 right-5 flex gap-2">
-                <button onClick={goPrevious} className="grid h-11 w-11 place-items-center rounded-full border" style={{ borderColor: 'var(--border-color)', color: 'var(--text-primary)', background: 'var(--card-bg)' }} aria-label="Previous product">
+                <button onClick={goPrevious} className="grid h-10 w-10 place-items-center rounded-full border sm:h-11 sm:w-11" style={{ borderColor: 'var(--border-color)', color: 'var(--text-primary)', background: 'var(--card-bg)' }} aria-label="Previous product">
                   <ArrowLeft className="h-4 w-4" />
                 </button>
-                <button onClick={goNext} className="grid h-11 w-11 place-items-center rounded-full border" style={{ borderColor: 'var(--border-color)', color: 'var(--text-primary)', background: 'var(--card-bg)' }} aria-label="Next product">
+                <button onClick={goNext} className="grid h-10 w-10 place-items-center rounded-full border sm:h-11 sm:w-11" style={{ borderColor: 'var(--border-color)', color: 'var(--text-primary)', background: 'var(--card-bg)' }} aria-label="Next product">
                   <ArrowRight className="h-4 w-4" />
                 </button>
               </div>

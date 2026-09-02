@@ -89,7 +89,7 @@ export function HeroSection() {
           </motion.div>
         </div>
 
-        <MouseParallax className="relative hidden min-h-[620px] lg:flex lg:items-center lg:justify-center" strength={10}>
+        <MouseParallax className="relative mt-10 flex min-h-[390px] items-center justify-center lg:mt-0 lg:min-h-[620px]" strength={10}>
           <motion.div
             initial={{ opacity: 0, scale: 0.92, rotateX: 8 }}
             animate={{ opacity: 1, scale: 1, rotateX: 0 }}
@@ -185,7 +185,7 @@ function SignalPanel({
 }) {
   return (
     <div
-      className="w-56 rounded-2xl border p-4"
+      className="w-44 rounded-2xl border p-3 sm:w-56 sm:p-4"
       style={{
         background: 'var(--card-bg)',
         borderColor: 'var(--border-color)',
@@ -197,7 +197,7 @@ function SignalPanel({
         <Icon className="h-5 w-5" style={{ color: 'var(--gold-primary)' }} />
         <span className="text-xs uppercase" style={{ color: 'var(--text-secondary)', letterSpacing: '0.16em' }}>{value}</span>
       </div>
-      <p className="mt-5 text-sm font-semibold" style={{ color: 'var(--text-primary)' }}>{title}</p>
+      <p className="mt-4 text-xs font-semibold sm:mt-5 sm:text-sm" style={{ color: 'var(--text-primary)' }}>{title}</p>
       <div className="mt-4 h-1.5 overflow-hidden rounded-full" style={{ background: 'var(--hover-overlay)' }}>
         <motion.div
           className="h-full w-2/3 origin-left rounded-full"

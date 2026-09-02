@@ -54,7 +54,7 @@ export function TechStackSection() {
           </p>
         </MotionSection>
 
-        <div className="relative mx-auto min-h-[760px] max-w-6xl lg:min-h-[640px]">
+        <div className="relative mx-auto max-w-6xl lg:min-h-[640px]">
           <div className="absolute left-1/2 top-1/2 hidden h-[520px] w-[520px] -translate-x-1/2 -translate-y-1/2 rounded-full border lg:block" style={{ borderColor: 'var(--border-color)' }} />
           <div className="absolute left-1/2 top-1/2 hidden h-[360px] w-[360px] -translate-x-1/2 -translate-y-1/2 rounded-full border lg:block" style={{ borderColor: 'var(--border-color)' }} />
 
